@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Informe | LiqenInsight SEIA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0;background:#F2F0EB;color:#0B1F2A;-webkit-font-smoothing:antialiased}
+a{color:#1F6B2B}a:hover{color:#0B1F2A}
+input,select,textarea,button{font-family:inherit}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid #2E9E3F;outline-offset:1px}
+@media print{[data-noprint]{display:none!important}body{background:#fff}}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:100vh;font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:14px;line-height:1.5;color:#0B1F2A;background:#F2F0EB">
+
+<sc-if value="{{ notSolo }}" hint-placeholder-val="{{ false }}">
+<aside data-noprint="1" style="flex:1 0 232px;max-width:100%;position:sticky;top:0;align-self:flex-start;height:100vh;overflow-y:auto;background:#0B1F2A;color:#E9ECE7;display:flex;flex-direction:column;gap:28px;padding:28px 18px 24px;box-sizing:border-box">
+  <div style="display:flex;flex-direction:column;gap:6px;padding:0 8px">
+    <span style="align-self:flex-start;font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#0B1F2A;background:#63C64C;border-radius:999px;padding:4px 9px;line-height:1">Prototipo</span>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9AA6AD">SEIA · Motor de aplicabilidad</div>
+  </div>
+  <a href="index.html" style="display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:6px;background:#16323F;color:#FFFFFF;font-size:13.5px;font-weight:600;text-decoration:none" style-hover="background:#1F3A48">← Volver a la evaluación guiada</a>
+  <nav aria-label="Secciones" style="display:flex;flex-direction:column;gap:20px">
+    <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="4">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7F8C93;padding:0 10px 6px">{{ g.title }}</div>
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+          <button onClick="{{ it.on }}" style="display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;border:0;border-radius:6px;padding:8px 10px;cursor:pointer;font-size:14px;background:{{ it.bg }};color:{{ it.fg }};transition:background .2s" style-hover="background:#16323F">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:{{ it.nfg }}">{{ it.n }}</span><span>{{ it.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-for>
+  </nav>
+  <div style="margin-top:auto;display:flex;flex-direction:column;gap:6px;padding:12px 10px 0;border-top:1px solid #1F3A48">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#F2A96B">Modo desarrollo</div>
+    <div style="font-size:12.5px;color:#B7C1C6;line-height:1.45">Catálogo parcial. Ninguna regla está validada jurídicamente.</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#7F8C93">{{ catVersion }}</div>
+  </div>
+</aside>
+</sc-if>
+
+<main style="flex:999 1 640px;min-width:0;display:flex;flex-direction:column">
+  <sc-if value="{{ isSolo }}" hint-placeholder-val="{{ false }}">
+    <div data-noprint="1" style="position:sticky;top:0;z-index:6;background:#0B1F2A;color:#E9ECE7;padding:12px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+      <div style="display:flex;align-items:center;gap:12px"><span style="font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#0B1F2A;background:#63C64C;border-radius:999px;padding:4px 9px;line-height:1">Prototipo</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#9AA6AD">Herramientas técnicas · {{ soloTitle }}</span></div>
+      <a href="index.html" style="display:inline-flex;align-items:center;height:36px;padding:0 13px;border-radius:8px;background:#16323F;color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none" style-hover="background:#1F3A48">← Volver a la aplicación</a>
+    </div>
+  </sc-if>
+  <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ true }}">
+  <header data-noprint="1" style="position:sticky;top:0;z-index:5;background:rgba(242,240,235,.94);border-bottom:1px solid #DCDDD8;padding:12px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px">
+    <div style="display:flex;align-items:center;gap:10px;flex:1 1 320px;min-width:0">
+      <label for="projsel" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#55616A;white-space:nowrap">Proyecto</label>
+      <select id="projsel" value="{{ pid }}" onChange="{{ onPickProject }}" style="flex:1 1 auto;min-width:0;max-width:420px;background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:7px 10px;font-size:14px;color:#0B1F2A">
+        <option value="">Ninguno seleccionado</option>
+        <sc-for list="{{ projOpts }}" as="o" hint-placeholder-count="0"><option value="{{ o.id }}">{{ o.name }}</option></sc-for>
+      </select>
+    </div>
+    <div style="font-size:12.5px;color:#55616A;flex:1 1 300px;text-wrap:pretty">Análisis preliminar. No constituye resolución del SEA, consulta de pertinencia ni autorización administrativa.</div>
+  </header>
+  </sc-if>
+
+  <div style="padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;gap:32px;max-width:1280px;width:100%;box-sizing:border-box">
+
+  <sc-if value="{{ notReady }}" hint-placeholder-val="{{ false }}">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Cargando motor y catálogo…</div>
+  </sc-if>
+  <sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:16px;border:1px solid #D9AE98;background:#F4E4DB;color:#7E3519;border-radius:8px">No se pudo cargar el motor: {{ err }}</div>
+  </sc-if>
+
+  <sc-if value="{{ isNoProj }}" hint-placeholder-val="{{ false }}">
+    <section style="display:flex;flex-direction:column;gap:16px;max-width:620px;padding:40px 0">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">Sin proyecto activo</div>
+      <h1 style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Seleccione o cree un proyecto <em style="font-style:italic;color:#1F6B2B">para continuar</em>.</h1>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <button onClick="{{ onCreate }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#16364A">Crear proyecto →</button>
+        <button onClick="{{ goPanel }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:10px 16px;font-size:14px;font-weight:500;cursor:pointer" style-hover="background:#E9E8E3">Ir al panel</button>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 01 PANEL -->
+  <sc-if value="{{ isPanel }}" hint-placeholder-val="{{ true }}">
+    <section data-screen-label="01 Panel" aria-labelledby="h-panel" style="display:flex;flex-direction:column;gap:36px">
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between">
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:720px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">01 · Panel principal</div>
+          <h1 id="h-panel" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(34px,4.2vw,58px);line-height:1;letter-spacing:-0.035em;margin:0;text-wrap:balance">Cada conclusión, <em style="font-style:italic;color:#1F6B2B">con su fundamento</em>.</h1>
+          <p style="margin:0;font-size:16px;line-height:1.55;color:#55616A;max-width:560px;text-wrap:pretty">Determine de forma preliminar si un proyecto debe ingresar al SEIA, con reglas versionadas, trazables y con su estado de validación visible.</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <button onClick="{{ onCreate }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#16364A">Crear proyecto →</button>
+          <button onClick="{{ onSamples }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:10px 16px;font-size:14px;font-weight:500;cursor:pointer" style-hover="background:#E9E8E3">Cargar casos de ejemplo ficticios</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid #0B1F2A;border-bottom:1px solid #DCDDD8">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="6">
+          <div style="padding:16px 16px 18px 0;display:flex;flex-direction:column;gap:6px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">{{ s.k }}</div>
+            <div style="font-family:'Newsreader',serif;font-weight:300;font-size:34px;line-height:1;letter-spacing:-0.02em">{{ s.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <h2 style="font-family:'Newsreader',serif;font-weight:400;font-size:26px;letter-spacing:-0.02em;margin:0">Proyectos</h2>
+        <sc-if value="{{ noProjects }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:28px;border:1px dashed #B9BDBB;border-radius:8px;color:#55616A;max-width:640px">Aún no hay proyectos. Cree uno o cargue los casos de ejemplo, que son ficticios y sirven para recorrer el flujo.</div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ projRows }}" as="r" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.4fr) auto;gap:12px 24px;align-items:center;padding:16px 12px;border-top:1px solid #DCDDD8;border-radius:4px;transition:background .2s" style-hover="background:#E9E8E3">
+              <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+                <div style="font-size:16px;font-weight:600">{{ r.name }}</div>
+                <div style="font-size:13px;color:#55616A">{{ r.meta }}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+                <span style="display:inline-flex;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:{{ r.badge.bg }};color:{{ r.badge.fg }};border:1px solid {{ r.badge.bd }}">{{ r.badge.label }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#55616A">{{ r.when }}</span>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+                <button onClick="{{ r.onOpen }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:7px 12px;font-size:13px;cursor:pointer" style-hover="background:#FBFAF7">Ficha</button>
+                <button onClick="{{ r.onEval }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:7px 12px;font-size:13px;cursor:pointer" style-hover="background:#16364A">Evaluación →</button>
+                <button onClick="{{ r.onDelete }}" aria-label="Eliminar proyecto" style="background:transparent;color:#7E3519;border:1px solid transparent;border-radius:6px;padding:7px 10px;font-size:13px;cursor:pointer" style-hover="border-color:#D9AE98">Eliminar</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 02-03 FICHA -->
+  <sc-if value="{{ isFicha }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="02 Ficha" aria-labelledby="h-ficha" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">02 · Ficha técnica del proyecto</div>
+        <h1 id="h-ficha" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0;text-wrap:balance">{{ projName }}</h1>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:#55616A;text-wrap:pretty">Solo se piden los parámetros que requieren las tipologías de las actividades declaradas. Un dato sin informar se trata como desconocido, nunca como ausencia de obligación.</p>
+      </div>
+      <div role="tablist" style="display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid #DCDDD8">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="6">
+          <button role="tab" onClick="{{ s.on }}" style="display:flex;gap:8px;align-items:baseline;background:transparent;border:0;border-bottom:2px solid {{ s.bd }};padding:10px 14px;margin-bottom:-1px;cursor:pointer;color:{{ s.fg }};font-size:14px;font-weight:500">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px">{{ s.id }}</span>{{ s.label }}
+          </button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ stepA }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px 20px">
+            <sc-for list="{{ fieldsA }}" as="f" hint-placeholder-count="10">
+              <label style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">{{ f.label }}</span>
+                <input value="{{ f.value }}" onChange="{{ f.on }}" placeholder="{{ f.ph }}" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:9px 11px;font-size:14px;color:#0B1F2A;width:100%;box-sizing:border-box">
+              </label>
+            </sc-for>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:6px;max-width:860px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Descripción del proyecto</span>
+            <textarea value="{{ descripcion }}" onChange="{{ onDesc }}" rows="4" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:10px 11px;font-size:14px;line-height:1.5;color:#0B1F2A;resize:vertical"></textarea>
+          </label>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ stepB }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:860px">
+          <p style="margin:0;color:#55616A">Seleccione todas las características que correspondan. Si marca «Modificación», los parámetros técnicos deben describir la magnitud de las partes, obras o acciones de la modificación.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ natureChips }}" as="c" hint-placeholder-count="10">
+              <button onClick="{{ c.on }}" aria-pressed="{{ c.pressed }}" style="border-radius:999px;padding:8px 14px;font-size:13.5px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.bd }};transition:background .2s">{{ c.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ stepC }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:28px">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <h3 style="margin:0;font-size:16px;font-weight:600">Actividades del proyecto</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ activityChips }}" as="c" hint-placeholder-count="8">
+                <button onClick="{{ c.on }}" style="border-radius:999px;padding:8px 14px;font-size:13.5px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.bd }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+              <span style="font-size:13.5px;color:#55616A">¿Las actividades declaradas son todas las del proyecto?</span>
+              <div style="display:flex;gap:0">
+                <sc-for list="{{ actConfirmOpts }}" as="o" hint-placeholder-count="2">
+                  <button onClick="{{ o.on }}" style="padding:6px 12px;font-size:13px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <h3 style="margin:0;font-size:16px;font-weight:600">Parámetros técnicos</h3>
+            <sc-if value="{{ isMod }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:10px 14px;background:#E3EAF5;color:#1A4C93;border-radius:6px;font-size:13.5px;max-width:860px">Proyecto declarado como modificación: informe la magnitud de la modificación (art. 2 g.1 RSEIA), no la del proyecto total.</div>
+            </sc-if>
+            <sc-if value="{{ noParams }}" hint-placeholder-val="{{ false }}">
+              <div style="color:#55616A;font-size:13.5px">Declare al menos una actividad para ver los parámetros que requiere. En campos numéricos, escriba 0 si el parámetro no aplica.</div>
+            </sc-if>
+            <div style="overflow-x:auto">
+              <div style="min-width:860px;display:flex;flex-direction:column">
+                <div style="display:grid;grid-template-columns:minmax(0,2fr) 120px 100px minmax(0,1.4fr) 140px minmax(0,1.2fr);gap:10px;padding:8px 0;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#55616A;border-bottom:1px solid #0B1F2A">
+                  <span>Parámetro</span><span>Valor</span><span>Unidad</span><span>Fuente</span><span>Fecha</span><span>Evidencia</span>
+                </div>
+                <sc-for list="{{ paramRows }}" as="r" hint-placeholder-count="0">
+                  <div style="display:grid;grid-template-columns:minmax(0,2fr) 120px 100px minmax(0,1.4fr) 140px minmax(0,1.2fr);gap:10px;padding:10px 0;border-bottom:1px solid #DCDDD8;align-items:center">
+                    <div style="display:flex;flex-direction:column;gap:2px">
+                      <span style="font-weight:500">{{ r.label }}</span>
+                      <span style="font-size:12px;color:#55616A">{{ r.meta }}</span>
+                    </div>
+                    <sc-if value="{{ r.isNum }}" hint-placeholder-val="{{ true }}">
+                      <input value="{{ r.value }}" onChange="{{ r.onValue }}" inputmode="decimal" aria-label="Valor" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:7px 9px;font-size:14px;width:100%;box-sizing:border-box">
+                      <select value="{{ r.unit }}" onChange="{{ r.onUnit }}" aria-label="Unidad" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:7px 6px;font-size:13px;width:100%">
+                        <sc-for list="{{ r.units }}" as="u" hint-placeholder-count="0"><option value="{{ u }}">{{ u }}</option></sc-for>
+                      </select>
+                    </sc-if>
+                    <sc-if value="{{ r.isBool }}" hint-placeholder-val="{{ false }}">
+                      <div style="grid-column:span 2;display:flex;flex-wrap:wrap;row-gap:4px">
+                        <sc-for list="{{ r.opts }}" as="o" hint-placeholder-count="3">
+                          <button onClick="{{ o.on }}" style="padding:6px 10px;font-size:12.5px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <input value="{{ r.source }}" onChange="{{ r.onSource }}" placeholder="Documento, autor o estudio" aria-label="Fuente" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:7px 9px;font-size:13px;width:100%;box-sizing:border-box">
+                    <input type="date" value="{{ r.date }}" onChange="{{ r.onDate }}" aria-label="Fecha" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:6px 8px;font-size:13px;width:100%;box-sizing:border-box">
+                    <select value="{{ r.evidence }}" onChange="{{ r.onEvidence }}" aria-label="Evidencia" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:7px 6px;font-size:13px;width:100%">
+                      <sc-for list="{{ docOpts }}" as="d" hint-placeholder-count="0"><option value="{{ d.id }}">{{ d.name }}</option></sc-for>
+                    </select>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <h3 style="margin:0;font-size:16px;font-weight:600">Obras y características</h3>
+            <p style="margin:0;color:#55616A;font-size:13.5px">Determinan permisos sectoriales y normativa potencialmente aplicable.</p>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ obraRows }}" as="r" hint-placeholder-count="0">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 20px;padding:9px 0;border-bottom:1px solid #DCDDD8">
+                  <span>{{ r.label }}</span>
+                  <div style="display:flex">
+                    <sc-for list="{{ r.opts }}" as="o" hint-placeholder-count="3">
+                      <button onClick="{{ o.on }}" style="padding:6px 11px;font-size:12.5px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ stepD }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <p style="margin:0;color:#55616A;max-width:860px;text-wrap:pretty">Declare la relación del área del proyecto con cada elemento e indique la fuente (cartografía oficial, catastro, línea de base). La proximidad no produce por sí sola una conclusión legal: deriva a revisión.</p>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ locRows }}" as="r" hint-placeholder-count="0">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center;gap:8px 20px;padding:10px 0;border-bottom:1px solid #DCDDD8">
+                <div style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:500">{{ r.label }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A">{{ r.crit }}</span></div>
+                <div style="display:flex;flex-wrap:wrap">
+                  <sc-for list="{{ r.opts }}" as="o" hint-placeholder-count="4">
+                    <button onClick="{{ o.on }}" style="padding:6px 10px;font-size:12.5px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button>
+                  </sc-for>
+                </div>
+                <input value="{{ r.source }}" onChange="{{ r.onSource }}" placeholder="Fuente de la información" aria-label="Fuente" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:7px 9px;font-size:13px;width:100%;box-sizing:border-box">
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ showHumedalQ }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 14px;background:#FBFAF7;border:1px solid #DCDDD8;border-radius:8px">
+              <span>¿El proyecto implica alteración física del humedal urbano?</span>
+              <div style="display:flex">
+                <sc-for list="{{ humedalOpts }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.on }}" style="padding:6px 10px;font-size:12.5px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ stepE }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:22px;max-width:960px">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+            <span style="font-weight:500">¿El proyecto cuenta con RCA?</span>
+            <div style="display:flex">
+              <sc-for list="{{ rcaOpts }}" as="o" hint-placeholder-count="3">
+                <button onClick="{{ o.on }}" style="padding:6px 12px;font-size:13px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ rcaRows }}" as="r" hint-placeholder-count="0">
+              <div style="display:flex;flex-direction:column;gap:10px;padding:14px;background:#FBFAF7;border:1px solid #DCDDD8;border-radius:8px">
+                <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) auto;gap:10px;align-items:end">
+                  <label style="display:flex;flex-direction:column;gap:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Número de RCA o resolución</span><input value="{{ r.numero }}" onChange="{{ r.onNumero }}" style="background:#fff;border:1px solid #CFD2CF;border-radius:6px;padding:8px 10px;font-size:14px"></label>
+                  <label style="display:flex;flex-direction:column;gap:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Año</span><input value="{{ r.anio }}" onChange="{{ r.onAnio }}" style="background:#fff;border:1px solid #CFD2CF;border-radius:6px;padding:8px 10px;font-size:14px"></label>
+                  <button onClick="{{ r.onRemove }}" style="background:transparent;color:#7E3519;border:1px solid #D9AE98;border-radius:6px;padding:8px 12px;font-size:13px;cursor:pointer">Quitar</button>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">
+                  <span style="font-size:13px;color:#55616A;margin-right:4px">Tipologías por las que fue calificado:</span>
+                  <sc-for list="{{ r.tips }}" as="t" hint-placeholder-count="0">
+                    <button onClick="{{ t.on }}" style="font-family:'IBM Plex Mono',monospace;font-size:12px;padding:4px 9px;border-radius:4px;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};border:1px solid {{ t.bd }}">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+            <div><button onClick="{{ onAddRca }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:8px 14px;font-size:13.5px;cursor:pointer" style-hover="background:#E9E8E3">Agregar RCA o resolución de modificación</button></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+            <sc-for list="{{ histFields }}" as="f" hint-placeholder-count="5">
+              <label style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">{{ f.label }}</span>
+                <textarea value="{{ f.value }}" onChange="{{ f.on }}" rows="3" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:9px 11px;font-size:14px;line-height:1.5;resize:vertical"></textarea>
+              </label>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ stepF }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <h3 style="margin:0;font-size:16px;font-weight:600">Completitud de la ficha</h3>
+            <sc-for list="{{ completeness }}" as="c" hint-placeholder-count="5">
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid #DCDDD8"><span>{{ c.label }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:{{ c.fg }}">{{ c.value }}</span></div>
+            </sc-for>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px">
+              <button onClick="{{ goDocs }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:9px 14px;font-size:13.5px;cursor:pointer" style-hover="background:#E9E8E3">Cargar antecedentes ({{ docCount }})</button>
+              <button onClick="{{ goSeia }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#16364A">Ir a la evaluación →</button>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <h3 style="margin:0;font-size:16px;font-weight:600">Validación de datos</h3>
+            <sc-if value="{{ noIssues }}" hint-placeholder-val="{{ false }}"><div style="color:#55616A">Sin observaciones en los parámetros informados.</div></sc-if>
+            <sc-for list="{{ issues }}" as="i" hint-placeholder-count="0">
+              <div style="display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #DCDDD8"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:{{ i.fg }};min-width:52px">{{ i.level }}</span><span><strong style="font-weight:600">{{ i.field }}</strong> — {{ i.msg }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;justify-content:space-between;gap:10px;border-top:1px solid #DCDDD8;padding-top:16px">
+        <button onClick="{{ onPrev }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:8px 14px;font-size:13.5px;cursor:pointer" style-hover="background:#E9E8E3">← Anterior</button>
+        <button onClick="{{ onNext }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:8px 14px;font-size:13.5px;cursor:pointer" style-hover="background:#E9E8E3">Siguiente →</button>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 04 / 09 ANTECEDENTES -->
+  <sc-if value="{{ isDocs }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="03 Antecedentes" aria-labelledby="h-docs" style="display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">03 · Antecedentes y evidencias</div>
+        <h1 id="h-docs" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Los datos se apoyan <em style="font-style:italic;color:#1F6B2B">en documentos</em>.</h1>
+        <div style="padding:10px 14px;background:#F4E4DB;color:#7E3519;border-radius:6px;font-size:13.5px;text-wrap:pretty">Simulado: los archivos no se suben. Solo se registran nombre, tipo, tamaño y fecha en este navegador. La carga real requiere Supabase Storage.</div>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:8px;padding:28px;border:1px dashed #9AA3A8;border-radius:8px;background:#FBFAF7;cursor:pointer;max-width:860px">
+        <span style="font-weight:600">Seleccionar archivos</span>
+        <span style="font-size:13px;color:#55616A">PDF, Word, Excel, imágenes, planos (.dwg, .kmz) y otros antecedentes.</span>
+        <input type="file" multiple onChange="{{ onFiles }}" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.tif,.dwg,.kmz,.kml,.zip" style="font-size:13px">
+      </label>
+      <div style="overflow-x:auto">
+        <div style="min-width:760px">
+          <div style="display:grid;grid-template-columns:minmax(0,2.2fr) 120px 90px 110px minmax(0,1.6fr) 80px;gap:12px;padding:8px 0;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#55616A;border-bottom:1px solid #0B1F2A"><span>Documento</span><span>Tipo</span><span>Tamaño</span><span>Registrado</span><span>Respalda</span><span></span></div>
+          <sc-if value="{{ noDocs }}" hint-placeholder-val="{{ false }}"><div style="padding:14px 0;color:#55616A">Sin documentos registrados.</div></sc-if>
+          <sc-for list="{{ docRows }}" as="d" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:minmax(0,2.2fr) 120px 90px 110px minmax(0,1.6fr) 80px;gap:12px;padding:10px 0;border-bottom:1px solid #DCDDD8;align-items:center">
+              <span style="font-weight:500;overflow-wrap:anywhere">{{ d.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#55616A;overflow-wrap:anywhere">{{ d.type }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{ d.size }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{ d.date }}</span><span style="font-size:13px;color:#55616A">{{ d.linked }}</span>
+              <button onClick="{{ d.onRemove }}" style="background:transparent;color:#7E3519;border:0;cursor:pointer;font-size:13px;text-align:right">Quitar</button>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:760px">
+          <h2 style="font-family:'Newsreader',serif;font-weight:400;font-size:26px;letter-spacing:-0.02em;margin:0">Obligaciones de la RCA</h2>
+          <p style="margin:0;color:#55616A;text-wrap:pretty">Registro manual vinculado a la sección de origen. La extracción automática desde el documento está pendiente; no se generan obligaciones de una RCA que no haya sido proporcionada.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:16px;background:#FBFAF7;border:1px solid #DCDDD8;border-radius:8px">
+          <sc-for list="{{ oblFields }}" as="f" hint-placeholder-count="6">
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">{{ f.label }}</span><input value="{{ f.value }}" onChange="{{ f.on }}" style="background:#fff;border:1px solid #CFD2CF;border-radius:6px;padding:8px 10px;font-size:13.5px"></label>
+          </sc-for>
+          <label style="display:flex;flex-direction:column;gap:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Tipo</span>
+            <select value="{{ oblTipo }}" onChange="{{ onOblTipo }}" style="background:#fff;border:1px solid #CFD2CF;border-radius:6px;padding:8px 8px;font-size:13.5px">
+              <sc-for list="{{ oblTipos }}" as="t" hint-placeholder-count="0"><option value="{{ t }}">{{ t }}</option></sc-for>
+            </select>
+          </label>
+          <div style="display:flex;align-items:flex-end"><button onClick="{{ onAddObl }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;width:100%" style-hover="background:#16364A">Registrar obligación</button></div>
+        </div>
+        <sc-for list="{{ oblRows }}" as="o" hint-placeholder-count="0">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) auto;gap:16px;padding:12px 0;border-bottom:1px solid #DCDDD8">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#55616A">{{ o.tipo }}</span><span style="font-size:13px">{{ o.rca }} · {{ o.sec }}</span></div>
+            <div style="display:flex;flex-direction:column;gap:3px"><span>{{ o.desc }}</span><span style="font-size:12.5px;color:#55616A">{{ o.meta }}</span></div>
+            <button onClick="{{ o.onRemove }}" style="background:transparent;color:#7E3519;border:0;cursor:pointer;font-size:13px">Quitar</button>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 05 EVALUACIÓN SEIA -->
+  <sc-if value="{{ isSeia }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="04 Evaluación SEIA" aria-labelledby="h-seia" style="display:flex;flex-direction:column;gap:30px">
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between">
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:720px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">04 · Aplicabilidad del SEIA · {{ projName }}</div>
+          <h1 id="h-seia" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Todas las tipologías, <em style="font-style:italic;color:#1F6B2B">evaluadas a la vez</em>.</h1>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px">
+          <label style="display:flex;flex-direction:column;gap:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Fecha normativa</span><input type="date" value="{{ evalDate }}" onChange="{{ onEvalDate }}" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:8px 10px;font-size:14px"></label>
+          <button onClick="{{ onRun }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#16364A">Ejecutar evaluación →</button>
+        </div>
+      </div>
+
+      <sc-if value="{{ noEval }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:28px;border:1px dashed #B9BDBB;border-radius:8px;color:#55616A;max-width:680px">Este proyecto aún no tiene evaluaciones. Cada ejecución guarda una instantánea de la ficha, la fecha normativa y la versión del catálogo.</div>
+      </sc-if>
+
+      <sc-if value="{{ hasEval }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:30px">
+          <sc-if value="{{ isStale }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:10px 14px;background:#E3EAF5;color:#1A4C93;border-radius:6px;font-size:13.5px">La ficha cambió después de esta evaluación. Ejecute nuevamente para incorporar los cambios.</div>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;padding:26px 0;border-top:1px solid #0B1F2A;border-bottom:1px solid #DCDDD8">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">Resultado global</div>
+              <div style="min-width:0"><span style="display:inline-block;max-width:100%;overflow-wrap:anywhere;padding:4px 10px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;background:{{ ev.badge.bg }};color:{{ ev.badge.fg }};border:1px solid {{ ev.badge.bd }}">{{ ev.code }}</span></div>
+              <div style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(28px,3vw,40px);line-height:1.05;letter-spacing:-0.02em">{{ ev.label }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#55616A;line-height:1.7">Fecha normativa {{ ev.date }} · ejecutada {{ ev.created }}<br>{{ ev.catalog }} · motor {{ ev.engine }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">Advertencias</div>
+              <sc-for list="{{ ev.warnings }}" as="w" hint-placeholder-count="0">
+                <div style="font-size:13.5px;line-height:1.5;padding-bottom:8px;border-bottom:1px solid #DCDDD8;text-wrap:pretty">{{ w }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px">
+            <sc-for list="{{ summary }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:1px solid #0B1F2A;padding-bottom:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">{{ s.title }}</span><span style="font-family:'Newsreader',serif;font-size:24px;font-weight:300">{{ s.count }}</span></div>
+                <sc-for list="{{ s.items }}" as="i" hint-placeholder-count="0"><div style="font-size:13px;line-height:1.45;color:#2A3A44">{{ i }}</div></sc-for>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ filterChips }}" as="c" hint-placeholder-count="8">
+                <button onClick="{{ c.on }}" style="border-radius:999px;padding:6px 12px;font-size:12.5px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.bd }}">{{ c.label }} <span style="font-family:'IBM Plex Mono',monospace">{{ c.n }}</span></button>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:24px;align-items:start">
+              <div style="display:flex;flex-direction:column">
+                <sc-for list="{{ ruleRows }}" as="r" hint-placeholder-count="0">
+                  <button onClick="{{ r.on }}" style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:start;text-align:left;width:100%;padding:12px 10px;border:0;border-top:1px solid #DCDDD8;cursor:pointer;background:{{ r.bg }};color:#0B1F2A;transition:background .2s" style-hover="background:#E9E8E3">
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding-top:2px">{{ r.literal }}</span>
+                    <span style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-weight:600;font-size:14px">{{ r.name }}</span><span style="font-size:12.5px;color:#55616A;line-height:1.45">{{ r.expl }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A">{{ r.meta }}</span></span>
+                    <span style="display:flex;flex-direction:column;gap:5px;align-items:flex-end">
+                      <span style="display:inline-flex;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:{{ r.st.bg }};color:{{ r.st.fg }};border:1px solid {{ r.st.bd }}">{{ r.st.label }}</span>
+                      <span style="display:inline-flex;padding:2px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:{{ r.val.bg }};color:{{ r.val.fg }};border:1px solid {{ r.val.bd }}">{{ r.val.label }}</span>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="position:sticky;top:76px;display:flex;flex-direction:column;gap:16px;padding:20px;background:#FBFAF7;border:1px solid #DCDDD8;border-radius:8px">
+                <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}"><div style="color:#55616A">Seleccione una regla para ver su fundamento y la traza de cada condición.</div></sc-if>
+                <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:14px">
+                    <div style="display:flex;flex-direction:column;gap:6px">
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">{{ sel.id }} · {{ sel.version }}</div>
+                      <div style="font-family:'Newsreader',serif;font-size:24px;font-weight:400;line-height:1.15;letter-spacing:-0.01em">{{ sel.name }}</div>
+                      <div style="font-size:13px">{{ sel.ref }}</div>
+                    </div>
+                    <sc-if value="{{ sel.hasText }}" hint-placeholder-val="{{ false }}">
+                      <blockquote style="margin:0;padding:10px 14px;border-left:1px solid #0B1F2A;font-family:'Newsreader',serif;font-size:16px;line-height:1.45;color:#2A3A44">{{ sel.text }}</blockquote>
+                    </sc-if>
+                    <div style="font-size:13.5px;line-height:1.5">{{ sel.expl }}</div>
+                    <sc-if value="{{ sel.hasTrace }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column">
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#55616A;padding-bottom:6px;border-bottom:1px solid #0B1F2A">Traza de condiciones</div>
+                        <sc-for list="{{ sel.trace }}" as="t" hint-placeholder-count="0">
+                          <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:9px 0;border-bottom:1px solid #DCDDD8">
+                            <span style="font-size:13px;font-weight:500">{{ t.label }}</span>
+                            <span style="display:inline-flex;padding:2px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:{{ t.b.bg }};color:{{ t.b.fg }};border:1px solid {{ t.b.bd }};height:fit-content">{{ t.b.label }}</span>
+                            <span style="grid-column:1 / -1;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#2A3A44">{{ t.line }}</span>
+                            <span style="grid-column:1 / -1;font-size:12px;color:#55616A">{{ t.note }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ sel.hasMissing }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:13px"><strong style="font-weight:600">Antecedentes faltantes:</strong> {{ sel.missing }}</div>
+                    </sc-if>
+                    <div style="font-size:13px"><strong style="font-weight:600">Evidencia requerida:</strong> {{ sel.evidence }}</div>
+                    <div style="font-size:12.5px;color:#55616A;text-wrap:pretty">{{ sel.notes }}</div>
+                    <sc-if value="{{ sel.hasUrl }}" hint-placeholder-val="{{ false }}"><a href="{{ sel.url }}" target="_blank" rel="noopener" style="font-size:13px;overflow-wrap:anywhere">Fuente consultada ↗</a></sc-if>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </section>
+  </sc-if>
+
+  <!-- 06 DIA / EIA -->
+  <sc-if value="{{ isDia }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="05 DIA EIA" aria-labelledby="h-dia" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">05 · Vía de evaluación · art. 11 Ley 19.300</div>
+        <h1 id="h-dia" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Seis criterios, <em style="font-style:italic;color:#1F6B2B">uno por uno</em>.</h1>
+        <p style="margin:0;font-size:15px;color:#55616A;text-wrap:pretty">Una respuesta negativa sin evidencia no demuestra que no exista un efecto significativo. La significancia la determina un profesional, con fundamento.</p>
+      </div>
+      <sc-if value="{{ diaGate }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px;padding:22px;border:1px dashed #B9BDBB;border-radius:8px;max-width:720px">
+          <div>El análisis de la vía se ejecuta solo después de identificar la obligación de ingreso. Resultado vigente: <strong style="font-weight:600">{{ diaGateLabel }}</strong>.</div>
+          <div><button onClick="{{ goSeia }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer">Ir a la evaluación SEIA →</button></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ diaOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:22px">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:18px 0;border-top:1px solid #0B1F2A;border-bottom:1px solid #DCDDD8">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">Resultado preliminar</span>
+            <span style="display:inline-flex;padding:4px 10px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:{{ dia.badge.bg }};color:{{ dia.badge.fg }};border:1px solid {{ dia.badge.bd }}">{{ dia.badge.label }}</span>
+          </div>
+          <sc-for list="{{ criteria }}" as="c" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;padding:22px 0;border-bottom:1px solid #DCDDD8">
+              <div style="font-family:'Newsreader',serif;font-style:italic;font-weight:300;font-size:44px;line-height:.9;color:#1F6B2B">{{ c.id }}</div>
+              <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px">
+                  <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:17px;font-weight:600">{{ c.title }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#55616A">{{ c.ref }}</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:360px"><span style="display:inline-flex;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:{{ c.b.bg }};color:{{ c.b.fg }};border:1px solid {{ c.b.bd }}">{{ c.b.label }}</span><span style="font-size:12.5px;color:#55616A;text-align:right">{{ c.reason }}</span></div>
+                </div>
+                <sc-for list="{{ c.qs }}" as="q" hint-placeholder-count="2">
+                  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px">
+                    <span style="font-size:14px;max-width:620px">{{ q.q }}</span>
+                    <div style="display:flex">
+                      <sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.on }}" style="padding:5px 11px;font-size:12.5px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button></sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ c.hasLoc }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#1A4C93;background:#E3EAF5;padding:8px 12px;border-radius:6px">{{ c.locText }}</div></sc-if>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+                  <label style="display:flex;flex-direction:column;gap:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Evidencia ({{ c.evHint }})</span><input value="{{ c.evidence }}" onChange="{{ c.onEvidence }}" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:8px 10px;font-size:13.5px"></label>
+                  <label style="display:flex;flex-direction:column;gap:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Fundamento profesional</span><input value="{{ c.fundamento }}" onChange="{{ c.onFund }}" style="background:#FBFAF7;border:1px solid #CFD2CF;border-radius:6px;padding:8px 10px;font-size:13.5px"></label>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+                  <span style="font-size:13px;color:#55616A">Determinación profesional</span>
+                  <div style="display:flex;flex-wrap:wrap"><sc-for list="{{ c.detOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.on }}" style="padding:5px 11px;font-size:12.5px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};margin-left:-1px">{{ o.label }}</button></sc-for></div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </section>
+  </sc-if>
+
+  <!-- 07 PAS -->
+  <sc-if value="{{ isPas }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="06 PAS" aria-labelledby="h-pas" style="display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:780px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">06 · Permisos ambientales sectoriales · Título VII RSEIA</div>
+        <h1 id="h-pas" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Permisos según <em style="font-style:italic;color:#1F6B2B">las obras declaradas</em>.</h1>
+        <p style="margin:0;font-size:15px;color:#55616A;text-wrap:pretty">La detección parte de las obras y actividades, no del sector. Ningún permiso se marca obligatorio por existir en el catálogo. Numeración y clasificación ambiental o mixta pendientes de contraste con el Título VII vigente. {{ pasCtx }}</p>
+      </div>
+      <div style="overflow-x:auto">
+        <div style="min-width:900px">
+          <div style="display:grid;grid-template-columns:70px minmax(0,2.4fr) minmax(0,1.4fr) minmax(0,1.6fr) 190px 130px;gap:14px;padding:8px 0;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#55616A;border-bottom:1px solid #0B1F2A"><span>Art.</span><span>Permiso</span><span>Organismo</span><span>Obra que lo activa</span><span>Estado</span><span></span></div>
+          <sc-for list="{{ pasRows }}" as="p" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:70px minmax(0,2.4fr) minmax(0,1.4fr) minmax(0,1.6fr) 190px 130px;gap:14px;padding:13px 0;border-bottom:1px solid #DCDDD8;align-items:start">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px">{{ p.articulo }}</span>
+              <span style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:500">{{ p.nombre }}</span><span style="font-size:12px;color:#55616A">{{ p.norma }} · {{ p.objeto }}</span></span>
+              <span style="font-size:13px">{{ p.organismo }}</span>
+              <span style="font-size:13px">{{ p.trig }}</span>
+              <span style="display:flex;flex-direction:column;gap:5px;align-items:flex-start"><span style="display:inline-flex;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:{{ p.b.bg }};color:{{ p.b.fg }};border:1px solid {{ p.b.bd }}">{{ p.b.label }}</span><span style="font-size:12px;color:#55616A">{{ p.reason }}</span></span>
+              <span style="display:flex;flex-direction:column;gap:5px;align-items:flex-end"><span style="display:inline-flex;padding:2px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;background:{{ p.v.bg }};color:{{ p.v.fg }};border:1px solid {{ p.v.bd }}">{{ p.v.label }}</span>
+                <sc-if value="{{ p.canConfirm }}" hint-placeholder-val="{{ false }}"><button onClick="{{ p.onConfirm }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:5px 9px;font-size:12px;cursor:pointer">Confirmar</button></sc-if>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 08 NORMATIVA -->
+  <sc-if value="{{ isNorm }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="07 Normativa" aria-labelledby="h-norm" style="display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:780px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">07 · Normativa ambiental aplicable</div>
+        <h1 id="h-norm" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Requisitos condicionados <em style="font-style:italic;color:#1F6B2B">por el proyecto</em>.</h1>
+        <p style="margin:0;font-size:15px;color:#55616A;text-wrap:pretty">Cada norma aparece solo si se declaró la característica que la condiciona. Los resúmenes son preliminares, sin verificación literal; artículos, frecuencias y plazos están por precisar.</p>
+      </div>
+      <div style="overflow-x:auto">
+        <div style="min-width:960px">
+          <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.3fr) minmax(0,2fr) minmax(0,1.3fr) minmax(0,1.2fr) 180px;gap:14px;padding:8px 0;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#55616A;border-bottom:1px solid #0B1F2A"><span>Materia</span><span>Norma</span><span>Obligación (resumen)</span><span>Condición</span><span>Fase · autoridad</span><span>Estado</span></div>
+          <sc-for list="{{ normRows }}" as="n" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.3fr) minmax(0,2fr) minmax(0,1.3fr) minmax(0,1.2fr) 180px;gap:14px;padding:13px 0;border-bottom:1px solid #DCDDD8;align-items:start">
+              <span style="font-size:13px;font-weight:500">{{ n.materia }}</span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13.5px">{{ n.norma }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A">Art. {{ n.articulo }}</span></span>
+              <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:13.5px">{{ n.obligacion }}</span><span style="font-size:12px;color:#55616A">{{ n.resumen }} Evidencia: {{ n.evidencia }}. Frecuencia: {{ n.frecuencia }}.</span></span>
+              <span style="font-size:13px">{{ n.cond }}</span>
+              <span style="font-size:12.5px">{{ n.fase }} · {{ n.autoridad }}</span>
+              <span style="display:flex;flex-direction:column;gap:5px;align-items:flex-start"><span style="display:inline-flex;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:{{ n.b.bg }};color:{{ n.b.fg }};border:1px solid {{ n.b.bd }}">{{ n.b.label }}</span><span style="display:inline-flex;padding:2px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;background:{{ n.v.bg }};color:{{ n.v.fg }};border:1px solid {{ n.v.bd }}">{{ n.v.label }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 10 INFORME -->
+  <sc-if value="{{ isInforme }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="08 Informe" aria-labelledby="h-inf" style="display:flex;flex-direction:column;gap:24px">
+      <div data-noprint="1" style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between">
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:700px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">08 · Informe de resultados</div>
+          <h1 id="h-inf" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Un informe <em style="font-style:italic;color:#1F6B2B">trazable</em>.</h1>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button onClick="{{ onPrint }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:#16364A">Imprimir o guardar PDF</button>
+          <button onClick="{{ onCsv }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:9px 14px;font-size:13.5px;cursor:pointer" style-hover="background:#E9E8E3">Exportar CSV (Excel)</button>
+          <button onClick="{{ onJson }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:9px 14px;font-size:13.5px;cursor:pointer" style-hover="background:#E9E8E3">Exportar JSON</button>
+        </div>
+      </div>
+      <sc-if value="{{ noEval }}" hint-placeholder-val="{{ false }}"><div style="padding:28px;border:1px dashed #B9BDBB;border-radius:8px;color:#55616A;max-width:680px">Ejecute una evaluación para generar el informe.</div></sc-if>
+      <sc-if value="{{ hasEval }}" hint-placeholder-val="{{ false }}">
+        <article style="background:#FFFFFF;border:1px solid #DCDDD8;border-radius:8px;padding:clamp(24px,5vw,64px);max-width:920px;display:flex;flex-direction:column;gap:30px">
+          <header style="display:flex;flex-direction:column;gap:10px;padding-bottom:22px;border-bottom:1px solid #0B1F2A">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">Prototipo SEIA · Informe preliminar · {{ rep.id }}</div>
+            <div style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(28px,3.4vw,42px);line-height:1.05;letter-spacing:-0.02em">{{ rep.name }}</div>
+            <div style="font-size:13px;color:#55616A">Fecha normativa {{ rep.date }} · emitido {{ rep.created }} · {{ rep.catalog }} · motor {{ rep.engine }}</div>
+            <div style="font-size:12.5px;color:#7E3519;text-wrap:pretty">Este informe es un análisis preliminar. No es una resolución del SEA, una consulta de pertinencia ni una autorización administrativa.</div>
+          </header>
+          <sc-for list="{{ rep.sections }}" as="s" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#55616A;padding-top:5px">{{ s.n }}</div>
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                <h2 style="font-family:'Newsreader',serif;font-weight:400;font-size:22px;letter-spacing:-0.01em;margin:0">{{ s.title }}</h2>
+                <sc-if value="{{ s.hasLead }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14px;line-height:1.55;text-wrap:pretty">{{ s.lead }}</p></sc-if>
+                <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="0">
+                  <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,2fr) auto;gap:4px 14px;padding:7px 0;border-bottom:1px solid #E6E6E1;font-size:13px;align-items:start">
+                    <span style="font-weight:500">{{ r.a }}</span><span style="color:#2A3A44">{{ r.b }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:{{ r.bg }};color:{{ r.fg }};border:1px solid {{ r.bd }};white-space:nowrap">{{ r.c }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </article>
+      </sc-if>
+    </section>
+  </sc-if>
+
+  <!-- 11 HISTORIAL -->
+  <sc-if value="{{ isHist }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="09 Historial" aria-labelledby="h-hist" style="display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">09 · Historial de evaluaciones</div>
+        <h1 id="h-hist" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Cada evaluación <em style="font-style:italic;color:#1F6B2B">se puede reproducir</em>.</h1>
+        <p style="margin:0;font-size:15px;color:#55616A;text-wrap:pretty">Reproducir vuelve a ejecutar el motor con la instantánea y la fecha normativa originales, y compara regla por regla.</p>
+      </div>
+      <sc-if value="{{ noHist }}" hint-placeholder-val="{{ false }}"><div style="padding:24px;border:1px dashed #B9BDBB;border-radius:8px;color:#55616A;max-width:640px">Sin evaluaciones registradas.</div></sc-if>
+      <div style="overflow-x:auto">
+        <div style="min-width:900px">
+          <sc-for list="{{ histRows }}" as="h" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:150px minmax(0,1.6fr) 110px minmax(0,1.6fr) minmax(0,1.6fr) 190px;gap:14px;padding:13px 0;border-bottom:1px solid #DCDDD8;align-items:start">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{ h.created }}</span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:500">{{ h.project }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A">{{ h.id }}</span></span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{ h.date }}</span>
+              <span style="display:flex;flex-direction:column;gap:4px;align-items:flex-start"><span style="display:inline-flex;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:{{ h.b.bg }};color:{{ h.b.fg }};border:1px solid {{ h.b.bd }}">{{ h.b.label }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A">{{ h.cat }}</span></span>
+              <span style="font-size:12.5px;color:{{ h.replayFg }}">{{ h.replay }}</span>
+              <span style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">
+                <button onClick="{{ h.onView }}" style="background:transparent;color:#0B1F2A;border:1px solid #B9BDBB;border-radius:6px;padding:6px 10px;font-size:12.5px;cursor:pointer">Ver</button>
+                <button onClick="{{ h.onReplay }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:6px 10px;font-size:12.5px;cursor:pointer">Reproducir</button>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- 12 CATÁLOGO -->
+  <sc-if value="{{ isCat }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="10 Catálogo" aria-labelledby="h-cat" style="display:flex;flex-direction:column;gap:34px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:780px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">10 · Catálogo y estado de las reglas · {{ catVersion }}</div>
+        <h1 id="h-cat" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Qué sabe el motor <em style="font-style:italic;color:#1F6B2B">y qué no</em>.</h1>
+        <p style="margin:0;font-size:15px;color:#55616A;text-wrap:pretty">El catálogo cubre todas las letras del art. 3 del Reglamento (a a t) y la letra s) del art. 10 de la Ley 19.300, en 64 reglas de tipología. Límites: la letra s) de la Ley está pendiente de validar su texto oficial; nueve literales (a.1, h.1, h.2, l.1, l.2, ñ.3, o.8, o.9 y o.10) no tienen cargada su redacción anterior a 2014, por lo que una evaluación con fecha previa queda sin versión vigente; ninguna regla tiene revisión jurídica. Esta pantalla muestra cada regla, su vigencia, su fuente y su estado de validación.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.on }}" style="border-radius:999px;padding:6px 12px;font-size:12.5px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.bd }}">{{ c.label }} <span style="font-family:'IBM Plex Mono',monospace">{{ c.n }}</span></button></sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:24px;align-items:start">
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ catRows }}" as="r" hint-placeholder-count="0">
+              <button onClick="{{ r.on }}" style="display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;text-align:left;width:100%;padding:12px 10px;border:0;border-top:1px solid #DCDDD8;cursor:pointer;background:{{ r.bg }};color:#0B1F2A" style-hover="background:#E9E8E3">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{ r.id }}</span>
+                <span style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                  <span style="font-weight:600">{{ r.literal }} · {{ r.name }}</span>
+                  <sc-for list="{{ r.versions }}" as="v" hint-placeholder-count="0">
+                    <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#2A3A44"><span>{{ v.id }}</span><span style="color:#55616A">{{ v.range }}</span><span style="padding:2px 6px;border-radius:3px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;background:{{ v.b.bg }};color:{{ v.b.fg }};border:1px solid {{ v.b.bd }}">{{ v.b.label }}</span><span style="color:{{ v.nowFg }}">{{ v.now }}</span></span>
+                  </sc-for>
+                  <span style="font-size:12px;color:#55616A">Entradas: {{ r.inputs }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="position:sticky;top:76px;display:flex;flex-direction:column;gap:10px;padding:18px;background:#FBFAF7;border:1px solid #DCDDD8;border-radius:8px;min-width:0">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Definición de la regla (esquema validado)</div>
+            <pre style="margin:0;max-height:560px;overflow:auto;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;color:#0B1F2A">{{ catJson }}</pre>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <h2 style="font-family:'Newsreader',serif;font-weight:400;font-size:26px;letter-spacing:-0.02em;margin:0">Cobertura del artículo 10, Ley 19.300</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0 28px">
+          <sc-for list="{{ art10Rows }}" as="a" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;padding:9px 0;border-bottom:1px solid #DCDDD8;align-items:baseline">
+              <span style="font-family:'Newsreader',serif;font-style:italic;font-size:19px;color:#1F6B2B">{{ a.letter }}</span><span style="font-size:13px">{{ a.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:{{ a.fg }}">{{ a.st }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;color:#55616A">Las fuentes normativas y su estado de verificación se consultan en «Marco normativo del motor», en la aplicación.</p>
+    </section>
+  </sc-if>
+
+  <!-- PRUEBAS -->
+  <sc-if value="{{ isTests }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="11 Pruebas" aria-labelledby="h-tests" style="display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between">
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:720px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">11 · Pruebas del motor</div>
+          <h1 id="h-tests" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">{{ testSummary }}</h1>
+          <p style="margin:0;font-size:15px;color:#55616A;text-wrap:pretty">Casos ficticios diseñados para probar la lógica, más regresión sobre resultados de referencia. No son casos del SEA ni prueban validez jurídica.</p>
+        </div>
+        <button onClick="{{ onRunTests }}" style="background:#0B1F2A;color:#FBFAF7;border:1px solid #0B1F2A;border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#16364A">Ejecutar pruebas</button>
+      </div>
+      <div style="overflow-x:auto">
+        <div style="min-width:900px">
+          <sc-for list="{{ testRows }}" as="t" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:52px 96px minmax(0,1.6fr) minmax(0,2.4fr) 92px;gap:14px;padding:11px 0;border-bottom:1px solid #DCDDD8;align-items:start">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{ t.id }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#55616A">{{ t.category }}</span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:500">{{ t.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A">{{ t.date }}</span></span>
+              <span style="display:flex;flex-direction:column;gap:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;overflow-wrap:anywhere"><span style="color:#55616A">Esperado: {{ t.expected }}</span><span>Obtenido: {{ t.obtained }}</span></span>
+              <span style="display:inline-flex;justify-content:center;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:{{ t.b.bg }};color:{{ t.b.fg }};border:1px solid {{ t.b.bd }};height:fit-content">{{ t.b.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ARQUITECTURA -->
+  <sc-if value="{{ isArq }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="12 Arquitectura" aria-labelledby="h-arq" style="display:flex;flex-direction:column;gap:34px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:780px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">12 · Arquitectura y entregables</div>
+        <h1 id="h-arq" style="font-family:'Newsreader',serif;font-weight:300;font-size:clamp(30px,3.4vw,46px);line-height:1.02;letter-spacing:-0.03em;margin:0">Un núcleo <em style="font-style:italic;color:#1F6B2B">independiente</em> de la interfaz.</h1>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border:1px solid #0B1F2A;border-radius:8px;overflow:hidden">
+        <sc-for list="{{ layers }}" as="l" hint-placeholder-count="5">
+          <div style="display:flex;flex-direction:column;gap:6px;padding:18px;border-right:1px solid #DCDDD8;background:#FBFAF7">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">{{ l.file }}</span>
+            <span style="font-weight:600">{{ l.name }}</span>
+            <span style="font-size:13px;color:#2A3A44;text-wrap:pretty">{{ l.desc }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <h2 style="font-family:'Newsreader',serif;font-weight:400;font-size:26px;letter-spacing:-0.02em;margin:0">Estado de cada funcionalidad</h2>
+        <sc-for list="{{ features }}" as="f" hint-placeholder-count="0">
+          <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px;padding:10px 0;border-bottom:1px solid #DCDDD8">
+            <span>{{ f.name }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:{{ f.fg }}">{{ f.status }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:24px">
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="font-family:'Newsreader',serif;font-weight:400;font-size:24px;margin:0">Documentación técnica</h2><a href="README.md" target="_blank" style="font-size:13px">README.md ↗</a></div>
+          <pre style="margin:0;max-height:620px;overflow:auto;padding:16px;background:#FBFAF7;border:1px solid #DCDDD8;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere">{{ readme }}</pre>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="font-family:'Newsreader',serif;font-weight:400;font-size:24px;margin:0">Modelo de datos</h2><a href="schema.sql" target="_blank" style="font-size:13px">schema.sql ↗</a></div>
+          <pre style="margin:0;max-height:620px;overflow:auto;padding:16px;background:#0B1F2A;color:#E9ECE7;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere">{{ schema }}</pre>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  </div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const seiaKey = x => JSON.stringify([x.region || '', x.nature || [], x.activities || [], !!x.activitiesConfirmed, x.inputs || {}, x.location || {}, (x.rca || {}).list || []]);
+const SK = { ink: ['#0B1F2A', '#FBFAF7', '#0B1F2A'], out: ['transparent', '#0B1F2A', '#7A858C'], mut: ['#E9E8E3', '#55616A', '#E9E8E3'], dash: ['transparent', '#55616A', '#B9BDBB'], rust: ['#F4E4DB', '#7E3519', '#D9AE98'], rustO: ['transparent', '#7E3519', '#D9AE98'], blue: ['#E3EAF5', '#1A4C93', '#AFC3E3'], blueO: ['transparent', '#1A4C93', '#AFC3E3'] };
+const LB = {
+  INGRESO_OBLIGATORIO_IDENTIFICADO: ['Ingreso obligatorio identificado', 'ink'], INGRESO_NO_IDENTIFICADO_CON_ANTECEDENTES_DISPONIBLES: ['Ingreso no identificado', 'out'], REVISION_ESPECIALIZADA_NECESARIA: ['Revisión especializada necesaria', 'rust'], INFORMACION_INSUFICIENTE: ['Información insuficiente', 'blue'],
+  ACTIVADA: ['Activada', 'ink'], NO_ACTIVADA: ['No activada', 'out'], INFO_INSUFICIENTE: ['Información insuficiente', 'blue'], REVISION: ['Revisión', 'rust'], EXCEPCION_APLICADA: ['Excepción aplicada', 'rustO'], DESCARTADA: ['Descartada', 'mut'], SIN_VERSION_VIGENTE: ['Sin versión vigente', 'dash'],
+  TEXTO_OFICIAL_CONTRASTADO: ['Texto oficial contrastado', 'blueO'], TEXTO_CONTRASTADO: ['Texto contrastado', 'blueO'], FUENTE_SECUNDARIA: ['Fuente secundaria', 'rustO'], PENDIENTE_VALIDACION: ['Pendiente de validación', 'rust'], VALIDADA_JURIDICAMENTE: ['Validada', 'out'],
+  EIA_PROCEDENTE_SEGUN_ANALISIS_PRELIMINAR: ['EIA procedente según análisis preliminar', 'ink'], DIA_POSIBLE_CON_ANTECEDENTES_SUFICIENTES: ['DIA posible con antecedentes suficientes', 'out'], VIA_NO_DETERMINADA: ['Vía no determinada', 'blue'], NO_APLICA_SIN_INGRESO: ['No aplica sin ingreso', 'mut'],
+  EFECTO_SIGNIFICATIVO: ['Efecto significativo', 'ink'], SIN_EFECTO_FUNDADO: ['No significativo, fundado', 'out'], SIN_EFECTO_INDICADO: ['Sin efecto indicado', 'out'], REQUIERE_EVALUACION: ['Requiere evaluación', 'rust'],
+  APLICABLE_CONFIRMADO: ['Aplicable confirmado', 'ink'], POTENCIALMENTE_APLICABLE: ['Potencialmente aplicable', 'rust'], DESCARTADO: ['Descartado', 'mut'], PENDIENTE_ANTECEDENTES: ['Pendiente de antecedentes', 'blue'],
+  TRUE: ['Verdadero', 'ink'], FALSE: ['Falso', 'out'], UNKNOWN: ['Desconocido', 'blue'], REVIEW: ['Revisión', 'rust'], OK: ['Superada', 'out'], FAIL: ['Falla', 'rust'], NONE: ['Sin evaluar', 'dash']
+};
+const badge = code => { const [label, k] = LB[code] || [code || '—', 'dash']; const [bg, fg, bd] = SK[k]; return { label, bg, fg, bd }; };
+const today = () => new Date().toISOString().slice(0, 10);
+const fmtDT = s => s ? new Date(s).toLocaleString('es-CL', { dateStyle: 'short', timeStyle: 'short' }) : '—';
+const clone = o => JSON.parse(JSON.stringify(o));
+const PROJECT_VIEWS = ['ficha', 'docs', 'seia', 'dia', 'pas', 'norm', 'informe'];
+const STEPS = [['A', 'Identificación'], ['B', 'Naturaleza y alcance'], ['C', 'Parámetros técnicos'], ['D', 'Localización'], ['E', 'Historial ambiental'], ['F', 'Evidencia y validación']];
+
+class Component extends DCLogic {
+  state = { ready: false, err: null, view: 'panel', db: { projects: [], evaluations: [] }, pid: '', step: 'A', filter: 'all', catFilter: 'all', selRule: null, selCat: 'RSEIA-3-I1', evalId: null, tests: null, evalDate: today(), schema: '', readme: '', replay: {}, obl: { rca: '', sec: '', desc: '', plazo: '', resp: '', evid: '' }, oblTipo: 'Condición o exigencia' };
+
+  componentDidMount() {
+    try {
+      const nav = JSON.parse(localStorage.getItem('liqen-seia-nav-v1') || '{}');
+      const db = JSON.parse(localStorage.getItem('liqen-seia-db-v1') || 'null');
+      this.setState({ ...nav, ...(db && db.projects ? { db } : {}) });
+    } catch (e) {}
+    Promise.all([import('./seia-engine.js'), import('./seia-catalog.js'), import('./seia-tests.js')])
+      .then(([E, C, T]) => { this.E = E; this.C = C; this.T = T; this.setState({ ready: true, tests: T.runTests() }); })
+      .catch(e => this.setState({ err: String(e && e.message || e) }));
+    fetch('./schema.sql').then(r => r.text()).then(t => this.setState({ schema: t })).catch(() => {});
+    fetch('./README.md').then(r => r.text()).then(t => this.setState({ readme: t })).catch(() => {});
+  }
+  componentDidUpdate() {
+    const s = this.state, ps = this._prev || {};
+    if (ps.db !== s.db) { try { localStorage.setItem('liqen-seia-db-v1', JSON.stringify(s.db)); } catch (e) {} }
+    if (ps.view !== s.view || ps.pid !== s.pid || ps.step !== s.step) { try { localStorage.setItem('liqen-seia-nav-v1', JSON.stringify({ view: s.view, pid: s.pid, step: s.step })); } catch (e) {} }
+    this._prev = { db: s.db, view: s.view, pid: s.pid, step: s.step };
+  }
+
+  get p() { return this.state.db.projects.find(x => x.id === this.state.pid) || null; }
+  go(view, extra = {}) { this.setState({ view, ...extra }); try { window.scrollTo(0, 0); } catch (e) {} }
+  setDb(fn) { this.setState(s => ({ db: fn(s.db) })); }
+  upd(fn) {
+    const pid = this.state.pid;
+    this.setDb(db => ({ ...db, projects: db.projects.map(x => { if (x.id !== pid) return x; const c = clone(x); fn(c); c.updated_at = new Date().toISOString(); return c; }) }));
+  }
+  blank(over = {}) {
+    const now = new Date().toISOString();
+    return { id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name: 'Proyecto sin nombre', titular: '', sector: '', actividad_principal: '', actividades_secundarias: '', descripcion: '', region: '', comuna: '', lat: '', lon: '', etapa: '', nature: [], activitiesConfirmed: false, activities: [], inputs: {}, location: Object.fromEntries(this.C.LOCATION_ELEMENTS.map(e => [e.id, 'desconocido'])), locSource: {}, obras: {}, rca: { has: 'desconocido', list: [] }, hist: {}, art11: {}, documents: [], rcaObligations: [], pasConfirm: {}, created_at: now, ...over, updated_at: now };
+  }
+  create() { if (!this.C) return; const p = this.blank(); this.setDb(db => ({ ...db, projects: [p, ...db.projects] })); this.go('ficha', { pid: p.id, step: 'A', evalId: null, selRule: null }); }
+  samples() {
+    if (!this.T) return;
+    const have = new Set(this.state.db.projects.map(p => p.id));
+    const add = this.T.SAMPLE_PROJECTS.filter(s => !have.has(s.id)).map(s => this.blank({ ...clone(s), name: s.name + ' (ejemplo ficticio)', rca: { has: s.rca.list.length ? 'si' : 'no', list: s.rca.list }, activitiesConfirmed: true }));
+    if (add.length) this.setDb(db => ({ ...db, projects: [...add, ...db.projects] }));
+  }
+  del(id) {
+    if (!window.confirm('¿Eliminar el proyecto y sus evaluaciones de este navegador?')) return;
+    this.setDb(db => ({ projects: db.projects.filter(p => p.id !== id), evaluations: db.evaluations.filter(e => e.pid !== id) }));
+    if (this.state.pid === id) this.setState({ pid: '' });
+  }
+  run() {
+    const p = this.p, E = this.E; if (!p || !E) return;
+    const date = this.state.evalDate || today();
+    const snap = clone(p);
+    const seia = E.runSeia(snap, { date });
+    const rec = { id: 'EV-' + Date.now().toString(36).toUpperCase(), pid: p.id, projectName: p.name, created_at: new Date().toISOString(), date, snapshot: snap, seia, art11: E.runArt11(snap, seia.global), pas: E.runPas(snap, seia.global, seia), norm: E.runNormativa(snap) };
+    this.setDb(db => ({ ...db, evaluations: [rec, ...db.evaluations] }));
+    this.setState({ evalId: rec.id, selRule: null, filter: 'all' });
+  }
+  currentEval() {
+    const p = this.p; if (!p) return null;
+    const evs = this.state.db.evaluations.filter(e => e.pid === p.id);
+    return evs.find(e => e.id === this.state.evalId) || evs[0] || null;
+  }
+  seg(options, current, pick) {
+    return options.map(o => { const a = current === o.id; return { label: o.label, on: () => pick(o.id), bg: a ? '#0B1F2A' : '#FBFAF7', fg: a ? '#FBFAF7' : '#0B1F2A', bd: a ? '#0B1F2A' : '#CFD2CF' }; });
+  }
+  chip(label, active, on) { return { label, on, pressed: active ? 'true' : 'false', bg: active ? '#0B1F2A' : 'transparent', fg: active ? '#FBFAF7' : '#0B1F2A', bd: active ? '#0B1F2A' : '#B9BDBB' }; }
+  download(name, text, type) { const b = new Blob([text], { type }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+  csv(ev) {
+    const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const rows = [['Sección', 'Identificador', 'Nombre', 'Estado', 'Versión', 'Validación', 'Explicación']];
+    ev.seia.results.forEach(r => rows.push(['Tipología', r.rule_id, r.rule_name, r.status, r.version_id, r.validation_status, r.explanation]));
+    ev.art11.criteria.forEach(c => rows.push(['Art. 11', c.id, c.title, c.status, '', '', c.reason]));
+    ev.pas.forEach(p => rows.push(['PAS', p.id, p.nombre, p.status, '', p.validation_status, p.reason]));
+    ev.norm.forEach(n => rows.push(['Normativa', n.id, n.norma, n.status, '', n.validation_status, n.resumen]));
+    rows.unshift(['Proyecto', ev.projectName, 'Fecha normativa', ev.date, 'Catálogo', ev.seia.catalog_version, 'Resultado ' + ev.seia.global]);
+    return '\ufeff' + rows.map(r => r.map(q).join(';')).join('\r\n');
+  }
+
+  renderVals() {
+    const s = this.state, C = this.C, E = this.E;
+    const ready = s.ready && C && E;
+    const p = this.p;
+    const v = !ready ? 'loading' : (PROJECT_VIEWS.includes(s.view) && !p) ? 'noproj' : s.view;
+    const is = k => v === k;
+    const navDef = [['Proyecto', [['01', 'panel', 'Panel principal'], ['02', 'ficha', 'Ficha del proyecto'], ['03', 'docs', 'Antecedentes y evidencias']]], ['Evaluación', [['04', 'seia', 'Aplicabilidad SEIA'], ['05', 'dia', 'Vía DIA / EIA'], ['06', 'pas', 'Permisos sectoriales'], ['07', 'norm', 'Normativa aplicable']]], ['Resultados', [['08', 'informe', 'Informe'], ['09', 'hist', 'Historial']]], ['Sistema', [['10', 'cat', 'Catálogo de reglas'], ['11', 'tests', 'Pruebas del motor'], ['12', 'arq', 'Arquitectura y entregables']]]];
+    const navGroups = navDef.map(([title, items]) => ({ title, items: items.map(([n, id, label]) => ({ n, label, on: () => this.go(id), bg: s.view === id ? '#16323F' : 'transparent', fg: s.view === id ? '#FFFFFF' : '#C9D1D5', nfg: s.view === id ? '#63C64C' : '#7F8C93' })) }));
+    const SOLO_T = { cat: 'Catálogo de reglas', tests: 'Pruebas del motor', arq: 'Arquitectura y entregables', hist: 'Historial de evaluaciones', informe: 'Informe detallado' };
+    const base = { isSolo: !!s.solo, notSolo: !s.solo, showHeader: !s.solo || v === 'hist' || v === 'informe' || v === 'noproj', soloTitle: SOLO_T[v] || '', navGroups, notReady: !s.ready && !s.err, hasErr: !!s.err, err: s.err, catVersion: C ? C.CATALOG_VERSION : '', pid: s.pid || '', projOpts: s.db.projects.map(x => ({ id: x.id, name: x.name })), onPickProject: e => this.setState({ pid: e.target.value, evalId: null, selRule: null }), onCreate: () => this.create(), goPanel: () => this.go('panel'), goSeia: () => this.go('seia'), goDocs: () => this.go('docs'), isNoProj: is('noproj'), isPanel: is('panel'), isFicha: is('ficha'), isDocs: is('docs'), isSeia: is('seia'), isDia: is('dia'), isPas: is('pas'), isNorm: is('norm'), isInforme: is('informe'), isHist: is('hist'), isCat: is('cat'), isTests: is('tests'), isArq: is('arq'), projName: p ? p.name : '' };
+    if (!ready) return base;
+
+    const evalsAll = s.db.evaluations;
+    const ev = this.currentEval();
+    const out = { ...base };
+
+    // Panel
+    const allVersions = C.RULES.flatMap(r => r.versions);
+    const tests = s.tests || [];
+    out.stats = [
+      { k: 'Reglas en catálogo', v: C.RULES.length }, { k: 'Versiones', v: allVersions.length },
+      { k: 'Texto oficial contrastado', v: allVersions.filter(x => x.validation_status === 'TEXTO_OFICIAL_CONTRASTADO').length },
+      { k: 'Fuente secundaria o pendiente', v: allVersions.filter(x => x.validation_status !== 'TEXTO_OFICIAL_CONTRASTADO').length },
+      { k: 'Validadas jurídicamente', v: allVersions.filter(x => x.validation_status === 'VALIDADA_JURIDICAMENTE').length },
+      { k: 'Pruebas superadas', v: `${tests.filter(t => t.pass).length}/${tests.length}` }
+    ];
+    out.onSamples = () => this.samples();
+    out.noProjects = !s.db.projects.length;
+    out.projRows = s.db.projects.map(x => {
+      const last = evalsAll.find(e => e.pid === x.id);
+      return { name: x.name, meta: [x.titular, x.sector, [x.comuna, x.region].filter(Boolean).join(', ')].filter(Boolean).join(' · ') || 'Sin datos de identificación', badge: badge(last ? last.seia.global : 'NONE'), when: last ? `Evaluado ${fmtDT(last.created_at)}` : `Editado ${fmtDT(x.updated_at)}`, onOpen: () => this.go('ficha', { pid: x.id, evalId: null }), onEval: () => this.go('seia', { pid: x.id, evalId: null, selRule: null }), onDelete: () => this.del(x.id) };
+    });
+
+    if (p) {
+      // Ficha
+      const si = STEPS.findIndex(x => x[0] === s.step);
+      out.steps = STEPS.map(([id, label]) => ({ id, label, on: () => this.setState({ step: id }), fg: s.step === id ? '#0B1F2A' : '#55616A', bd: s.step === id ? '#0B1F2A' : 'transparent' }));
+      ['A', 'B', 'C', 'D', 'E', 'F'].forEach(k => { out['step' + k] = s.step === k; });
+      out.onPrev = () => this.setState({ step: STEPS[Math.max(0, si - 1)][0] });
+      out.onNext = () => this.setState({ step: STEPS[Math.min(STEPS.length - 1, si + 1)][0] });
+      const fA = [['name', 'Nombre del proyecto', ''], ['titular', 'Titular', ''], ['sector', 'Sector productivo', 'Minería, energía…'], ['actividad_principal', 'Actividad principal', ''], ['actividades_secundarias', 'Actividades secundarias', ''], ['region', 'Región', 'p. ej., Atacama'], ['comuna', 'Comuna', ''], ['lat', 'Latitud (WGS84)', '-27.4800'], ['lon', 'Longitud (WGS84)', '-70.2800'], ['etapa', 'Etapa de desarrollo', 'Perfil, ingeniería básica…']];
+      out.fieldsA = fA.map(([k, label, ph]) => ({ label, ph, value: p[k] || '', on: e => { const val = e.target.value; this.upd(c => { c[k] = val; }); } }));
+      out.descripcion = p.descripcion || '';
+      out.onDesc = e => { const val = e.target.value; this.upd(c => { c.descripcion = val; }); };
+      out.natureChips = C.NATURE.map(n => this.chip(n.label, (p.nature || []).includes(n.id), () => this.upd(c => { c.nature = c.nature.includes(n.id) ? c.nature.filter(x => x !== n.id) : [...c.nature, n.id]; })));
+      out.activityChips = C.ACTIVITIES.map(a => this.chip(a.label, p.activities.includes(a.id), () => this.upd(c => { c.activities = c.activities.includes(a.id) ? c.activities.filter(x => x !== a.id) : [...c.activities, a.id]; })));
+      out.actConfirmOpts = this.seg([{ id: true, label: 'Sí, confirmadas' }, { id: false, label: 'Aún no' }], !!p.activitiesConfirmed, val => this.upd(c => { c.activitiesConfirmed = val; }));
+      out.isMod = (p.nature || []).includes('modificacion');
+      const docs = p.documents || [];
+      out.docOpts = [{ id: '', name: 'Sin evidencia' }, ...docs.map(d => ({ id: d.id, name: d.name }))];
+      const setInp = (id, unit, f, val) => this.upd(c => { c.inputs[id] = { unit, ...(c.inputs[id] || {}), [f]: val }; });
+      const rulesFor = id => C.RULES.filter(r => r.versions.some(x => (x.required_inputs || []).includes(id))).map(r => r.literal).join(', ');
+      out.paramRows = C.INPUTS.filter(i => C.inputVisible(i, p)).map(i => {
+        const cur = p.inputs[i.id] || {};
+        const ev2 = e => e.target.value;
+        return { label: i.label, meta: `Regla ${rulesFor(i.id)}${i.help ? ' · ' + i.help : ''}`, isNum: i.type === 'number' || i.type === 'count', isBool: i.type === 'bool' || i.type === 'enum', value: cur.value == null ? '' : String(cur.value), unit: cur.unit || i.unit, units: i.units || [], source: cur.source || '', date: cur.date || '', evidence: cur.evidence || '',
+          onValue: e => setInp(i.id, i.unit, 'value', ev2(e)), onUnit: e => setInp(i.id, i.unit, 'unit', ev2(e)), onSource: e => setInp(i.id, i.unit, 'source', ev2(e)), onDate: e => setInp(i.id, i.unit, 'date', ev2(e)), onEvidence: e => setInp(i.id, i.unit, 'evidence', ev2(e)),
+          opts: i.type === 'enum' ? this.seg([...i.options.map(([id, label]) => ({ id, label })), { id: null, label: 'Sin respuesta' }], cur.value || null, val => setInp(i.id, i.unit, 'value', val)) : this.seg([{ id: true, label: 'Sí' }, { id: false, label: 'No' }, { id: null, label: 'Sin respuesta' }], cur.value === true || cur.value === false ? cur.value : null, val => setInp(i.id, i.unit, 'value', val)) };
+      });
+      out.noParams = !out.paramRows.length;
+      const ynu = [{ id: 'si', label: 'Sí' }, { id: 'no', label: 'No' }, { id: 'desconocido', label: 'Sin información' }];
+      out.obraRows = C.OBRAS.map(o => ({ label: o.label, opts: this.seg(ynu, (p.obras || {})[o.id] || 'desconocido', val => this.upd(c => { c.obras[o.id] = val; })) }));
+      out.locRows = C.LOCATION_ELEMENTS.map(l => ({ label: l.label, crit: 'Art. 11 · ' + l.criteria.join(', ') + (l.id === 'area_protegida' ? ' · Art. 3 p' : l.id === 'humedal_urbano' ? ' · Art. 10 s' : ''), opts: this.seg(C.LOCATION_VALUES, p.location[l.id] || 'desconocido', val => this.upd(c => { c.location[l.id] = val; })), source: (p.locSource || {})[l.id] || '', onSource: e => { const val = e.target.value; this.upd(c => { c.locSource = c.locSource || {}; c.locSource[l.id] = val; }); } }));
+      out.showHumedalQ = ['dentro', 'colindante'].includes(p.location.humedal_urbano);
+      const hq = (p.inputs.altera_humedal_urbano || {}).value;
+      out.humedalOpts = this.seg([{ id: true, label: 'Sí' }, { id: false, label: 'No' }, { id: null, label: 'Sin respuesta' }], hq === true || hq === false ? hq : null, val => this.upd(c => { c.inputs.altera_humedal_urbano = { value: val }; }));
+      out.rcaOpts = this.seg([{ id: 'si', label: 'Sí' }, { id: 'no', label: 'No' }, { id: 'desconocido', label: 'No se sabe' }], p.rca.has, val => this.upd(c => { c.rca.has = val; }));
+      const literals = C.RULES.filter(r => r.rule_type === 'tipologia_art3').map(r => r.literal);
+      out.rcaRows = p.rca.list.map((r, i) => ({ numero: r.numero || '', anio: r.anio || '', onNumero: e => { const val = e.target.value; this.upd(c => { c.rca.list[i].numero = val; }); }, onAnio: e => { const val = e.target.value; this.upd(c => { c.rca.list[i].anio = val; }); }, onRemove: () => this.upd(c => { c.rca.list.splice(i, 1); }),
+        tips: literals.map(l => { const a = (r.tipologias || []).includes(l); return { label: l, on: () => this.upd(c => { const t = c.rca.list[i].tipologias || []; c.rca.list[i].tipologias = a ? t.filter(x => x !== l) : [...t, l]; }), bg: a ? '#0B1F2A' : 'transparent', fg: a ? '#FBFAF7' : '#0B1F2A', bd: a ? '#0B1F2A' : '#B9BDBB' }; }) }));
+      out.onAddRca = () => this.upd(c => { c.rca.has = 'si'; c.rca.list.push({ numero: '', anio: '', tipologias: [] }); });
+      out.histFields = [['pertinencias', 'Consultas de pertinencia previas'], ['relacionados', 'Proyectos relacionados'], ['cambios', 'Cambios ejecutados y proyectados'], ['compromisos', 'Compromisos ambientales'], ['permisos', 'Permisos sectoriales existentes']].map(([k, label]) => ({ label, value: (p.hist || {})[k] || '', on: e => { const val = e.target.value; this.upd(c => { c.hist = c.hist || {}; c.hist[k] = val; }); } }));
+      const issues = E.validateProject(p);
+      out.issues = issues.map(i => ({ ...i, fg: i.level === 'error' ? '#7E3519' : '#1A4C93' }));
+      out.noIssues = !issues.length;
+      const locUnknown = C.LOCATION_ELEMENTS.filter(l => (p.location[l.id] || 'desconocido') === 'desconocido').length;
+      const numInputs = out.paramRows.filter(r => r.isNum);
+      const comp = [['Identificación (nombre, titular, región)', !!(p.name && p.titular && p.region), p.name && p.titular && p.region ? 'Completa' : 'Incompleta'], ['Naturaleza declarada', p.nature.length > 0, p.nature.length ? `${p.nature.length} característica(s)` : 'Sin declarar'], ['Actividades confirmadas', !!p.activitiesConfirmed, p.activitiesConfirmed ? `${p.activities.length} actividad(es)` : 'Sin confirmar'], ['Parámetros numéricos informados', numInputs.every(r => r.value !== ''), `${numInputs.filter(r => r.value !== '').length} de ${numInputs.length}`], ['Elementos de localización con información', locUnknown === 0, `${C.LOCATION_ELEMENTS.length - locUnknown} de ${C.LOCATION_ELEMENTS.length}`], ['RCA declarada', p.rca.has !== 'desconocido', p.rca.has === 'si' ? `${p.rca.list.length} registrada(s)` : p.rca.has === 'no' ? 'Sin RCA' : 'Sin información']];
+      out.completeness = comp.map(([label, ok, value]) => ({ label, value, fg: ok ? '#0B1F2A' : '#1A4C93' }));
+      out.docCount = docs.length;
+
+      // Antecedentes
+      out.onFiles = e => { const files = Array.from(e.target.files || []); const now = new Date().toISOString(); const add = files.map((f, k) => ({ id: 'd' + Date.now().toString(36) + k, name: f.name, type: f.type || f.name.split('.').pop(), size: f.size, date: now, origin: 'usuario' })); e.target.value = ''; if (add.length) this.upd(c => { c.documents = [...(c.documents || []), ...add]; }); };
+      const linked = id => C.INPUTS.filter(i => (p.inputs[i.id] || {}).evidence === id).map(i => i.label).join(', ') || 'Sin vincular';
+      out.docRows = docs.map(d => ({ name: d.name, type: d.type, size: d.size > 1048576 ? (d.size / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(d.size / 1024)) + ' KB', date: d.date.slice(0, 10), linked: linked(d.id), onRemove: () => this.upd(c => { c.documents = c.documents.filter(x => x.id !== d.id); Object.values(c.inputs).forEach(x => { if (x.evidence === d.id) x.evidence = ''; }); }) }));
+      out.noDocs = !docs.length;
+      const oblDef = [['rca', 'RCA'], ['sec', 'Sección de origen (considerando, punto)'], ['desc', 'Descripción fiel'], ['plazo', 'Plazo o frecuencia'], ['resp', 'Responsable'], ['evid', 'Evidencia de cumplimiento']];
+      out.oblFields = oblDef.map(([k, label]) => ({ label, value: s.obl[k], on: e => { const val = e.target.value; this.setState(st => ({ obl: { ...st.obl, [k]: val } })); } }));
+      out.oblTipos = ['Condición o exigencia', 'Compromiso ambiental voluntario', 'Medida de mitigación', 'Medida de reparación', 'Medida de compensación', 'Monitoreo', 'Reporte', 'Límite o parámetro'];
+      out.oblTipo = s.oblTipo;
+      out.onOblTipo = e => this.setState({ oblTipo: e.target.value });
+      out.onAddObl = () => { const o = s.obl; if (!o.sec.trim() || !o.desc.trim()) { window.alert('Indique la sección de origen y la descripción.'); return; } this.upd(c => { c.rcaObligations = [...(c.rcaObligations || []), { id: 'o' + Date.now().toString(36), ...o, tipo: s.oblTipo, origin: 'manual', confirmed_at: new Date().toISOString() }]; }); this.setState({ obl: { rca: o.rca, sec: '', desc: '', plazo: '', resp: '', evid: '' } }); };
+      out.oblRows = (p.rcaObligations || []).map(o => ({ tipo: o.tipo, rca: o.rca || 'RCA sin número', sec: o.sec, desc: o.desc, meta: [o.plazo && 'Plazo: ' + o.plazo, o.resp && 'Responsable: ' + o.resp, o.evid && 'Evidencia: ' + o.evid, 'Origen: registro manual, confirmada'].filter(Boolean).join(' · '), onRemove: () => this.upd(c => { c.rcaObligations = c.rcaObligations.filter(x => x.id !== o.id); }) }));
+
+      // SEIA
+      out.evalDate = s.evalDate; out.onEvalDate = e => this.setState({ evalDate: e.target.value });
+      out.onRun = () => this.run();
+      out.hasEval = !!ev; out.noEval = !ev;
+      if (ev) {
+        const R = ev.seia;
+        out.isStale = seiaKey(p) !== seiaKey(ev.snapshot);
+        out.ev = { code: R.global, label: R.global_label, badge: badge(R.global), date: R.date, created: fmtDT(ev.created_at), catalog: R.catalog_version, engine: R.engine_version, warnings: R.warnings };
+        const evaluated = R.results.filter(r => r.status !== 'DESCARTADA');
+        const missing = [...new Set(R.results.flatMap(r => r.missing || []))];
+        const pasPot = ev.pas.filter(x => x.status === 'POTENCIALMENTE_APLICABLE' || x.status === 'APLICABLE_CONFIRMADO');
+        const normPot = ev.norm.filter(x => x.status === 'POTENCIALMENTE_APLICABLE');
+        out.summary = [
+          { title: 'Tipologías activadas', count: R.counts.ACTIVADA, items: R.results.filter(r => r.status === 'ACTIVADA').map(r => `${r.literal} — ${r.rule_name}`) },
+          { title: 'Antecedentes faltantes', count: missing.length, items: missing },
+          { title: 'PAS potenciales', count: pasPot.length, items: pasPot.map(x => `Art. ${x.articulo} — ${x.nombre}`) },
+          { title: 'Normativa potencial', count: normPot.length, items: normPot.map(x => x.norma) }
+        ];
+        out.summary[0].items = out.summary[0].items.length ? out.summary[0].items : [`${evaluated.length} de ${R.results.length} reglas evaluadas; ninguna activada.`];
+        const order = ['all', 'ACTIVADA', 'REVISION', 'INFO_INSUFICIENTE', 'EXCEPCION_APLICADA', 'NO_ACTIVADA', 'SIN_VERSION_VIGENTE', 'DESCARTADA'];
+        out.filterChips = order.map(k => { const a = s.filter === k; return { label: k === 'all' ? 'Todas' : badge(k).label, n: k === 'all' ? R.results.length : R.counts[k] || 0, on: () => this.setState({ filter: k }), bg: a ? '#0B1F2A' : 'transparent', fg: a ? '#FBFAF7' : '#0B1F2A', bd: a ? '#0B1F2A' : '#B9BDBB' }; }).filter(c => c.n > 0 || c.label === 'Todas');
+        out.ruleRows = R.results.filter(r => s.filter === 'all' || r.status === s.filter).map(r => ({ literal: r.literal, name: r.rule_name, expl: r.explanation, meta: [r.version_id || 'sin versión', r.role === 'insumo_modificacion' ? 'insumo de art. 2 g)' : null].filter(Boolean).join(' · '), st: badge(r.status), val: badge(r.validation_status || 'NONE'), on: () => this.setState({ selRule: r.rule_id }), bg: s.selRule === r.rule_id ? '#E4E3DD' : 'transparent' }));
+        const sr = R.results.find(r => r.rule_id === s.selRule);
+        out.hasSel = !!sr; out.noSel = !sr;
+        if (sr) {
+          const rule = C.RULES.find(r => r.rule_id === sr.rule_id);
+          const ver = rule && rule.versions.find(x => x.version_id === sr.version_id);
+          out.sel = { id: sr.rule_id, version: sr.version_id || 'sin versión aplicable', name: sr.rule_name, ref: sr.legal_reference || 'Sin referencia aplicable a la fecha', text: ver ? ver.text : '', hasText: !!ver, expl: sr.explanation,
+            trace: (sr.trace || []).map(t => ({ label: (t.exception ? 'Excepción · ' : '') + t.label, b: badge(t.result), line: t.kind === 'cmp' ? `Informado ${t.provided}${t.converted ? ' → ' + t.converted : ''}  ·  condición ${t.op} ${t.threshold}` : t.threshold ? `Informado ${t.provided}  ·  esperado ${t.threshold}` : `Valor ${t.provided}`, note: t.note || '' })),
+            hasTrace: !!(sr.trace && sr.trace.length), missing: (sr.missing || []).join(', '), hasMissing: !!(sr.missing && sr.missing.length), evidence: rule ? rule.evidence_required.join(', ') : '—', notes: ver ? ver.notes : '', url: sr.source_url || '', hasUrl: !!sr.source_url };
+        } else out.sel = {};
+      }
+
+      // DIA / EIA
+      const sg = ev ? ev.seia.global : null;
+      out.diaGate = sg !== 'INGRESO_OBLIGATORIO_IDENTIFICADO';
+      out.diaOpen = !out.diaGate;
+      out.diaGateLabel = sg ? E.GLOBAL_LABELS[sg] : 'sin evaluación';
+      const art11 = E.runArt11(p, sg);
+      out.dia = { badge: badge(art11.global) };
+      const setA = (cid, fn) => this.upd(c => { c.art11 = c.art11 || {}; c.art11[cid] = c.art11[cid] || {}; fn(c.art11[cid]); });
+      out.criteria = art11.criteria.map(c => ({ id: c.id, title: c.title, ref: c.ref, b: badge(c.status), reason: c.reason, evHint: c.evidence.length ? 'declarada' : 'p. ej. ' + C.ART11.find(x => x.id === c.id).evidence.split(',')[0].toLowerCase(),
+        qs: c.questions.map((q, i) => ({ q, opts: this.seg([{ id: 'si', label: 'Sí' }, { id: 'no', label: 'No' }, { id: 'ns', label: 'No sé' }], c.answers[i], val => setA(c.id, a => { a.q = a.q || []; a.q[i] = val; })) })),
+        hasLoc: !!(c.locPresent.length || c.locUnknown.length), locText: [c.locPresent.length ? 'Declarado presente o próximo: ' + c.locPresent.join(', ') + '.' : '', c.locUnknown.length ? 'Sin información: ' + c.locUnknown.join(', ') + '.' : ''].filter(Boolean).join(' '),
+        evidence: c.evidence, onEvidence: e => { const val = e.target.value; setA(c.id, a => { a.evidence = val; }); }, fundamento: c.fundamento, onFund: e => { const val = e.target.value; setA(c.id, a => { a.fundamento = val; }); },
+        detOpts: this.seg([{ id: '', label: 'Sin determinar' }, { id: 'significativo', label: 'Efecto significativo' }, { id: 'no_significativo', label: 'No significativo' }], c.det, val => setA(c.id, a => { a.det = val; })) }));
+
+      // PAS y normativa (ficha actual)
+      const obraLabel = id => (C.OBRAS.find(o => o.id === id) || {}).label || id;
+      const valLabel = { si: 'Sí', no: 'No', desconocido: 'Sin información' };
+      out.pasCtx = sg === 'INGRESO_OBLIGATORIO_IDENTIFICADO' ? 'Con ingreso identificado, los PAS se tramitarían en el SEIA.' : 'Sin ingreso identificado, los permisos se tramitarían directamente ante cada organismo.';
+      out.pasRows = E.runPas(p, sg, ev ? ev.seia : null).map(x => ({ ...x, trig: `${obraLabel(x.trigger)}: ${valLabel[x.triggerValue]}`, b: badge(x.status), v: badge(x.validation_status), canConfirm: x.status === 'POTENCIALMENTE_APLICABLE', onConfirm: () => { const who = window.prompt('Nombre del profesional que confirma la aplicabilidad:'); if (who && who.trim()) this.upd(c => { c.pasConfirm = c.pasConfirm || {}; c.pasConfirm[x.id] = who.trim(); }); } }));
+      out.normRows = E.runNormativa(p).map(n => ({ ...n, cond: n.triggerActivity ? `Actividad minera: ${valLabel[n.triggerValue]}` : `${obraLabel(n.trigger)}: ${valLabel[n.triggerValue]}`, b: badge(n.status), v: badge(n.validation_status) }));
+
+      // Informe
+      out.onPrint = () => window.print();
+      out.onCsv = () => ev && this.download(`${ev.id}.csv`, this.csv(ev), 'text/csv;charset=utf-8');
+      out.onJson = () => ev && this.download(`${ev.id}.json`, JSON.stringify(ev, null, 2), 'application/json');
+      if (ev) {
+        const R = ev.seia, P = ev.snapshot;
+        const row = (a, b, code) => { const x = badge(code); return { a, b, c: code ? x.label : '', bg: code ? x.bg : 'transparent', fg: x.fg, bd: code ? x.bd : 'transparent' }; };
+        const evaluated = R.results.filter(r => r.status !== 'DESCARTADA');
+        const missing = [...new Set(R.results.flatMap(r => r.missing || []))];
+        const plan = [];
+        missing.forEach(m => plan.push(row('Completar antecedente', m, null)));
+        R.results.filter(r => r.status === 'REVISION').forEach(r => plan.push(row('Revisión especializada', `${r.rule_id}: ${r.explanation}`, null)));
+        R.results.filter(r => r.status === 'ACTIVADA' && r.validation_status !== 'VALIDADA_JURIDICAMENTE').forEach(r => plan.push(row('Validación jurídica', `Validar la regla ${r.rule_id} (${r.validation_status}) antes de usar la conclusión.`, null)));
+        ev.pas.filter(x => x.status === 'PENDIENTE_ANTECEDENTES').forEach(x => plan.push(row('Definir obra', `Confirmar si el proyecto contempla la obra asociada al PAS ${x.articulo}.`, null)));
+        if (R.global === 'INGRESO_OBLIGATORIO_IDENTIFICADO') plan.push(row('Vía de evaluación', 'Completar el análisis del art. 11 con evidencia y determinación profesional.', null));
+        const usedSources = [...new Set(evaluated.map(r => r.source_url).filter(Boolean))];
+        out.rep = { id: ev.id, name: P.name, date: R.date, created: fmtDT(ev.created_at), catalog: R.catalog_version, engine: R.engine_version, sections: [
+          { n: '01', title: 'Identificación y descripción del proyecto', lead: P.descripcion || 'Sin descripción.', rows: [row('Titular', P.titular || '—'), row('Sector', P.sector || '—'), row('Ubicación', [P.comuna, P.region].filter(Boolean).join(', ') || '—'), row('Coordenadas', P.lat && P.lon ? `${P.lat}, ${P.lon}` : '—'), row('Etapa', P.etapa || '—'), row('Naturaleza', P.nature.map(n => (C.NATURE.find(x => x.id === n) || {}).label).join(', ') || 'Sin declarar')] },
+          { n: '02', title: 'Alcance y antecedentes utilizados', lead: `Actividades: ${P.activities.map(a => (C.ACTIVITIES.find(x => x.id === a) || {}).label).join(', ') || 'ninguna'}${P.activitiesConfirmed ? ' (confirmadas)' : ' (sin confirmar)'}. ${(P.documents || []).length} documento(s) registrados.`, rows: [...C.INPUTS.filter(i => P.inputs[i.id] && P.inputs[i.id].value !== '' && P.inputs[i.id].value != null).map(i => { const x = P.inputs[i.id]; return row(i.label, `${x.value === true ? 'Sí' : x.value === false ? 'No' : x.value + ' ' + (x.unit || '')} · ${x.source || 'sin fuente'}`, null); }), ...C.LOCATION_ELEMENTS.map(l => row(l.label, (C.LOCATION_VALUES.find(x => x.id === P.location[l.id]) || { label: 'Sin información' }).label, null))] },
+          { n: '03', title: 'Resultado de aplicabilidad del SEIA', lead: R.global_label + '. ' + R.warnings.join(' '), rows: [row('Resultado global', R.global, R.global)] },
+          { n: '04', title: 'Análisis de tipologías', lead: `${evaluated.length} reglas evaluadas de ${R.results.length} en el catálogo.`, rows: R.results.map(r => row(`${r.literal} · ${r.rule_name}`, r.explanation, r.status)) },
+          { n: '05', title: 'Fundamentos legales', lead: '', rows: evaluated.filter(r => r.legal_reference).map(r => row(r.legal_reference, `${r.version_id} · vigencia ${r.effective_from} a ${r.effective_to || 'la fecha'}`, r.validation_status)) },
+          { n: '06', title: 'Análisis DIA / EIA', lead: badge(ev.art11.global).label + '.', rows: ev.art11.criteria.map(c => row(`${c.id}) ${c.title}`, c.reason, c.status)) },
+          { n: '07', title: 'Matriz de PAS', lead: 'Numeración y requisitos pendientes de contraste con el Título VII vigente.', rows: ev.pas.map(x => row(`Art. ${x.articulo} · ${x.organismo}`, x.nombre, x.status)) },
+          { n: '08', title: 'Matriz de normativa ambiental', lead: 'Resúmenes preliminares no verificados.', rows: ev.norm.map(n => row(`${n.materia}`, `${n.norma}: ${n.obligacion}`, n.status)) },
+          { n: '09', title: 'Información faltante', lead: missing.length ? '' : 'No se registraron antecedentes faltantes en las reglas evaluadas.', rows: [...missing.map(m => row(m, 'Requerido por al menos una regla', 'UNKNOWN')), ...ev.art11.criteria.filter(c => c.status === 'INFORMACION_INSUFICIENTE').map(c => row(`Art. 11 ${c.id})`, c.reason, 'UNKNOWN'))] },
+          { n: '10', title: 'Riesgos de interpretación', lead: 'Notas registradas en las versiones de reglas evaluadas.', rows: evaluated.map(r => { const ru = C.RULES.find(x => x.rule_id === r.rule_id); const vv = ru && ru.versions.find(x => x.version_id === r.version_id); return vv ? row(r.rule_id, vv.notes, vv.validation_status) : null; }).filter(Boolean) },
+          { n: '11', title: 'Plan de acción recomendado', lead: '', rows: plan },
+          { n: '12', title: 'Fuentes y versiones normativas', lead: `Versiones aplicadas: ${R.rule_versions.join(', ') || 'ninguna'}.`, rows: usedSources.map(u => { const src = C.LEGAL_SOURCES.find(x => x.url === u); return row(src ? src.id : 'Fuente', src ? `${src.title} — ${u}` : u, null); }) },
+          { n: '13', title: 'Limitaciones y fecha del análisis', lead: `Análisis a la fecha normativa ${R.date}, emitido ${fmtDT(ev.created_at)}. Catálogo parcial en modo desarrollo; ninguna regla validada jurídicamente. Tipologías no implementadas: ${R.notImplemented.join('; ')}. La localización es declarada por el usuario, sin cruce cartográfico. Los documentos no se almacenan en un servidor.`, rows: [] }
+        ].map(x => ({ ...x, hasLead: !!x.lead })) };
+      }
+    }
+
+    // Historial
+    out.noHist = !evalsAll.length;
+    out.histRows = evalsAll.map(e => { const rp = s.replay[e.id]; return { id: e.id, created: fmtDT(e.created_at), project: e.projectName, date: e.date, b: badge(e.seia.global), cat: `${e.seia.catalog_version} · motor ${e.seia.engine_version}`, replay: rp == null ? 'Sin reproducir' : rp.length ? 'Diferencias: ' + rp.join('; ') : 'Reproducción idéntica: mismas reglas, versiones y resultados.', replayFg: rp && rp.length ? '#7E3519' : '#55616A',
+      onView: () => this.go('seia', { pid: e.pid, evalId: e.id, selRule: null, filter: 'all' }),
+      onReplay: () => { const again = E.runSeia(e.snapshot, { date: e.date }); const d = E.compareRuns(e.seia, again); if (e.seia.catalog_version !== C.CATALOG_VERSION) d.unshift(`catálogo original ${e.seia.catalog_version}, actual ${C.CATALOG_VERSION}`); this.setState(st => ({ replay: { ...st.replay, [e.id]: d } })); } }; });
+
+    // Catálogo
+    const now = today();
+    const cats = ['all', 'TEXTO_OFICIAL_CONTRASTADO', 'FUENTE_SECUNDARIA', 'PENDIENTE_VALIDACION'];
+    out.catChips = cats.map(k => { const a = s.catFilter === k; return { label: k === 'all' ? 'Todas' : badge(k).label, n: k === 'all' ? C.RULES.length : C.RULES.filter(r => r.versions.some(x => x.validation_status === k)).length, on: () => this.setState({ catFilter: k }), bg: a ? '#0B1F2A' : 'transparent', fg: a ? '#FBFAF7' : '#0B1F2A', bd: a ? '#0B1F2A' : '#B9BDBB' }; });
+    out.catRows = C.RULES.filter(r => s.catFilter === 'all' || r.versions.some(x => x.validation_status === s.catFilter)).map(r => ({ id: r.rule_id, literal: r.literal, name: r.rule_name, inputs: [...new Set(r.versions.flatMap(x => x.required_inputs))].join(', '), on: () => this.setState({ selCat: r.rule_id }), bg: s.selCat === r.rule_id ? '#E4E3DD' : 'transparent',
+      versions: r.versions.map(x => { const vig = x.effective_from <= now && (!x.effective_to || now <= x.effective_to); return { id: x.version_id, range: `${x.effective_from} → ${x.effective_to || 'sin término'}`, b: badge(x.validation_status), now: vig ? 'vigente hoy' : x.effective_from > now ? 'futura' : 'terminada', nowFg: vig ? '#0B1F2A' : '#55616A' }; }) }));
+    const selCat = C.RULES.find(r => r.rule_id === s.selCat) || C.RULES[0];
+    out.catJson = JSON.stringify(selCat, null, 2);
+    out.art10Rows = C.ART10_LETTERS.map(a => ({ letter: a.letter, name: a.name, st: a.rules.length ? a.rules.length + (a.rules.length === 1 ? ' regla' : ' reglas') : 'No implementada', fg: a.rules.length ? '#1A4C93' : '#7E3519' }));
+    out.sources = C.LEGAL_SOURCES.map(x => ({ ...x, status: x.status.replace(/_/g, ' ') }));
+
+    // Pruebas
+    out.onRunTests = () => this.setState({ tests: this.T.runTests() });
+    const passed = tests.filter(t => t.pass).length;
+    out.testSummary = `${passed} de ${tests.length} pruebas superadas`;
+    out.testRows = tests.map(t => ({ ...t, date: t.date || '', b: badge(t.pass ? 'OK' : 'FAIL'), obtained: t.fails && t.fails.length ? t.fails.join(' · ') : t.obtained }));
+
+    // Arquitectura
+    out.layers = [
+      { file: 'seia-catalog.js', name: 'Catálogo normativo', desc: 'Fuentes, reglas versionadas con vigencia, unidades, PAS, normativa y criterios del art. 11. Solo datos.' },
+      { file: 'seia-engine.js', name: 'Motor de reglas', desc: 'Intérprete controlado de condiciones JSON, lógica trivalente, conversión de unidades, dependencias, excepciones.' },
+      { file: 'seia-tests.js', name: 'Pruebas', desc: 'Casos de umbral, versiones, vigencias, unidades, modificación y regresión.' },
+      { file: 'schema.sql', name: 'Persistencia', desc: 'PostgreSQL / Supabase con RLS por organización e instantáneas inmutables.' },
+      { file: 'LiqenInsight SEIA.dc.html', name: 'Interfaz e informe', desc: 'Ficha, resultados, matrices, informe e historial. Hoy persiste en el navegador.' }
+    ];
+    const fk = st => st.startsWith('IMPLEMENTADA') ? '#0B1F2A' : st.startsWith('PARCIAL') ? '#1A4C93' : '#7E3519';
+    out.features = C.FEATURES.map(([name, status]) => ({ name, status, fg: fk(status) }));
+    out.schema = s.schema || 'Cargando schema.sql…';
+    out.readme = s.readme || 'Cargando README.md…';
+    return out;
+  }
+}
+</script>
+</body>
+</html>
