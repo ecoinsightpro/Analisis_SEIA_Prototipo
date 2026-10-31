@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <title>LiqenInsight SEIA</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
 :root{--bg:#1E1E1F;--side:#252526;--surf:#2D2D2E;--surf2:#3D3D3D;--line:#48494B;--ink:#EBECEE;--ink2:#BDBFC2;--ink3:#9A9CA0;--acc:#C4E326;--hl:#C4E326;--onacc:#1A1D0A;--sec:#8A8C8F;--warn:#E8B04B;--err:#F28B7D;--sh:0 1px 2px rgba(0,0,0,.25),0 14px 34px -14px rgba(0,0,0,.5)}
 [data-theme=Claro]{--bg:#EBECEE;--side:#E1E2E5;--surf:var(--surf);--surf2:#F2F3F4;--line:#D2D4D7;--ink:#262626;--ink2:#3D3D3D;--ink3:#62646A;--hl:#5A6E00;--warn:#8F5B00;--err:#B4382B;--sh:0 1px 2px rgba(30,30,30,.06),0 14px 34px -16px rgba(30,30,30,.2)}
-body{margin:0;background:#1E1E1F;color:#EBECEE;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{margin:0;padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:#1E1E1F;color:#EBECEE;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 a{color:var(--hl)}a:hover{color:var(--ink)}
 button,a,input,select,textarea{transition:background-color .2s ease,color .2s ease,border-color .2s ease}
 button:disabled{opacity:.45}
@@ -29,6 +29,20 @@ option{background:var(--surf);color:var(--ink)}
 input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid #C4E326;outline-offset:2px}
 @media print{[data-noprint]{display:none!important}body{background:var(--surf)}body.li-preview [data-app-root]>*:not([data-preview]){display:none!important}body.li-preview [data-preview]{position:static!important;background:var(--surf)!important;overflow:visible!important;display:block!important}body.li-preview [data-preview-scroll]{overflow:visible!important;padding:0!important;display:block!important}body.li-preview [data-sheet]{box-shadow:none!important;margin:0!important;transform:none!important;break-after:page;page-break-after:always}body.li-preview [data-sheet-wrap]{width:auto!important;height:auto!important}}
 @page{size:A4;margin:0}
+@media (pointer:coarse),(max-width:760px){[data-app-root] button:not([data-tiny]),[data-app-root] select,[data-app-root] input:not([type=checkbox]):not([type=radio]){min-height:44px}}
+@media (max-width:760px){
+[data-app-root]{overflow-x:clip}
+[data-aside]{flex:1 1 100%!important;position:relative!important;height:auto!important;max-height:none!important;border-right:0!important;border-bottom:1px solid var(--line);z-index:40}
+[data-aside][data-mopen="false"]>*:not([data-abar]){display:none!important}
+[data-mtoggle]{display:flex!important}
+[data-app-root] main{flex-basis:100%!important}
+[data-app-root] [style*="font-size: 10px"],[data-app-root] [style*="font-size: 10.5px"]{font-size:11.5px!important}
+[data-app-root] [style*="font-size: 11px"],[data-app-root] [style*="font-size: 11.5px"]{font-size:12px!important}
+[data-mgrid]{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+[data-mstack]{grid-template-columns:minmax(0,1fr)!important}
+input,select,textarea{font-size:16px!important;max-width:100%}
+}
+
 </style>
 </helmet>
 <div data-app-root="1" data-theme="{{ theme }}" style="display:flex;flex-wrap:wrap;min-height:100vh;font-family:'Archivo',system-ui,sans-serif;font-size:14px;line-height:1.5;letter-spacing:-0.006em;font-feature-settings:'ss01','cv11';color:var(--ink);background:radial-gradient(1100px 520px at 88% -12%, color-mix(in oklab, var(--acc) 7%, transparent), transparent 62%), var(--bg)">
@@ -48,8 +62,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
     </div>
   </sc-if>
 <sc-if value="{{ notLanding }}" hint-placeholder-val="{{ false }}">
-<aside data-noprint="1" style="flex:1 0 252px;max-width:100%;position:sticky;top:0;align-self:flex-start;height:100vh;overflow-y:auto;scrollbar-width:thin;background:var(--side);border-right:1px solid var(--line);color:var(--ink);display:flex;flex-direction:column;box-sizing:border-box">
-  <button onClick="{{ goLanding }}" style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;background:transparent;border:0;border-bottom:1px solid var(--line);color:inherit;text-align:left;cursor:pointer;font-family:inherit"><span style="font-weight:700;letter-spacing:.02em;text-transform:uppercase;font-size:14px">Prototipo/SEIA</span><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--ink3)">evaluación guiada</span></button>
+<aside data-noprint="1" data-aside="1" data-mopen="{{ mnavOpen }}" onClick="{{ asideClick }}" style="flex:1 0 252px;max-width:100%;position:sticky;top:0;align-self:flex-start;height:100vh;overflow-y:auto;scrollbar-width:thin;background:var(--side);border-right:1px solid var(--line);color:var(--ink);display:flex;flex-direction:column;box-sizing:border-box">
+  <div data-abar="1" style="display:flex;align-items:stretch;border-bottom:1px solid var(--line)"><button onClick="{{ goLanding }}" style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;background:transparent;border:0;flex:1 1 auto;min-width:0;color:inherit;text-align:left;cursor:pointer;font-family:inherit"><span style="font-weight:700;letter-spacing:.02em;text-transform:uppercase;font-size:14px">Prototipo/SEIA</span><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--ink3)">evaluación guiada</span></button><button data-mtoggle="1" onClick="{{ toggleMnav }}" aria-expanded="{{ mnavOpen }}" aria-label="Menú" style="display:none;align-items:center;gap:8px;margin:10px 12px 10px 0;padding:0 14px;min-height:44px;background:var(--surf);border:1px solid var(--line);border-radius:3px;color:var(--ink);font-family:inherit;font-size:13.5px;cursor:pointer">{{ mnavLabel }}</button></div>
   <nav aria-label="Navegación" style="display:flex;flex-direction:column;padding:10px 0;border-bottom:1px solid var(--line)">
     <sc-if value="{{ isTool }}" hint-placeholder-val="{{ false }}"><button onClick="{{ goBack }}" style="display:flex;align-items:center;height:36px;padding:0 18px;border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;font-size:13.5px;text-align:left" style-hover="background:var(--surf)">← Volver atrás</button></sc-if>
     <button onClick="{{ goHome }}" style="display:flex;align-items:center;height:36px;padding:0 18px;border:0;background:{{ homeBg }};color:var(--ink);cursor:pointer;font-family:inherit;font-size:13.5px;text-align:left" style-hover="background:var(--surf)">Proyectos</button>
@@ -180,7 +194,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
         <h1 style="font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-0.03em;font-size:clamp(32px,3.6vw,48px);line-height:1.02;letter-spacing:-0.03em;margin:0">Leyes, reglamentos y guías <em style="font-style:italic;color:var(--hl)">que usa el motor</em>.</h1>
         <p style="margin:0;font-size:15px;line-height:1.55;color:var(--ink2);text-wrap:pretty">Cada fuente indica la versión que utiliza el motor, su vigencia, su estado de verificación y las reglas que dependen de ella. Una actualización normativa no altera evaluaciones anteriores: cada una conserva la versión con que se emitió.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--line)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--line)">
         <sc-for list="{{ nm.stats }}" as="s" hint-placeholder-count="5">
           <div style="padding:14px 14px 16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)">{{ s.k }}</span><span style="font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-0.03em;font-size:30px;line-height:1">{{ s.v }}</span></div>
         </sc-for>
@@ -197,7 +211,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
             <span style="font-size:12.5px;color:var(--ink2);max-width:560px;text-wrap:pretty">{{ g.desc }}</span>
           </div>
           <sc-for list="{{ g.items }}" as="n" hint-placeholder-count="0">
-            <div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.8fr) minmax(150px,auto);gap:8px 22px;padding:14px 0;border-bottom:1px solid var(--line);align-items:start">
+            <div data-mstack="1" style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.8fr) minmax(150px,auto);gap:8px 22px;padding:14px 0;border-bottom:1px solid var(--line);align-items:start">
               <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
                 <span style="font-weight:600;font-size:14.5px;line-height:1.35">{{ n.title }}</span>
                 <sc-if value="{{ n.note }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;line-height:1.45;color:var(--ink2);text-wrap:pretty">{{ n.note }}</span></sc-if>
@@ -295,7 +309,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
         <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)">Arquitectura y entregables</div>
         <h1 style="font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-0.03em;font-size:clamp(30px,3.4vw,44px);line-height:1.05;margin:0;text-wrap:balance">Un núcleo de reglas independiente de la interfaz</h1>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px">
         <sc-for list="{{ arq.layers }}" as="l" hint-placeholder-count="5">
           <div style="display:flex;flex-direction:column;gap:6px;padding:16px;background:var(--surf);border:1px solid var(--line);border-radius:4px">
             <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--hl)">{{ l.file }}</span>
@@ -377,7 +391,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
       <sc-if value="{{ noProjects }}" hint-placeholder-val="{{ false }}">
         <div style="padding:32px;border:1px dashed var(--line);border-radius:4px;color:var(--ink2);max-width:640px">Aún no hay proyectos. Crea una evaluación nueva o carga los casos ficticios para recorrer el flujo.</div>
       </sc-if>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px">
         <sc-for list="{{ projCards }}" as="c" hint-placeholder-count="0">
           <div style="display:flex;flex-direction:column;gap:16px;padding:22px;background:var(--surf);border:1px solid var(--line);border-radius:4px;transition:border-color .2s" style-hover="border-color:var(--ink3)">
             <div style="display:flex;flex-direction:column;gap:4px">
@@ -430,7 +444,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
           </div>
           <button onClick="{{ pre.on }}" style="background:var(--acc);color:var(--onacc);border:1px solid var(--acc);font-weight:600;border-radius:3px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:var(--surf2)">{{ pre.btn }}</button>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px 24px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:22px 24px">
           <sc-for list="{{ pre.groups }}" as="g" hint-placeholder-count="6">
             <div style="display:flex;flex-direction:column;gap:9px;padding-top:10px;border-top:1px solid var(--ink)">
               <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font-size:13.5px;font-weight:600">{{ g.title }}</span><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--ink2)">{{ g.count }}</span></div>
@@ -443,7 +457,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
         </div>
         <div style="font-size:12px;color:var(--ink2);text-wrap:pretty">Sugerencias orientativas según el tipo de proyecto, lo declarado, la localización y la región. No declaran actividades ni obras y no reemplazan la evaluación del motor.</div>
       </section>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:14px">
         <sc-for list="{{ stageCards }}" as="s" hint-placeholder-count="11">
           <button onClick="{{ s.on }}" style="display:flex;flex-direction:column;gap:14px;text-align:left;padding:20px;background:{{ s.bg }};border:1px solid {{ s.bd }};border-radius:4px;cursor:pointer;color:var(--ink);transition:border-color .2s,transform .2s" style-hover="border-color:var(--ink)">
             <span style="display:flex;justify-content:space-between;align-items:center;gap:10px">
@@ -472,7 +486,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
         <div style="flex:1 1 260px;display:flex;flex-direction:column;gap:5px;min-width:0">
           <div style="display:flex;justify-content:space-between;gap:10px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Etapa {{ cur.n }} de 11 · {{ projName }}</span><span style="white-space:nowrap">{{ cur.pctText }}</span></div>
           <div style="display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:3px">
-            <sc-for list="{{ stepBar }}" as="b" hint-placeholder-count="11"><button onClick="{{ b.on }}" aria-label="{{ b.title }}" title="{{ b.title }}" style="height:6px;border:0;padding:0;border-radius:6px;cursor:pointer;background:{{ b.bg }};outline:{{ b.outline }};outline-offset:2px"></button></sc-for>
+            <sc-for list="{{ stepBar }}" as="b" hint-placeholder-count="11"><button data-tiny="1" onClick="{{ b.on }}" aria-label="{{ b.title }}" title="{{ b.title }}" style="height:6px;border:0;padding:0;border-radius:6px;cursor:pointer;background:{{ b.bg }};outline:{{ b.outline }};outline-offset:2px"></button></sc-for>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--ink2);white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ saved.dot }}"></span>{{ saved.text }}</div>
@@ -534,7 +548,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
                     </select>
                   </sc-if>
                   <sc-if value="{{ f.isNum }}" hint-placeholder-val="{{ false }}">
-                    <div style="display:grid;grid-template-columns:minmax(110px,150px) minmax(90px,110px) minmax(120px,140px) minmax(150px,1fr) minmax(130px,150px);gap:8px;max-width:900px">
+                    <div data-mgrid="1" style="display:grid;grid-template-columns:minmax(110px,150px) minmax(90px,110px) minmax(120px,140px) minmax(min(100%,150px),1fr) minmax(130px,150px);gap:8px;max-width:900px">
                       <input value="{{ f.value }}" onChange="{{ f.on }}" inputmode="decimal" placeholder="Valor" aria-label="Valor" style="background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:9px 11px;font-size:14.5px;width:100%;box-sizing:border-box">
                       <select value="{{ f.unit }}" onChange="{{ f.onUnit }}" aria-label="Unidad" style="background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:9px 8px;font-size:13.5px;width:100%">
                         <sc-for list="{{ f.units }}" as="u" hint-placeholder-count="0"><option value="{{ u }}">{{ u }}</option></sc-for>
@@ -562,7 +576,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
                     <div style="display:flex;flex-direction:column;gap:12px">
                       <seia-map lat="{{ f.lat }}" lon="{{ f.lon }}" center="{{ f.center }}" place="{{ f.place }}" style="display:block;height:360px;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:var(--surf2)"></seia-map>
                       <div style="font-size:12.5px;color:var(--ink2)">Haz clic en el mapa para ubicar el proyecto, o arrastra el marcador. También puedes escribir las coordenadas UTM.</div>
-                      <div style="display:grid;grid-template-columns:minmax(90px,120px) minmax(140px,1fr) minmax(140px,1fr) auto;gap:8px;align-items:end">
+                      <div data-mgrid="1" style="display:grid;grid-template-columns:minmax(90px,120px) minmax(min(100%,140px),1fr) minmax(min(100%,140px),1fr) auto;gap:8px;align-items:end">
                         <label style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)">Huso</span><select value="{{ f.zone }}" onChange="{{ f.onZone }}" style="background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:9px 11px;font-size:14px;width:100%;box-sizing:border-box"><sc-for list="{{ f.zones }}" as="z" hint-placeholder-count="0"><option value="{{ z }}">{{ z }} S</option></sc-for></select></label>
                         <label style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)">Este (m)</span><input value="{{ f.e }}" onChange="{{ f.onE }}" inputmode="decimal" placeholder="345000" style="background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:9px 11px;font-size:14px;width:100%;box-sizing:border-box"></label>
                         <label style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)">Norte (m)</span><input value="{{ f.n }}" onChange="{{ f.onN }}" inputmode="decimal" placeholder="6960000" style="background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:9px 11px;font-size:14px;width:100%;box-sizing:border-box"></label>
@@ -578,7 +592,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
                     <div style="display:flex;flex-direction:column;gap:10px">
                       <sc-for list="{{ f.rows }}" as="r" hint-placeholder-count="0">
                         <div style="display:flex;flex-direction:column;gap:10px;padding:14px;background:var(--surf);border:1px solid var(--line);border-radius:4px">
-                          <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(80px,1fr) auto;gap:8px;align-items:center">
+                          <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(min(100%,80px),1fr) auto;gap:8px;align-items:center">
                             <input value="{{ r.numero }}" onChange="{{ r.onNumero }}" placeholder="N.º de RCA o resolución" aria-label="Número de RCA" style="background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-size:14px">
                             <input value="{{ r.anio }}" onChange="{{ r.onAnio }}" placeholder="Año" aria-label="Año" style="background:var(--surf);border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-size:14px">
                             <button onClick="{{ r.onRemove }}" style="background:transparent;color:var(--err);border:1px solid color-mix(in oklab, var(--err) 45%, transparent);border-radius:3px;padding:7px 10px;font-size:12.5px;cursor:pointer">Quitar</button>
@@ -643,7 +657,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
                   <span style="display:block;height:6px;border-radius:3px;background:var(--line);overflow:hidden"><span style="display:block;height:6px;width:{{ dv.pctCss }};background:var(--acc)"></span></span>
                 </div>
               </section>
-              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:8px">
                 <sc-for list="{{ dv.tiles }}" as="t" hint-placeholder-count="6">
                   <button onClick="{{ t.on }}" aria-pressed="{{ t.pressed }}" style="display:flex;flex-direction:column;gap:6px;text-align:left;padding:12px;border-radius:4px;cursor:pointer;background:{{ t.bg }};border:1px solid {{ t.bd }};color:var(--ink)">
                     <span style="display:flex;justify-content:space-between;align-items:baseline;gap:6px"><span style="font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-0.03em;font-style:italic;font-size:24px;line-height:1;color:var(--hl)">{{ t.id }}</span><span style="width:9px;height:9px;border-radius:50%;background:{{ t.dot }};border:1px solid {{ t.dotBd }}"></span></span>
@@ -689,7 +703,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
                 </div>
                 <div style="display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;padding:20px 24px;border-bottom:1px solid var(--line)">
                   <span style="width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;background:{{ dv.c.s3 }};color:var(--ink)">3</span>
-                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;min-width:0">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;min-width:0">
                     <div style="grid-column:1 / -1;display:flex;flex-direction:column;gap:2px"><span style="font-weight:600">Evidencia y fundamento</span><span style="font-size:12.5px;color:var(--ink2)">Necesarios para cualquier determinación. Evidencia sugerida: {{ dv.c.evHint }}</span></div>
                     <div style="grid-column:1 / -1;display:flex;flex-direction:column;gap:5px;padding:10px 12px;background:var(--surf);border:1px solid var(--line);border-radius:4px">
                       <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)">Guías oficiales del SEA para este criterio</span>
@@ -704,7 +718,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
                   <span style="width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;background:{{ dv.c.s4 }};color:var(--ink)">4</span>
                   <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
                     <div style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:600">Determinación profesional</span><span style="font-size:12.5px;color:var(--ink2)">La significancia la determina un profesional; el motor solo verifica que esté fundada.</span></div>
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:8px">
                       <sc-for list="{{ dv.c.dets }}" as="d" hint-placeholder-count="3">
                         <button onClick="{{ d.on }}" aria-pressed="{{ d.pressed }}" style="display:flex;flex-direction:column;gap:4px;text-align:left;padding:12px 14px;border-radius:4px;cursor:pointer;background:{{ d.bg }};color:{{ d.fg }};border:1px solid {{ d.bd }}">
                           <span style="font-weight:600;font-size:13.5px">{{ d.label }}</span><span style="font-size:12px;line-height:1.4;opacity:.85">{{ d.hint }}</span>
@@ -792,7 +806,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
                         </sc-for>
                       </div>
                     </sc-if>
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px">
                       <sc-for list="{{ why.cols }}" as="g" hint-placeholder-count="4">
                         <div style="display:flex;flex-direction:column;gap:6px;padding-top:8px;border-top:1px solid var(--ink)">
                           <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)">{{ g.title }} · {{ g.count }}</span>
@@ -1361,6 +1375,11 @@ class Component extends DCLogic {
   }
 
   renderVals() {
+    const o = this._rv();
+    const mo = !!this.state.mnav;
+    return Object.assign(o, { mnavOpen: mo ? 'true' : 'false', mnavLabel: mo ? 'Cerrar' : 'Menú', toggleMnav: (e) => { e.stopPropagation(); this.setState(x => ({ mnav: !x.mnav })); }, asideClick: (e) => { const b = e.target.closest && e.target.closest('button'); if (b && this.state.mnav && !b.hasAttribute('data-mtoggle') && !b.hasAttribute('aria-expanded')) this.setState({ mnav: false }); } });
+  }
+  _rv() {
     const s = this.state, C = this.C, E = this.E;
     const ready = s.ready && C && E;
     const p = this.p;
