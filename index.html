@@ -11,7 +11,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:wght@300;400&family=Hanken+Grotesk:wght@400;600&family=IBM+Plex+Sans:wght@700&family=IBM+Plex+Mono:wght@400&display=swap">
 <style>
 :root{--bg:#1E1E1F;--side:#252526;--surf:#2D2D2E;--surf2:#3D3D3D;--line:#48494B;--ink:#EBECEE;--ink2:#BDBFC2;--ink3:#9A9CA0;--acc:#C4E326;--hl:#C4E326;--onacc:#1A1D0A;--sec:#8A8C8F;--warn:#E8B04B;--err:#F28B7D;--sh:0 1px 2px rgba(0,0,0,.25),0 14px 34px -14px rgba(0,0,0,.5)}
 [data-theme=Claro]{--bg:#EBECEE;--side:#E1E2E5;--surf:var(--surf);--surf2:#F2F3F4;--line:#D2D4D7;--ink:#262626;--ink2:#3D3D3D;--ink3:#62646A;--hl:#5A6E00;--warn:#8F5B00;--err:#B4382B;--sh:0 1px 2px rgba(30,30,30,.06),0 14px 34px -16px rgba(30,30,30,.2)}
@@ -36,8 +36,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 [data-aside][data-mopen="false"]>*:not([data-abar]){display:none!important}
 [data-mtoggle]{display:flex!important}
 [data-app-root] main{flex-basis:100%!important}
-[data-app-root] [style*="font-size: 10px"],[data-app-root] [style*="font-size: 10.5px"]{font-size:11.5px!important}
-[data-app-root] [style*="font-size: 11px"],[data-app-root] [style*="font-size: 11.5px"]{font-size:12px!important}
+[data-app-root]>main [style*="font-size: 10px"],[data-app-root]>main [style*="font-size: 10.5px"],[data-aside] [style*="font-size: 10px"],[data-aside] [style*="font-size: 10.5px"]{font-size:11.5px!important}
+[data-app-root]>main [style*="font-size: 11px"],[data-app-root]>main [style*="font-size: 11.5px"],[data-aside] [style*="font-size: 11px"],[data-aside] [style*="font-size: 11.5px"]{font-size:12px!important}
 [data-mgrid]{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
 [data-mstack]{grid-template-columns:minmax(0,1fr)!important}
 input,select,textarea{font-size:16px!important;max-width:100%}
@@ -442,7 +442,7 @@ input,select,textarea{font-size:16px!important;max-width:100%}
             <h2 style="font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-0.03em;font-weight:400;font-size:26px;letter-spacing:-0.01em;margin:0">{{ pre.title }}</h2>
             <p style="margin:0;font-size:13.5px;line-height:1.5;color:var(--ink2);text-wrap:pretty">{{ pre.lead }}</p>
           </div>
-          <button onClick="{{ pre.on }}" style="background:var(--acc);color:var(--onacc);border:1px solid var(--acc);font-weight:600;border-radius:3px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:var(--surf2)">{{ pre.btn }}</button>
+          <button onClick="{{ pre.on }}" style="background:var(--acc);color:var(--onacc);border:1px solid var(--acc);font-weight:600;border-radius:3px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;max-width:100%;text-align:left" style-hover="background:var(--surf2)">{{ pre.btn }}</button>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:22px 24px">
           <sc-for list="{{ pre.groups }}" as="g" hint-placeholder-count="6">
@@ -1005,40 +1005,40 @@ input,select,textarea{font-size:16px!important;max-width:100%}
                 <div style="display:flex;flex-direction:column;gap:16px;padding-bottom:20px;border-bottom:1px solid #0B1F2A">
                   <div style="display:flex;flex-direction:column;gap:6px">
                     <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">Análisis preliminar de aplicabilidad del SEIA</span>
-                    <span style="font-family:'Newsreader',serif;font-weight:300;font-size:34px;line-height:1.05;letter-spacing:-0.02em">{{ pv.r.name }}</span>
+                    <span style="font-family:'Newsreader',serif;font-weight:300;font-size:34px;line-height:1.05;letter-spacing:-0.02em;overflow-wrap:anywhere;text-wrap:balance">{{ pv.r.name }}</span>
                     <span style="font-size:12.5px;color:#55616A">{{ pv.r.titular }} · {{ pv.r.ubicacion }}</span>
                   </div>
-                  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:18px;align-items:stretch">
+                  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:stretch;overflow-wrap:anywhere">
                     <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px;border:1px solid {{ pv.gb.bd }};background:{{ pv.gb.bg }};color:{{ pv.gb.fg }};border-radius:6px">
                       <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase">Resultado global</span>
                       <span style="font-family:'Newsreader',serif;font-size:21px;line-height:1.15">{{ pv.r.global_label }}</span>
                       <span style="font-size:11.5px">Vía preliminar: {{ pv.via }}</span>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 14px">
+                    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 14px">
                       <sc-for list="{{ pv.r.kpis }}" as="k" hint-placeholder-count="4">
                         <div style="display:flex;flex-direction:column;gap:2px;border-top:1px solid #DCDDD8;padding-top:6px"><span style="font-family:'Newsreader',serif;font-size:24px;font-weight:300;line-height:1">{{ k.v }}</span><span style="font-size:10.5px;color:#55616A">{{ k.k }}</span></div>
                       </sc-for>
                     </div>
                   </div>
-                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;overflow-wrap:anywhere">
                     <sc-for list="{{ pv.tiers }}" as="t" hint-placeholder-count="3">
                       <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;border:1px solid #DCDDD8;border-radius:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:{{ t.c }}">● {{ t.l }} · {{ t.n }}</span><span style="font-size:10.5px;color:#55616A">{{ t.d }}</span></div>
                     </sc-for>
                   </div>
-                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#55616A">
+                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#55616A;overflow-wrap:anywhere">
                     <span>Fecha normativa {{ pv.r.date }}</span><span>Emitido {{ pv.r.created }}</span><span>{{ pv.r.catalog }} · motor {{ pv.r.engine }}</span>
                   </div>
                 </div>
               </sc-if>
               <sc-for list="{{ pg.items }}" as="s" hint-placeholder-count="0">
-                <div style="display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px">
+                <div data-m-sec="1" style="display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;break-inside:avoid">
                   <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A;padding-top:3px">{{ s.n }}</span>
                   <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
-                    <span style="font-family:'Newsreader',serif;font-size:17px;line-height:1.2">{{ s.title }}{{ s.contTxt }}</span>
-                    <sc-if value="{{ s.lead }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;line-height:1.5;color:#2A3A44;text-wrap:pretty">{{ s.lead }}</span></sc-if>
+                    <span data-m-title="1" style="font-family:'Newsreader',serif;font-size:17px;line-height:1.2;overflow-wrap:anywhere">{{ s.title }}{{ s.contTxt }}</span>
+                    <sc-if value="{{ s.lead }}" hint-placeholder-val="{{ false }}"><span data-m-lead="1" style="font-size:12px;line-height:1.5;color:#2A3A44;text-wrap:pretty;overflow-wrap:anywhere">{{ s.lead }}</span></sc-if>
                     <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="0">
-                      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr) auto;gap:3px 12px;padding:4px 0;border-bottom:1px solid #ECECE8;align-items:start;font-size:11px">
-                        <span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:600">{{ r.a }}</span><sc-if value="{{ r.tl }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:{{ r.tc }}">● {{ r.tl }}</span></sc-if></span><span style="color:#2A3A44">{{ r.b }}</span>
+                      <div data-m-row="1" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr) auto;gap:3px 12px;padding:4px 0;border-bottom:1px solid #ECECE8;align-items:start;font-size:11px;overflow-wrap:anywhere">
+                        <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-weight:600">{{ r.a }}</span><sc-if value="{{ r.tl }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:{{ r.tc }}">● {{ r.tl }}</span></sc-if></span><span style="color:#2A3A44">{{ r.b }}</span>
                         <span style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.04em;text-transform:uppercase;padding:1px 5px;border-radius:3px;white-space:nowrap;background:{{ r.bg }};color:{{ r.fg }};border:1px solid {{ r.bd }}">{{ r.c }}</span>
                       </div>
                     </sc-for>
@@ -1052,6 +1052,63 @@ input,select,textarea{font-size:16px!important;max-width:100%}
           </div>
         </div>
       </sc-for>
+    </div>
+    <div data-noprint="1" data-pv-measure="{{ pv.sig }}" aria-hidden="true" style="position:absolute;left:-20000px;top:0;visibility:hidden;pointer-events:none">
+          <div style="width:794px;height:1123px;box-sizing:border-box;padding:56px 64px 48px;background:#FFFFFF;color:#0B1F2A;box-shadow:0 10px 30px rgba(0,0,0,.35);display:flex;flex-direction:column;font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:12.5px;line-height:1.45;overflow:hidden">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:10px;border-bottom:1px solid #DCDDD8">
+              <span style="display:flex;align-items:baseline;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E3F;display:inline-block"></span><span style="font-family:'IBM Plex Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Prototipo · SEIA</span></span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#55616A">Informe preliminar · {{ pv.r.id }}</span>
+            </div>
+            <div data-m-body="1" style="flex:1 1 auto;display:flex;flex-direction:column;gap:18px;padding-top:22px;min-height:0">
+              <sc-if value="{{ true }}" hint-placeholder-val="{{ true }}">
+                <div data-m-cover="1" style="display:flex;flex-direction:column;gap:16px;padding-bottom:20px;border-bottom:1px solid #0B1F2A">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#55616A">Análisis preliminar de aplicabilidad del SEIA</span>
+                    <span style="font-family:'Newsreader',serif;font-weight:300;font-size:34px;line-height:1.05;letter-spacing:-0.02em;overflow-wrap:anywhere;text-wrap:balance">{{ pv.r.name }}</span>
+                    <span style="font-size:12.5px;color:#55616A">{{ pv.r.titular }} · {{ pv.r.ubicacion }}</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:stretch;overflow-wrap:anywhere">
+                    <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px;border:1px solid {{ pv.gb.bd }};background:{{ pv.gb.bg }};color:{{ pv.gb.fg }};border-radius:6px">
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase">Resultado global</span>
+                      <span style="font-family:'Newsreader',serif;font-size:21px;line-height:1.15">{{ pv.r.global_label }}</span>
+                      <span style="font-size:11.5px">Vía preliminar: {{ pv.via }}</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 14px">
+                      <sc-for list="{{ pv.r.kpis }}" as="k" hint-placeholder-count="4">
+                        <div style="display:flex;flex-direction:column;gap:2px;border-top:1px solid #DCDDD8;padding-top:6px"><span style="font-family:'Newsreader',serif;font-size:24px;font-weight:300;line-height:1">{{ k.v }}</span><span style="font-size:10.5px;color:#55616A">{{ k.k }}</span></div>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;overflow-wrap:anywhere">
+                    <sc-for list="{{ pv.tiers }}" as="t" hint-placeholder-count="3">
+                      <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;border:1px solid #DCDDD8;border-radius:5px"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:{{ t.c }}">● {{ t.l }} · {{ t.n }}</span><span style="font-size:10.5px;color:#55616A">{{ t.d }}</span></div>
+                    </sc-for>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#55616A;overflow-wrap:anywhere">
+                    <span>Fecha normativa {{ pv.r.date }}</span><span>Emitido {{ pv.r.created }}</span><span>{{ pv.r.catalog }} · motor {{ pv.r.engine }}</span>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-for list="{{ pv.msecs }}" as="s" hint-placeholder-count="0">
+                <div data-m-sec="1" style="display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;break-inside:avoid">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#55616A;padding-top:3px">{{ s.n }}</span>
+                  <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                    <span data-m-title="1" style="font-family:'Newsreader',serif;font-size:17px;line-height:1.2;overflow-wrap:anywhere">{{ s.title }}{{ s.contTxt }}</span>
+                    <sc-if value="{{ s.lead }}" hint-placeholder-val="{{ false }}"><span data-m-lead="1" style="font-size:12px;line-height:1.5;color:#2A3A44;text-wrap:pretty;overflow-wrap:anywhere">{{ s.lead }}</span></sc-if>
+                    <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="0">
+                      <div data-m-row="1" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr) auto;gap:3px 12px;padding:4px 0;border-bottom:1px solid #ECECE8;align-items:start;font-size:11px;overflow-wrap:anywhere">
+                        <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-weight:600">{{ r.a }}</span><sc-if value="{{ r.tl }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:{{ r.tc }}">● {{ r.tl }}</span></sc-if></span><span style="color:#2A3A44">{{ r.b }}</span>
+                        <span style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.04em;text-transform:uppercase;padding:1px 5px;border-radius:3px;white-space:nowrap;background:{{ r.bg }};color:{{ r.fg }};border:1px solid {{ r.bd }}">{{ r.c }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:16px;padding-top:10px;border-top:1px solid #DCDDD8;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#55616A">
+              <span>No constituye resolución del SEA, consulta de pertinencia ni autorización administrativa.</span><span style="white-space:nowrap">{{ pg.label }}</span>
+            </div>
+          </div>
     </div>
   </div>
 </sc-if>
@@ -1119,8 +1176,40 @@ class Component extends DCLogic {
         this.setState(st => ({ ready: true, db: { ...st.db, projects: st.db.projects.map(p => { const s = canon(p.sector); return s === p.sector ? p : { ...p, sector: s }; }) } })); })
       .catch(e => this.setState({ err: String(e && e.message || e) }));
   }
+  measureReport() {
+    const el = document.querySelector('[data-pv-measure]'); if (!el) return;
+    const sig = el.getAttribute('data-pv-measure'); if (!sig || (this.state.pvM && this.state.pvM.sig === sig) || this._mSig === sig) return;
+    this._mSig = sig;
+    const go = () => {
+      const body = el.querySelector('[data-m-body]'), cov = el.querySelector('[data-m-cover]'); if (!body) return;
+      const hh = x => x ? x.getBoundingClientRect().height : 0;
+      const sec = [...el.querySelectorAll('[data-m-sec]')].map(n => ({ t: hh(n.querySelector('[data-m-title]')), l: hh(n.querySelector('[data-m-lead]')), rows: [...n.querySelectorAll('[data-m-row]')].map(hh) }));
+      this.setState({ pvM: { sig, cap: body.clientHeight - 8, fix: 0, cover: hh(cov), sec } });
+    };
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(go, 30));
+  }
+  paginate(secs, M) {
+    const G = 18, g = 6, pages = []; let cur = { items: [] }, used = M.cover + G;
+    const push = () => { pages.push(cur); cur = { items: [] }; used = 0; };
+    secs.forEach((s, i) => {
+      const m = M.sec[i] || { t: 24, l: 0, rows: [] };
+      const head = m.t + (s.lead ? g + m.l : 0);
+      const first = s.rows.length ? g + (m.rows[0] || 24) : 0;
+      if (used > 0 && used + head + first > M.cap) push();
+      let part = { ...s, rows: [], cont: false }; used += head;
+      s.rows.forEach((r, j) => {
+        const rh = g + (m.rows[j] || 24);
+        if (used + rh > M.cap && part.rows.length) { cur.items.push(part); push(); part = { ...s, lead: '', rows: [], cont: true }; used = m.t; }
+        part.rows.push(r); used += rh;
+      });
+      cur.items.push(part); used += G;
+    });
+    if (cur.items.length || !pages.length) pages.push(cur);
+    return pages;
+  }
   componentDidUpdate() {
     const s = this.state; if (!s) return;
+    if (s.preview) { this.measureReport(); if (s.pvM && s.pvM.sig === this._pvSig && s.pvM.fix < 6) { let ov = 0; document.querySelectorAll('[data-sheet]').forEach(sh => { const b = sh.children[1]; if (b) ov = Math.max(ov, b.scrollHeight - b.clientHeight); }); if (ov > 0) this.setState({ pvM: { ...s.pvM, cap: s.pvM.cap - ov - 2, fix: s.pvM.fix + 1 } }); } } else this._mSig = null;
     if (s.pid && (!this._base || this._base.pid !== s.pid) && s.db.projects.some(x => x.id === s.pid)) this._base = this.snapOf(s.pid, this._newPid === s.pid);
     if (this._db !== s.db) { this._db = s.db; try { localStorage.setItem('liqen-seia-db-v1', JSON.stringify(s.db)); } catch (e) {} }
     const nav = JSON.stringify({ view: s.view, pid: s.pid, stage: s.stage });
@@ -1684,14 +1773,18 @@ class Component extends DCLogic {
       if (r) {
       const vw = (typeof window !== 'undefined' ? window.innerWidth : 1200) - 40;
       const sc = s.zoom === 'fit' ? Math.min(1, vw / 794) : Number(s.zoom);
+      const sig = r.id + '|' + r.created + '|' + r.sections.map(x => x.rows.length + ':' + (x.lead || '').length).join(',');
+      this._pvSig = sig;
+      if (s.pvM && s.pvM.sig === sig) r = { ...r, pages: this.paginate(r.sections, s.pvM) };
       const N = r.pages.length;
-      const TC = { DET: 'var(--ink)', PRE: 'var(--hl)', PEN: 'var(--err)' };
-      const rb = x => { const b = badge(x.code); return { a: x.a, b: x.b, c: x.code ? b.label : '', bg: x.code ? b.bg : 'transparent', fg: b.fg, bd: x.code ? b.bd : 'transparent', tl: x.tier ? this.RP.TIERS[x.tier] : '', tc: TC[x.tier] || 'var(--ink2)' }; };
+      const TC = { DET: '#0B1F2A', PRE: '#5A6E00', PEN: '#B4382B' };
+      const rb = x => { const b = badge(x.code); return { a: x.a, b: x.b, c: x.code ? b.label : '', bg: x.code ? b.bg : 'transparent', fg: b.fg, bd: x.code ? b.bd : 'transparent', tl: x.tier ? this.RP.TIERS[x.tier] : '', tc: TC[x.tier] || '#55616A' }; };
       out.pv = { open: true, tiers: r.tiers.map(([k, l, n, d]) => ({ l, n, d, c: TC[k] })), onDoc: () => this.download(`${r.id}.doc`, '\ufeff' + this.RP.buildDoc(r, x => badge(x).label), 'application/msword'), r: { ...r, kpis: r.kpis.map(([k, v]) => ({ k, v })) }, gb: badge(r.global), via: badge(r.via).label, stale: !!out.isStale, pageCount: N,
         wrapW: Math.round(794 * sc) + 'px', wrapH: Math.round(1123 * sc) + 'px', transform: 'scale(' + sc + ')',
         pages: r.pages.map((pg, k) => ({ cover: k === 0, label: 'Página ' + (k + 1) + ' de ' + N, items: pg.items.map(it => ({ n: it.n, title: it.title, contTxt: it.cont ? ' (continuación)' : '', lead: it.lead || '', rows: it.rows.map(rb) })) })),
         zooms: [['fit', 'Ajustar'], ['0.75', '75 %'], ['1', '100 %'], ['1.25', '125 %']].map(([id, label]) => ({ label, pressed: s.zoom === id ? 'true' : 'false', on: () => this.setState({ zoom: id }), bg: s.zoom === id ? 'var(--acc)' : 'transparent', fg: s.zoom === id ? 'var(--onacc)' : 'var(--ink)' })),
-        onPrint: () => window.print(), onClose: () => this.closePreview() };
+        onPrint: () => window.print(), onClose: () => this.closePreview(), sig,
+        msecs: r.sections.map(it => ({ n: it.n, title: it.title, contTxt: ' (continuación)', lead: it.lead || '', rows: it.rows.map(rb) })) };
       }
     }
     out.onCsv = () => ev && this.download(`${ev.id}.csv`, this.csv(ev), 'text/csv;charset=utf-8');
