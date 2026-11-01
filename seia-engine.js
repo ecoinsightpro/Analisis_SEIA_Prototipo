@@ -1,7 +1,7 @@
 // LiqenInsight SEIA — Motor de reglas. Independiente de la interfaz: sin DOM, sin eval.
-import { RULES, UNITS, CATALOG_VERSION, ART10_LETTERS, ART11, LOCATION_ELEMENTS, PAS_CATALOG, NORMATIVA, INPUTS, REGIONS, ACTIVITIES, OBRAS, PROJECT_TYPES, PRESELECT_LOC_RULES, PRESELECT_REGION_RULES, inputVisible } from './seia-catalog.js';
+import { SECTOR_SOURCES, RULES, UNITS, CATALOG_VERSION, ART10_LETTERS, ART11, LOCATION_ELEMENTS, PAS_CATALOG, NORMATIVA, INPUTS, REGIONS, ACTIVITIES, OBRAS, PROJECT_TYPES, PRESELECT_LOC_RULES, PRESELECT_REGION_RULES, inputVisible } from './seia-catalog.js';
 
-export const ENGINE_VERSION = '0.5.0';
+export const ENGINE_VERSION = '0.6.0';
 export const PROXIMITY_MARGIN = 0.10; // un dato estimado a ±10 % del umbral no permite concluir
 const T = 'TRUE', F = 'FALSE', U = 'UNKNOWN', R = 'REVIEW';
 const and3 = v => v.includes(F) ? F : v.includes(U) ? U : v.includes(R) ? R : T;
@@ -295,6 +295,22 @@ export function runArt11(project, seiaGlobal) {
   return { global, criteria, decisive, blocking, rationale: global === 'EIA_PROCEDENTE_SEGUN_ANALISIS_PRELIMINAR' ? `Se identifica fundadamente al menos un efecto del art. 11 (letras ${decisive.join(', ')}). No se promedian criterios: un solo efecto basta para el EIA.` : global === 'DIA_POSIBLE_CON_ANTECEDENTES_SUFICIENTES' ? 'Se evaluaron los seis criterios y una determinación profesional fundada y con evidencia descarta cada uno.' : global === 'VIA_NO_DETERMINADA' ? `Faltan antecedentes o determinaciones en los criterios ${blocking.join(', ')}; pueden cambiar la conclusión.` : 'No aplica: no se identificó obligación de ingreso.', notes: [isMod ? 'Modificación: los efectos del art. 11 se evalúan considerando la suma de los impactos de la modificación y del proyecto existente (Ley 19.300 art. 11 ter).' : '', indig ? 'Presencia de grupos humanos indígenas: si concurren efectos de los arts. 7, 8 o 10 procede consulta indígena (art. 85 RSEIA); en DIA, reuniones del art. 86.' : '', consulta ? 'Consulta indígena (art. 85) probable.' : ''].filter(Boolean) };
 }
 
+// Versiones de normas sectoriales verificadas por un profesional (se guardan fuera del catálogo).
+let SRC_VERIF = {};
+export function setSourceVerifications(m) { SRC_VERIF = m || {}; }
+export function getSourceVerifications() { return SRC_VERIF; }
+const LEYCHILE_ID = /bcn\.cl\/leychile\/navegar\?(?:.*&)?(?:idNorma|i)=(\d+)/i;
+export function parseLeyChileUrl(url) { const m = LEYCHILE_ID.exec(String(url || '')); return m ? m[1] : null; }
+export function sourceOf(id, verif) {
+  const base = SECTOR_SOURCES.find(s => s.id === id); if (!base) return null;
+  const v = (verif || SRC_VERIF)[id];
+  const ok = !!(v && v.url && parseLeyChileUrl(v.url) && v.versionFrom && (v.by || '').trim());
+  return { id, cite: base.cite, title: base.title, idNorma: ok ? parseLeyChileUrl(v.url) : base.idNorma, url: ok ? v.url : base.url,
+    version: ok ? { from: v.versionFrom, lastMod: v.lastMod || '' } : null, consulted: ok ? v.at : null, verifiedBy: ok ? v.by.trim() : null,
+    status: ok ? 'VERIFICADA' : 'PENDIENTE', note: ok ? '' : base.note };
+}
+export const versionText = s => !s ? 'Fuente no registrada' : s.status === 'VERIFICADA' ? `Versión desde ${s.version.from}${s.version.lastMod ? ' · última modificación ' + s.version.lastMod : ''} · LeyChile idNorma ${s.idNorma} · verificada por ${s.verifiedBy} el ${s.consulted}` : 'Versión pendiente de verificación';
+
 export function runPas(project, seiaGlobal, seia) {
   const obras = project.obras || {};
   const conf = project.pasConfirm || {};
@@ -303,16 +319,18 @@ export function runPas(project, seiaGlobal, seia) {
   const statusOf = id => seia ? (seia.results.find(r => r.rule_id === id) || {}).status : null;
   return PAS_CATALOG.map(p => {
     const v = obras[p.trigger] || 'desconocido';
-    let status, reason;
+    const sources = (p.sourceIds || []).map(id => sourceOf(id)); const pend = sources.filter(s => !s || s.status !== 'VERIFICADA');
+    let status, reason, confirmBlocked = false;
     if (v === 'no') { status = 'DESCARTADO'; reason = 'El usuario declaró que el proyecto no contempla la obra que activa el permiso.'; }
     else if (p.regions && code && !p.regions.includes(code)) { status = 'DESCARTADO'; reason = 'Fuera del ámbito territorial del permiso (Arica y Parinacota, Tarapacá y Antofagasta).'; }
     else if (p.excludeIfRule && statusOf(p.excludeIfRule) === 'ACTIVADA') { status = 'DESCARTADO'; reason = `El permiso excluye los proyectos de la letra m.1, que resultó activada.`; }
     else if (v === 'si' && noap[p.id] && (noap[p.id].fundamento || '').trim()) { status = 'NO_APLICA_CONFIRMADO'; reason = `No aplicabilidad confirmada por ${noap[p.id].por}: ${noap[p.id].fundamento}`; }
+    else if (v === 'si' && conf[p.id] && pend.length) { status = 'POTENCIALMENTE_APLICABLE'; confirmBlocked = true; reason = `Confirmación de ${conf[p.id]} en espera: falta verificar la versión de ${pend.map(s => s ? s.cite : 'la norma').join(' y ')}.`; }
     else if (v === 'si' && conf[p.id]) { status = 'APLICABLE_CONFIRMADO'; reason = `Confirmado por ${conf[p.id]}.`; }
     else if (v === 'si') { status = 'POTENCIALMENTE_APLICABLE'; reason = 'Obra declarada. La aplicabilidad requiere contrastar las condiciones del permiso.' + (p.regions && !code ? ' Región no reconocida.' : ''); }
     else { status = 'PENDIENTE_ANTECEDENTES'; reason = 'Sin respuesta sobre la obra que activa el permiso.'; }
     if (p.notas && status !== 'DESCARTADO' && status !== 'NO_APLICA_CONFIRMADO') reason += ' ' + p.notas;
-    return { ...p, status, reason, ctxNote: seiaGlobal === 'INGRESO_OBLIGATORIO_IDENTIFICADO' ? 'Se tramitaría en el SEIA (art. 107).' : 'Sin ingreso al SEIA, se tramita directamente ante el organismo sectorial.', triggerValue: v };
+    return { ...p, status, reason, ctxNote: seiaGlobal === 'INGRESO_OBLIGATORIO_IDENTIFICADO' ? 'Se tramitaría en el SEIA (art. 107).' : 'Sin ingreso al SEIA, se tramita directamente ante el organismo sectorial.', triggerValue: v, sources, sourcesPending: pend.length > 0, confirmBlocked };
   });
 }
 
@@ -323,7 +341,8 @@ export function runNormativa(project) {
     if (n.triggerActivity) v = !project.activitiesConfirmed ? 'desconocido' : (project.activities || []).includes(n.triggerActivity) ? 'si' : 'no';
     else v = obras[n.trigger] || 'desconocido';
     if (n.triggerLoc && (loc[n.triggerLoc] === 'dentro' || loc[n.triggerLoc] === 'colindante')) v = 'si';
-    return { ...n, status: v === 'si' ? 'POTENCIALMENTE_APLICABLE' : v === 'no' ? 'DESCARTADO' : 'PENDIENTE_ANTECEDENTES', triggerValue: v };
+    const sources = (n.sourceIds || []).map(id => sourceOf(id));
+    return { ...n, status: v === 'si' ? 'POTENCIALMENTE_APLICABLE' : v === 'no' ? 'DESCARTADO' : 'PENDIENTE_ANTECEDENTES', triggerValue: v, sources, sourcesPending: sources.some(s => !s || s.status !== 'VERIFICADA') };
   });
 }
 

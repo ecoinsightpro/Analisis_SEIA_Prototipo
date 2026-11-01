@@ -486,6 +486,46 @@ export const ART11 = [
 ];
 
 // Título VII — PAS (arts. 111–160) y pronunciamiento del art. 161. Texto consolidado 2024. El D.S. 17/2025 no modificó el Título VII según las fuentes consultadas.
+
+// Normas sectoriales citadas por los PAS y la matriz de normativa. Una entrada por norma.
+// version queda null hasta que alguien la verifique en LeyChile; nunca se completa con una fecha supuesta.
+const SS = (id, cite, title, keys, extra = {}) => ({ id, cite, title, keys, idNorma: null, url: null, version: null, consulted: null, verifiedBy: null, note: '', ...extra });
+export const SECTOR_SOURCES = [
+  SS('SRC-DS1-1992-DEF', 'D.S. N.º 1/1992 Defensa', 'Reglamento para el Control de la Contaminación Acuática', ['D.S. 1/1992 Defensa']),
+  SS('SRC-LEY-18892', 'Ley N.º 18.892', 'Ley General de Pesca y Acuicultura', ['Ley 18.892 LGPA']),
+  SS('SRC-LEY-20256', 'Ley N.º 20.256', 'Pesca recreativa', ['Ley 20.256']),
+  SS('SRC-DS314-2004-ECO', 'D.S. N.º 314/2004 Economía', 'Acuicultura en áreas de manejo y explotación de recursos bentónicos', ['D.S. 314/2004 Economía']),
+  SS('SRC-LEY-17288', 'Ley N.º 17.288', 'Monumentos Nacionales', ['Ley 17.288']),
+  SS('SRC-COD-MINERIA', 'Código de Minería', 'Código de Minería', ['Código de Minería']),
+  SS('SRC-LEY-19473', 'Ley N.º 19.473', 'Ley de Caza', ['Ley 19.473']),
+  SS('SRC-COD-SANITARIO', 'Código Sanitario', 'Código Sanitario', ['Código Sanitario']),
+  SS('SRC-DS4-2009-SEGPRES', 'D.S. N.º 4/2009 SEGPRES', 'Manejo de lodos de plantas de tratamiento de aguas servidas', ['D.S. 4/2009 Segpres']),
+  SS('SRC-DS490-1976-AGR', 'D.S. N.º 490/1976 Agricultura', 'Alerce', ['D.S. 490/1976 Agricultura']),
+  SS('SRC-DS43-1990-AGR', 'D.S. N.º 43/1990 Agricultura', 'Araucaria', ['D.S. 43/1990 Agricultura']),
+  SS('SRC-DS13-1995-AGR', 'D.S. N.º 13/1995 Agricultura', 'Queule, pitao, belloto del sur, ruil y belloto del norte', ['D.S. 13/1995 Agricultura']),
+  SS('SRC-COD-AGUAS', 'Código de Aguas', 'DFL N.º 1.122/1981 Justicia, fija texto del Código de Aguas', ['Código de Aguas'], { idNorma: '5605', url: 'https://www.bcn.cl/leychile/navegar?idNorma=5605', note: 'Ficha LeyChile identificada (idNorma 5605). La versión vigente no está confirmada: las copias consultadas el 01-11-2026 informan últimas modificaciones distintas.' }),
+  SS('SRC-LEY-18302', 'Ley N.º 18.302', 'Seguridad nuclear', ['Ley 18.302']),
+  SS('SRC-DS248-2006-MIN', 'D.S. N.º 248/2006 Minería', 'Reglamento de depósitos de relaves', ['D.S. 248/2006 Minería']),
+  SS('SRC-DS132-2002-MIN', 'D.S. N.º 132/2002 Minería', 'Reglamento de seguridad minera', ['D.S. 132/2002 Minería']),
+  SS('SRC-LEY-20551', 'Ley N.º 20.551', 'Cierre de faenas e instalaciones mineras', ['Ley 20.551']),
+  SS('SRC-DS189-2005-MINSAL', 'D.S. N.º 189/2005 MINSAL', 'Rellenos sanitarios', ['D.S. 189/2005 MINSAL']),
+  SS('SRC-DS148-2003-MINSAL', 'D.S. N.º 148/2003 MINSAL', 'Reglamento sanitario sobre manejo de residuos peligrosos', ['D.S. 148/2003 MINSAL']),
+  SS('SRC-LEY-20283', 'Ley N.º 20.283', 'Recuperación del bosque nativo y fomento forestal', ['Ley 20.283']),
+  SS('SRC-DS93-2008', 'D.S. N.º 93/2008', 'Reglamento general de la Ley N.º 20.283', ['D.S. 93/2008']),
+  SS('SRC-DL701-1974', 'D.L. N.º 701/1974', 'Fomento forestal', ['D.L. 701/1974']),
+  SS('SRC-LEY-18378', 'Ley N.º 18.378', 'Distritos de conservación de suelos, bosques y aguas', ['Ley 18.378']),
+  SS('SRC-LEY-11402', 'Ley N.º 11.402', 'Obras de defensa y regularización de riberas y cauces', ['Ley 11.402']),
+  SS('SRC-DFL458-1975', 'DFL N.º 458/1975 MINVU', 'Ley General de Urbanismo y Construcciones', ['DFL 458/1975 LGUC']),
+  SS('SRC-OGUC', 'OGUC', 'Ordenanza General de Urbanismo y Construcciones', ['OGUC']),
+  SS('SRC-DS138-2005-MINSAL', 'D.S. N.º 138/2005 MINSAL', 'Declaración de emisiones', ['D.S. 138/2005 MINSAL']),
+  SS('SRC-DS38-2011-MMA', 'D.S. N.º 38/2011 MMA', 'Norma de emisión de ruidos', ['D.S. 38/2011 MMA']),
+  SS('SRC-DS90-2000-SEGPRES', 'D.S. N.º 90/2000 MINSEGPRES', 'Norma de emisión de residuos líquidos a aguas superficiales', ['D.S. 90/2000 MINSEGPRES']),
+  SS('SRC-DS43-2015-MINSAL', 'D.S. N.º 43/2015 MINSAL', 'Reglamento de almacenamiento de sustancias peligrosas', ['D.S. 43/2015 MINSAL'])
+];
+const srcKey = s => String(s).replace(/N\.º\s*/g, '').replace(/\s+/g, ' ').trim();
+const SRC_BY_KEY = Object.fromEntries(SECTOR_SOURCES.flatMap(s => s.keys.map(k => [srcKey(k), s.id])));
+export const sourceIdsOf = norma => [...new Set(String(norma).split(';').map(part => srcKey(part.split(',')[0])).map(k => SRC_BY_KEY[k] || null))];
+
 const OB = {};
 export const OBRA_GROUPS = ['Marino y portuario', 'Pesca y acuicultura', 'Áreas protegidas y minería', 'Fauna', 'Flora y bosques', 'Patrimonio cultural', 'Minería y nuclear', 'Aguas y cauces', 'Saneamiento y residuos', 'Territorio', 'Características para normativa'];
 const PAS_RAW = [
@@ -543,7 +583,7 @@ const PAS_RAW = [
 ];
 export const PAS_CATALOG = PAS_RAW.map(([art, nombre, norma, organismo, tipo, trigger, obra, g, regions, excludeIfRule]) => {
   OB[trigger] = { id: trigger, label: obra, group: OBRA_GROUPS[g] };
-  return { id: 'PAS-' + art, articulo: String(art), nombre, norma, organismo, tipo: tipo === 'ambiental' ? 'Contenido únicamente ambiental' : tipo === 'mixto' ? 'Mixto' : 'Pronunciamiento', objeto: '', trigger, regions: regions || null, excludeIfRule: excludeIfRule || null,
+  return { id: 'PAS-' + art, articulo: String(art), nombre, norma, sourceIds: sourceIdsOf(norma), organismo, tipo: tipo === 'ambiental' ? 'Contenido únicamente ambiental' : tipo === 'mixto' ? 'Mixto' : 'Pronunciamiento', objeto: '', trigger, regions: regions || null, excludeIfRule: excludeIfRule || null,
     validation_status: 'TEXTO_OFICIAL_CONTRASTADO', fuente: DS40_PDF, vigencia: 'Texto consolidado 2024; sin cambios del D.S. 17/2025 según fuentes secundarias',
     notas: [regions ? 'Solo aplica en Arica y Parinacota, Tarapacá y Antofagasta.' : '', excludeIfRule ? 'No aplica a proyectos de la letra m.1 (art. ' + art + ').' : '', art === 140 ? 'Solo si no corresponde otro PAS por la misma acción.' : '', art === 161 ? 'Exigible solo en áreas con IPT que restringe usos según la calificación.' : ''].filter(Boolean).join(' ') };
 });
@@ -561,7 +601,7 @@ export const NORMATIVA = [
   { id: 'N-PATR-17288', materia: 'Suelo y patrimonio', norma: 'Ley N.º 17.288', articulo: 'Arts. 22 y 23', resumen: 'Ley de Monumentos Nacionales.', trigger: 'obra_excavacion_arq', triggerLoc: 'patrimonio', obligacion: 'Gestión de hallazgos y permisos ante el CMN', evidencia: 'Informes arqueológicos', fase: 'Construcción', responsable: 'Titular', autoridad: 'Consejo de Monumentos Nacionales' },
   { id: 'N-CIERRE-20551', materia: 'Cierre y abandono', norma: 'Ley N.º 20.551', articulo: 'Art. 6', resumen: 'Ley que regula el cierre de faenas e instalaciones mineras.', triggerActivity: 'min', obligacion: 'Plan de cierre de faena minera', evidencia: 'Plan de cierre aprobado', fase: 'Cierre', responsable: 'Titular', autoridad: 'SERNAGEOMIN' },
   { id: 'N-AGUA-CA', materia: 'Agua y recursos hídricos', norma: 'Código de Aguas', articulo: 'Por precisar', resumen: 'Derechos de aprovechamiento de aguas.', trigger: 'car_captacion', obligacion: 'Contar con derechos o autorizaciones para la captación', evidencia: 'Títulos de derechos de agua', fase: 'Construcción y operación', responsable: 'Titular', autoridad: 'Dirección General de Aguas' }
-].map(n => ({ ...n, frecuencia: 'No registrada', fuente: 'https://www.bcn.cl/leychile/', vigencia: 'Por verificar', validation_status: 'PENDIENTE_VALIDACION' }));
+].map(n => ({ ...n, sourceIds: sourceIdsOf(n.norma), frecuencia: 'No registrada', fuente: null, vigencia: 'Por verificar', validation_status: 'PENDIENTE_VALIDACION' }));
 
 export const FEATURES = [
   ['Ficha del proyecto por pasos con preguntas condicionales', 'IMPLEMENTADA'],

@@ -1,6 +1,6 @@
 // LiqenInsight SEIA — Pruebas automatizadas del motor. Casos ficticios construidos para probar la lógica; no son casos del SEA.
-import { runSeia, runPas, runArt11, explain, convert, compareRuns, regionCode, preselect } from './seia-engine.js';
-import { RULES, LOCATION_ELEMENTS, INPUTS, OBRAS, inputVisible } from './seia-catalog.js';
+import { runSeia, runPas, runNormativa, runArt11, explain, convert, compareRuns, regionCode, preselect, setSourceVerifications, getSourceVerifications, sourceOf } from './seia-engine.js';
+import { RULES, LOCATION_ELEMENTS, INPUTS, OBRAS, PAS_CATALOG, NORMATIVA, SECTOR_SOURCES, inputVisible } from './seia-catalog.js';
 const OBRAS_IDS = OBRAS.map(o => o.id);
 
 const allFuera = () => Object.fromEntries(LOCATION_ELEMENTS.map(e => [e.id, 'fuera']));
@@ -280,8 +280,20 @@ export function runTests() {
   const g13 = INPUTS.find(i => i.id === 'g13_loteo_ind');
   unit('U24', 'Toda entrada usada por una regla sin actividad es visible cuando la regla aplica', inputVisible(g13, { activities: ['min'], location: { zona_latente_saturada: 'dentro' } }), 'visible', 'oculta');
   const pp = fixture({ obras: { obra_relaves: 'si', obra_botadero: 'si', obra_cauce: 'si' }, pasConfirm: { 'PAS-135': 'Ing. ficticio' }, pasNoAplica: { 'PAS-136': { por: 'Ing. ficticio', fundamento: 'El acopio es temporal y no constituye botadero (ficticio).' }, 'PAS-156': { por: 'Ing. ficticio', fundamento: '' } } });
+  const VER = { 'SRC-DS248-2006-MIN': { url: 'https://www.bcn.cl/leychile/navegar?idNorma=999999', versionFrom: '01-01-2026', by: 'Prueba ficticia', at: '2026-11-01' } };
+  const prevVer = getSourceVerifications(); setSourceVerifications({});
+  const psBlocked = runPas(pp, 'INGRESO_OBLIGATORIO_IDENTIFICADO'); const p135b = psBlocked.find(x => x.id === 'PAS-135');
+  setSourceVerifications(VER);
   const ps = runPas(pp, 'INGRESO_OBLIGATORIO_IDENTIFICADO'); const st = id => ps.find(x => x.id === id).status;
+  setSourceVerifications(prevVer);
   unit('U25', 'PAS: confirmación de aplicabilidad y de no aplicabilidad fundada', st('PAS-135') === 'APLICABLE_CONFIRMADO' && st('PAS-136') === 'NO_APLICA_CONFIRMADO', 'APLICABLE / NO_APLICA', st('PAS-135') + ' / ' + st('PAS-136'));
   unit('U26', 'PAS: no aplicabilidad sin fundamento no se acepta', st('PAS-156') === 'POTENCIALMENTE_APLICABLE', 'POTENCIALMENTE_APLICABLE', st('PAS-156'));
+  unit('U27', 'PAS: la confirmación queda en espera si la versión de su norma no está verificada', p135b.status === 'POTENCIALMENTE_APLICABLE' && p135b.confirmBlocked, 'POTENCIALMENTE_APLICABLE (bloqueado)', p135b.status + (p135b.confirmBlocked ? ' (bloqueado)' : ''));
+  const noSrc = [...PAS_CATALOG, ...NORMATIVA].filter(x => !(x.sourceIds || []).length || x.sourceIds.some(id => !id || !sourceOf(id)));
+  unit('U28', 'Todo PAS y toda norma de la matriz apuntan a una fuente registrada', !noSrc.length, '0 sin fuente', noSrc.length ? noSrc.map(x => x.id).join(', ') : '0 sin fuente');
+  const cites = SECTOR_SOURCES.map(s => s.cite.replace(/N\.º\s*/g, '')); const dupS = cites.filter((x, i) => cites.indexOf(x) !== i);
+  unit('U29', 'Fuentes sectoriales sin duplicados', !dupS.length, '0 duplicadas', dupS.length ? dupS.join(', ') : '0 duplicadas');
+  const pendN = SECTOR_SOURCES.filter(s => sourceOf(s.id).status !== 'VERIFICADA').length;
+  out.push({ id: 'U30', name: 'Versiones de normas sectoriales pendientes de verificación (informativa)', category: 'Unitaria', pass: true, expected: '0 pendientes', obtained: `${pendN} de ${SECTOR_SOURCES.length} pendientes`, fails: [] });
   return out;
 }

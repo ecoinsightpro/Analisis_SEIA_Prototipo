@@ -1,6 +1,6 @@
 // LiqenInsight SEIA — Generador del informe preliminar (15 secciones). Recibe una evaluación guardada (instantánea) y devuelve secciones y páginas.
 // Sin DOM: la interfaz decide cómo dibujarlo. Incluye exportación a documento editable (HTML compatible con Word).
-import { explain, runArt11, OUTCOME } from './seia-engine.js';
+import { explain, runArt11, OUTCOME, versionText } from './seia-engine.js';
 
 const fmtDT = s => s ? new Date(s).toLocaleString('es-CL', { dateStyle: 'short', timeStyle: 'short' }) : '—';
 const ANS = { si: 'Sí', no: 'No', ns: 'Sin determinar', desconocido: 'Sin información', dentro: 'Presente', colindante: 'Próximo', fuera: 'No presente' };
@@ -29,6 +29,11 @@ export function buildReport(ev, C) {
   const noIngreso = A11.global === 'NO_APLICA_SIN_INGRESO';
   const pasShown = ev.pas.filter(x => x.status !== 'DESCARTADO');
   const normShown = ev.norm.filter(x => x.status !== 'DESCARTADO');
+  const hasSrcSnap = [...pasShown, ...normShown].some(x => Array.isArray(x.sources));
+  const sectSrc = [...new Map([...pasShown, ...normShown].flatMap(x => x.sources || []).filter(Boolean).map(s => [s.id, s])).values()];
+  const sectRows = !hasSrcSnap ? ((pasShown.length || normShown.length) ? [row('Fuentes sectoriales', 'Evaluación emitida antes del registro de versiones de normas sectoriales. Vuelve a ejecutarla para incluirlas.', 'PENDIENTE_VERIFICACION', 'PEN')] : [])
+    : sectSrc.map(s => row(`Fuente · ${s.cite}`, `${s.title}. ${versionText(s)}${s.url ? '. ' + s.url : ''}`, s.status === 'VERIFICADA' ? 'VERIFICADA' : 'PENDIENTE_VERIFICACION', s.status === 'VERIFICADA' ? 'DET' : 'PEN'));
+  const srcPendN = sectSrc.filter(s => s.status !== 'VERIFICADA').length;
   const tierCount = { DET: 0, PRE: 0, PEN: 0 }; evaluated.forEach(r => tierCount[tierOf(r)]++);
 
   const params = C.INPUTS.filter(i => P.inputs && P.inputs[i.id] && (P.inputs[i.id].value !== '' && P.inputs[i.id].value != null || P.inputs[i.id].quality)).map(i => {
@@ -74,10 +79,11 @@ export function buildReport(ev, C) {
       ...modRules.filter(r => r.status !== 'DESCARTADA').map(r => row(`${r.literal} · ${r.rule_name}`, r.explanation, r.status, tierOf(r)))] },
     { n: '09', title: 'Matriz de los seis efectos, características o circunstancias (art. 11)', lead: noIngreso ? 'No corresponde: no se identificó obligación de ingreso.' : 'Cada criterio se evalúa por separado. No se promedian ni compensan.', rows: noIngreso ? [] : A11.criteria.map(c => row(`${c.id}) ${c.title}`, `${c.reason} Incertidumbre ${String(c.uncertainty || 'alta').toLowerCase()}.${c.fundamento ? ' Fundamento: ' + c.fundamento + '.' : ''}${c.evidence ? ' Evidencia: ' + c.evidence + '.' : ''}`, c.status, c.status === 'EFECTO_SIGNIFICATIVO' || c.status === 'SIN_EFECTO_FUNDADO' ? 'DET' : c.status === 'SIN_EFECTO_INDICADO' ? 'PRE' : 'PEN')) },
     { n: '10', title: 'Determinación DIA / EIA (Motor B)', guidesNote: true, lead: noIngreso ? 'No corresponde.' : A11.rationale + ' Contenidos mínimos: EIA según el art. 18 y DIA según el art. 19 del D.S. 40/2012.', rows: noIngreso ? [] : [row('Vía preliminar', '', A11.global, A11.global === 'VIA_NO_DETERMINADA' ? 'PEN' : 'PRE'), ...(A11.notes || []).map(n => row('Nota', n)), ...C.ART11.flatMap(c => (c.guides || []).map(g => row(`Guía SEA · criterio ${c.id})`, `${g.title} (${g.edicion}). ${g.url}`)))] },
-    { n: '11', title: 'Normativa, permisos y fuentes oficiales', lead: `Versiones aplicadas: ${R.rule_versions.join(', ') || 'ninguna'}.`, rows: [
+    { n: '11', title: 'Normativa, permisos y fuentes oficiales', lead: `Versiones aplicadas: ${R.rule_versions.join(', ') || 'ninguna'}.` + (sectSrc.length ? ` Normas sectoriales citadas: ${sectSrc.length}, ${srcPendN === sectSrc.length ? 'todas' : srcPendN} con versión pendiente de verificación.` : ''), rows: [
       ...sources,
+      ...sectRows,
       ...pasShown.map(x => row(`PAS ${x.articulo} · ${x.organismo}`, x.nombre + (x.guia ? ` · Guía SEA: ${x.guia.edicion} (${x.guia.fecha}), ${x.guia.url}` : ' · Sin guía trámite del SEA'), x.status, x.status === 'APLICABLE_CONFIRMADO' || x.status === 'NO_APLICA_CONFIRMADO' ? 'DET' : x.status === 'POTENCIALMENTE_APLICABLE' ? 'PRE' : 'PEN')),
-      ...normShown.map(n => row(n.materia, `${n.norma}: ${n.obligacion} (resumen no verificado)`, n.status, 'PRE'))] },
+      ...normShown.map(n => row(n.materia, `${n.norma}${n.articulo && n.articulo !== 'Por precisar' ? ', ' + n.articulo : ''}: ${n.obligacion} (resumen no verificado)`, n.status, 'PRE'))] },
     { n: '12', title: 'Evidencias y antecedentes revisados', lead: `${(P.documents || []).length} documento(s) registrados. Los archivos no se almacenan en servidor en esta versión.`, rows: [...(P.documents || []).map(d => row(d.name, `${d.type || ''} · registrado ${String(d.date || '').slice(0, 10)}`)), ...params] },
     { n: '13', title: 'Información pendiente', lead: missing.length ? '' : 'No se registraron antecedentes faltantes en las reglas evaluadas.', rows: [...missing.map(m => row(m, 'Requerido por al menos una regla', 'UNKNOWN', 'PEN')), ...(noIngreso ? [] : A11.criteria.filter(c => (c.needs || []).length && c.status !== 'EFECTO_SIGNIFICATIVO').map(c => row(`Art. 11 ${c.id})`, (c.needs || []).join('; '), null, 'PEN')))] },
     { n: '14', title: 'Alertas y limitaciones', lead: 'Análisis preliminar. No es una resolución del SEA, una consulta de pertinencia ni una autorización administrativa. Ninguna regla está validada jurídicamente. La localización es declarada por el usuario, sin cruce cartográfico.', rows: [...R.warnings.map(w => row('Advertencia', w)), ...notes] },
