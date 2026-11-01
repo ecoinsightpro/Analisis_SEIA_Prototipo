@@ -116,3 +116,13 @@ Auditoría estructural automática de las 66 reglas: entradas, unidades, opcione
 - Invariantes en 600 proyectos aleatorios (todas las regiones, modificaciones y calidades de dato): 0 violaciones.
 - Secuencia de la aplicación: Localización pasa antes de Parámetros, porque activa tipologías por sí misma y habilita parámetros (zona saturada, glaciar, humedal urbano).
 - 93 pruebas superadas.
+
+## Auditoría normativa (motor 0.7.0, catálogo CAT-2026.11-dev.5)
+Detalle en `AUDITORIA-NORMATIVA.md`.
+- Nueva regla **art. 3 a) inicial**: acueductos, embalses o tranques y sifones del art. 294 del Código de Aguas (unidad m³/s).
+- **Letra p)** con dos versiones: desde la Ley 21.202 incluye humedales urbanos declarados; sitio Ramsar deriva a revisión.
+- **Ley 10 s)** con texto oficial cotejado (Ley 21.202; Dictamen CGR E157665N21); no exige declaración del MMA. Ya no queda pendiente de validación.
+- a.5 glaciares se evalúa por localización en todo proyecto; e.8 incluye santuarios; g.1.3 pregunta por el IPT evaluado en proyectos fabriles; i.3 usa la capacidad de los proyectos de origen; o.9 (texto anterior) incluye tratamiento; q) incluye humedales.
+- Motor: «No aplica» en una condición negativa queda indeterminado; en regiones fuera de los tramos (Ñuble) se concluye si todos los tramos coinciden.
+- Art. 2 g): modificación de proyecto sin RCA evaluable; la tipología original excluida del g.1 deja g.2 en revisión; g.4 solo si alguna RCA proviene de un EIA.
+- 110 pruebas superadas (11 nuevas).

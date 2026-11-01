@@ -5,7 +5,7 @@
 //  PENDIENTE_VALIDACION: texto no cotejado o condición con interpretación abierta.
 //  VALIDADA_JURIDICAMENTE: revisada por profesional habilitado (ninguna en esta versión).
 
-export const CATALOG_VERSION = 'CAT-2026.10-dev.4';
+export const CATALOG_VERSION = 'CAT-2026.11-dev.5';
 export const CATALOG_CONSULTED_AT = '2026-10-19';
 const DS40_URL = 'https://www.bcn.cl/leychile/navegar?idNorma=1053563';
 const DS40_PDF = 'https://faolex.fao.org/docs/pdf/chi127211.pdf';
@@ -24,7 +24,7 @@ export const LEGAL_SOURCES = [
   { id: 'MMA-MINUTA-ANTEPROYECTO', title: 'MMA — Minuta del anteproyecto de reforma al RSEIA', kind: 'anteproyecto', url: 'https://expedientes.mma.gob.cl/storage/2025/07/29/expedientes/pdf/doc_11_20250729135110.pdf', status: 'no_vinculante', note: 'Documento de proceso. No se usa como fuente de obligaciones.' },
   { id: 'LEY-21455', title: 'Ley N.º 21.455, Ley Marco de Cambio Climático', kind: 'ley', url: 'https://www.bcn.cl/leychile/', status: 'no_incorporado', note: 'Pendiente de validación: no se han cotejado sus modificaciones a la Ley 19.300 ni su efecto en el contenido de DIA y EIA. No se usa en ninguna regla.' },
   { id: 'RSEIA-18-19', title: 'D.S. 40 arts. 18 y 19 — contenidos mínimos del EIA y de la DIA', kind: 'reglamento', url: 'https://faolex.fao.org/docs/pdf/chi127211.pdf', status: 'referencia', note: 'Se citan en el informe como contenidos exigibles según la vía. No generan reglas de ingreso.' },
-  { id: 'LEY-19300', title: 'Ley N.º 19.300 sobre Bases Generales del Medio Ambiente', kind: 'ley', url: 'https://www.bcn.cl/leychile/', status: 'vigente_texto_no_cotejado', note: 'Art. 10 s) (humedales urbanos, Ley 21.202) codificado sin cotejo del texto consolidado.' },
+  { id: 'LEY-19300', title: 'Ley N.º 19.300 sobre Bases Generales del Medio Ambiente', kind: 'ley', url: 'https://www.bcn.cl/leychile/', status: 'vigente_texto_no_cotejado', note: 'Arts. 10 p), q) y s) modificados por la Ley 21.202, cotejados con dictámenes CGR E157665N21 y E39766N20.' },
   { id: 'SEA-GUIAS-PAS', title: 'SEA — Guías para los Permisos Ambientales Sectoriales', kind: 'guia', url: 'https://www.sea.gob.cl/guias-para-los-permisos-ambientales-sectoriales-pas', status: 'indice_consultado', note: 'Índice consultado el 21-10-2026: 16 guías trámite (PAS 116, 131, 132, 133, 135, 136, 137, 138, 140, 146, 148, 149, 155, 156, 157 y 160), con edición, resolución y enlace asociados a cada permiso. El contenido de cada guía no se ha incorporado como regla.' },
   { id: 'SEA-GUIAS-EIA', title: 'SEA — Guías relacionadas al artículo 11 de la Ley 19.300', kind: 'guia', url: 'https://www.sea.gob.cl/guias-relacionadas-al-articulo-11-de-la-ley-ndeg19300', status: 'indice_consultado', note: 'Índice consultado el 21-10-2026: 13 guías asociadas a los criterios a) a f) del art. 11 (salud, recursos naturales, ecosistemas terrestres y marinos, humedales, sistemas de vida, reasentamiento, paisaje, turismo, patrimonio, ruido, olor, compensación). Se muestran en cada criterio; la significancia sigue siendo determinación profesional.' }
 ];
@@ -48,7 +48,7 @@ export const UNITS = {
   'm²': ['superficie', 1], 'ha': ['superficie', 1e4], 'km²': ['superficie', 1e6],
   'ha/año': ['sup_anual', 1],
   'L': ['volumen', 1e-3], 'm³': ['volumen', 1], 'hm³': ['volumen', 1e6],
-  'm³/mes': ['vol_mes', 1], 'm³/día': ['vol_dia', 1], 'L/s': ['vol_dia', 86.4], 'm³ ssc/h': ['madera_h', 1],
+  'm³/mes': ['vol_mes', 1], 'm³/día': ['vol_dia', 1], 'L/s': ['vol_dia', 86.4], 'm³/s': ['vol_dia', 86400], 'm³ ssc/h': ['madera_h', 1],
   'kg': ['masa', 1e-3], 't': ['masa', 1], 'kt': ['masa', 1e3],
   'kg/día': ['masa_dia', 1e-3], 't/día': ['masa_dia', 1], 'kg/h': ['masa_hora', 1e-3], 't/h': ['masa_hora', 1],
   'kg/mes': ['masa_mes', 1e-3], 't/mes': ['masa_mes', 1], 'kt/mes': ['masa_mes', 1e3], 't/año': ['masa_anio', 1],
@@ -91,6 +91,9 @@ const E_ = (id, label, options, activity, help, when) => ({ id, label, type: 'en
 const VOL = ['m³', 'L', 'hm³'], SUP = ['m²', 'ha', 'km²'], MD = ['t/día', 'kg/día'], MASA = ['t', 'kg', 'kt'];
 const CERO = 'Escriba 0 si no aplica.';
 export const INPUTS = [
+  N('a0_caudal', 'Caudal máximo de diseño de acueductos, sifones o canoas', 'm³/s', ['m³/s', 'L/s'], ['hid'], 'Art. 294 b) y c) del Código de Aguas. ' + CERO),
+  B('a0_urbano', '¿Algún acueducto de más de 0,5 m³/s se proyecta a menos de 1 km del límite urbano, con cota de fondo más de 10 m sobre la cota de dicho límite?', ['hid'], 'Art. 294 c) del Código de Aguas.'),
+  B('a0_sifon', '¿Contempla sifones o canoas que crucen cauces naturales?', ['hid'], 'Art. 294 d) del Código de Aguas.'),
   N('a1_altura_muro', 'Altura del muro de la presa (coronamiento a terreno natural)', 'm', ['m'], ['hid'], CERO),
   N('a1_capacidad', 'Capacidad del embalse', 'm³', VOL, ['hid'], CERO),
   B('a2_vegas_bofedales', '¿Drena o deseca vegas o bofedales?', ['hid'], 'Relevante en Arica y Parinacota, Tarapacá y Antofagasta.'),
@@ -101,7 +104,7 @@ export const INPUTS = [
   N('a3_dragado_mar', 'Dragado en aguas marítimas (material total)', 'm³', VOL, ['hid', 'port'], CERO),
   N('a4_defensa', 'Material movilizado por defensa o alteración de cauce', 'm³', VOL, ['hid'], CERO),
   B('a4_pesca_recreativa', '¿Altera lecho o ribera en un área preferencial para la pesca recreativa?', ['hid']),
-  B('a5_glaciar', '¿Las obras o actividades alteran características de un glaciar?', ['hid', 'glac'], null, 'loc:glaciar'),
+  B('a5_glaciar', '¿Las obras o actividades (incluidas emisiones, tránsito o depósito de material) alteran características de un glaciar?', null, 'Se pregunta a todo proyecto con glaciar presente o próximo, cualquiera sea su actividad.', 'loc:glaciar'),
   N('tension_linea', 'Tensión de la línea', 'kV', ['V', 'kV'], ['lt']),
   N('longitud_linea', 'Longitud del trazado', 'km', ['m', 'km'], ['lt']),
   B('b2_subestacion', '¿Incluye subestaciones asociadas a líneas de alto voltaje que mantienen el voltaje a nivel de transporte?', ['lt']),
@@ -120,8 +123,8 @@ export const INPUTS = [
   B('f2_via', '¿Construye o acondiciona una vía de navegación?', ['port']),
   B('f3_astillero', '¿Es un astillero (excluye varaderos, hangares y diques flotantes)?', ['port']),
   B('f4_terminal', '¿Es un terminal marítimo para buques tanque con cañerías de carga o descarga?', ['port']),
-  B('g_plan_eae', '¿La zona está comprendida en un instrumento de planificación territorial evaluado estratégicamente?', ['urb', 'tur'], 'Si la respuesta es sí, la letra g) no aplica.'),
-  C_('g11_viviendas', 'Número de viviendas', 'viviendas', ['urb'], CERO),
+  B('g_plan_eae', '¿La zona está comprendida en un instrumento de planificación territorial evaluado estratégicamente?', ['urb', 'tur', 'fab'], 'Si la respuesta es sí, la letra g) no aplica. «No aplica» no se acepta como respuesta.'),
+  C_('g11_viviendas', 'Número de viviendas', 'viviendas', ['urb', 'tur'], CERO),
   B('g11_social', '¿Son viviendas sociales, progresivas o infraestructura sanitaria?', ['urb']),
   B('g12_equipamiento', '¿Contempla equipamiento permanente (salud, educación, comercio, servicios u otros)?', ['urb']),
   N('urb_sup_construida', 'Superficie construida', 'm²', SUP, ['urb', 'tur'], CERO),
@@ -132,9 +135,9 @@ export const INPUTS = [
   C_('g2_camas', 'Capacidad en camas', 'camas', ['tur'], CERO),
   C_('g2_camping', 'Sitios para acampar', 'sitios', ['tur'], CERO),
   C_('g2_naves', 'Capacidad para naves', 'naves', ['tur'], CERO),
-  B('h11_sistemas_propios', '¿Se emplaza en área de extensión urbana o rural y requiere sistemas propios de agua potable o aguas servidas?', ['urb'], null, 'loc:zona_latente_saturada'),
-  B('h12_vias', '¿Incorpora al dominio público vías expresas o troncales?', ['urb'], null, 'loc:zona_latente_saturada'),
-  N('h13_superficie', 'Superficie del proyecto inmobiliario', 'ha', SUP, ['urb'], CERO, 'loc:zona_latente_saturada'),
+  B('h11_sistemas_propios', '¿Se emplaza en área de extensión urbana o rural y requiere sistemas propios de agua potable o aguas servidas?', ['urb', 'tur'], null, 'loc:zona_latente_saturada'),
+  B('h12_vias', '¿Incorpora al dominio público vías expresas o troncales?', ['urb', 'tur'], null, 'loc:zona_latente_saturada'),
+  N('h13_superficie', 'Superficie del proyecto inmobiliario o de equipamiento', 'ha', SUP, ['urb', 'tur'], CERO, 'loc:zona_latente_saturada'),
   N('h2_pct', 'Emisión diaria esperada del contaminante que motiva la declaración, respecto del total de la zona para ese tipo de fuente (umbral 5 %)', '%', ['%'], null, 'Requiere inventario de emisiones de la zona.', 'loc:zona_latente_saturada'),
   N('capacidad_extraccion', 'Capacidad de extracción de mineral', 't/mes', ['t/mes', 'kt/mes', 'kg/mes', 't/día', 't/año'], ['min'], 'Bases temporales distintas a t/mes no se convierten.'),
   B('i1_reprocesa_relaves', '¿Contempla reprocesamiento de relaves dentro de la faena en operación o valorización de residuos masivos mineros?', ['min'], 'Excepción del art. 3 i.1, párrafo segundo (D.S. 17/2025).'),
@@ -143,7 +146,7 @@ export const INPUTS = [
   N('i1_aumento_pct', 'Capacidad del reprocesamiento o valorización respecto de la capacidad nominal autorizada de procesamiento de minerales', '%', ['%'], ['min'], null, 'inp:i1_reprocesa_relaves'),
   C_('i2_plataformas', 'Plataformas de prospección (con sus sondajes)', 'plataformas', ['prosp']),
   B('dispone_residuos_masivos', '¿Dispone residuos masivos mineros (estériles, relaves, ripios, escorias)?', ['rel']),
-  B('residuos_de_otros_proyectos', '¿Los residuos provienen también de otros proyectos mineros?', ['rel']),
+  N('i3_cap_origen', 'Capacidad de extracción, por sí mismos o en su conjunto, de los proyectos mineros que originan los residuos', 't/mes', ['t/mes', 'kt/mes', 'kg/mes'], ['rel'], 'Art. 3 i.3: remite a la capacidad de la letra i.1.'),
   B('i4_explotacion', '¿Explota yacimientos con posterioridad a la perforación del primer pozo exploratorio o instala plantas procesadoras?', ['hc']),
   E_('i5_tipo', 'Tipo de extracción de áridos', [['pozo', 'Pozo o cantera'], ['cauce', 'Cuerpo o curso de agua'], ['playa', 'Arena en playa']], ['arid']),
   N('i5_mes', 'Extracción mensual (pozo o cantera)', 'm³/mes', ['m³/mes'], ['arid'], CERO),
@@ -196,20 +199,22 @@ export const INPUTS = [
   B('o7_sin_tratar', '¿Se usan efluentes sin tratar para riego, aspersión o humectación de terrenos o caminos?', ['san_riles']),
   N('o7_riego_vol', 'Volumen de efluente tratado usado en riego, aspersión o humectación', 'm³/día', ['m³/día', 'L/s'], ['san_riles'], CERO), N('o7_caudal', 'Caudal de efluente tratado', 'm³/día', ['m³/día', 'L/s'], ['san_riles']),
   E_('o8_tipo', 'Residuos industriales sólidos', [['elim', 'Eliminación o disposición'], ['animal', 'Tratamiento de residuos de origen animal o lodos'], ['otros', 'Tratamiento de otros (compostaje, biodigestión)']], ['san_ris']),
-  N('o8_trat', 'Capacidad de tratamiento', 't/día', MD, ['san_ris'], CERO), N('o8_disp', 'Capacidad de disposición', 't', MASA, ['san_ris'], CERO),
+  N('o8_trat', 'Tasa de ingreso a tratamiento o eliminación (desde el D.S. 17); capacidad de tratamiento (texto anterior)', 't/día', MD, ['san_ris'], CERO), N('o8_disp', 'Capacidad de disposición', 't', MASA, ['san_ris'], CERO),
   N('o9_tox', 'Eliminación de residuos peligrosos tóxicos agudos (D.S. 148): tasa de ingreso', 'kg/día', MD, ['san_respel'], CERO), N('o9_otros', 'Eliminación de otros residuos peligrosos: tasa de ingreso', 'kg/día', MD, ['san_respel'], CERO),
   N('o9_trat', 'Tratamiento de residuos peligrosos: tasa de ingreso', 't/día', MD, ['san_respel'], CERO),
   N('o10', 'Residuos especiales de establecimientos de salud: capacidad', 'kg/día', MD, ['san_salud']),
   N('o11_sup', 'Superficie de áreas a reparar o recuperar', 'm²', SUP, ['remed']), B('o11_plan_sma', '¿Las medidas forman parte de un plan de reparación del art. 43 de la LOSMA?', ['remed']),
   B('q_aerea', '¿Planes o programas de aplicación aérea sobre 1.000 ha o más para prevenir o erradicar plagas?', ['quim']),
-  B('q_proximo', '¿En área urbana, o en zona rural a menos de 5 km de centros poblados o cursos o masas de agua?', ['quim']),
+  B('q_proximo', '¿En área urbana, o en zona rural a menos de 5 km de centros poblados, humedales o cursos o masas de agua?', ['quim'], 'Ley 19.300 art. 10 q), reemplazada por la Ley 21.202.'),
   B('r_produccion', '¿Utiliza OGM con fines de producción (no de investigación)?', ['ogm']), B('r_confinada', '¿Opera en áreas confinadas con medidas de bioseguridad?', ['ogm']),
   B('s_coto', '¿Constituye un coto de caza (art. 10 Ley 19.473)?', ['coto']), B('t_subsuelo', '¿Es una obra concesionada para construir y explotar el subsuelo de bienes nacionales de uso público?', ['subsuelo']),
-  B('altera_humedal_urbano', '¿Implica relleno, drenaje, secado, extracción de caudales o áridos, alteración de vegetación azonal u otra alteración física o química del humedal?', null, null, 'loc:humedal_urbano'),
+  B('altera_humedal_urbano', '¿Puede alterar física o químicamente los componentes bióticos, sus interacciones o los flujos ecosistémicos del humedal (relleno, drenaje, secado, extracción de caudales o áridos, alteración de la barra terminal, de la vegetación azonal hídrica y ripariana o de la cubierta vegetal de turberas, o deterioro de su flora y fauna)?', null, 'Ley 19.300 art. 10 s): «indistintamente de su superficie». No exige declaración del MMA.', 'loc:humedal_urbano'),
+  B('p_humedal_declarado', '¿El humedal urbano fue declarado por el Ministerio del Medio Ambiente (Ley 21.202)?', null, 'Si fue declarado, es además un área colocada bajo protección oficial (art. 10 p).', 'loc:humedal_urbano'),
   B('g2_suma_incluida', '¿Los parámetros informados incluyen la suma de partes, obras y acciones no calificadas ambientalmente (art. 2 g.2)?', null, null, 'mod'),
   B('frac_relacionado', '¿Existen otros proyectos, fases u obras del mismo titular o vinculados funcionalmente, ejecutados o proyectados en el mismo lugar o área?', null, 'Ley 19.300 art. 11 bis (fraccionamiento). Incluya fases anteriores sin evaluación ambiental.', 'all'),
   B('frac_etapas', '¿El proyecto corresponde a uno cuya ejecución se realizará por etapas, y puede acreditarlo?', null, 'Art. 11 bis inciso final: la prohibición no se aplica si se acredita la ejecución por etapas.', 'frac'),
   E_('g3_impactos', 'Art. 2 g.3: ¿la modificación cambia sustantivamente la extensión, magnitud o duración de los impactos?', [['si', 'Sí'], ['no', 'No'], ['ns', 'Sin determinar']], null, 'Indique el fundamento en la columna Fuente.', 'mod'),
+  B('g4_rca_eia', '¿Alguna RCA del proyecto se obtuvo mediante un EIA (con medidas de mitigación, reparación o compensación por impactos significativos)?', null, 'Art. 2 g.4 se refiere a medidas por impactos significativos: solo existen en proyectos calificados por EIA.', 'mod'),
   E_('g4_medidas', 'Art. 2 g.4: ¿se modifican sustantivamente las medidas de mitigación, reparación o compensación?', [['si', 'Sí'], ['no', 'No'], ['ns', 'Sin determinar']], null, 'Indique el fundamento en la columna Fuente.', 'mod')
 ];
 
@@ -229,7 +234,7 @@ export function inputVisible(i, p) {
 }
 
 export const LOCATION_ELEMENTS = [
-  { id: 'area_protegida', label: 'Área colocada bajo protección oficial (parque, reserva, monumento natural u otra)', criteria: ['d'] },
+  { id: 'area_protegida', label: 'Área colocada bajo protección oficial (parque, reserva, monumento natural, área de preservación ecológica de un IPT u otra)', criteria: ['d'] },
   { id: 'santuario', label: 'Santuario de la Naturaleza', criteria: ['d'] },
   { id: 'sitio_prioritario', label: 'Sitio prioritario para la conservación', criteria: ['d'] },
   { id: 'humedal_ramsar', label: 'Humedal protegido (sitio Ramsar)', criteria: ['b', 'd'] },
@@ -299,6 +304,9 @@ const one = (id, text, logic, o = {}) => [r => v40(id, text, logic, { ...o, ref:
 const two = (id, t1, l1, t2, l2, o = {}) => [r => v40(id, t1, l1, { ...o.v1, ref: r, to: '2026-01-20' }), r => v17(id, t2, l2, { ...o.v2, ref: r })];
 
 export const RULES = [
+  T('A0', 'a (art. 294 CA)', 'a', 'Acueductos, embalses o tranques y sifones del art. 294 del Código de Aguas', ['hid'], one('A0', 'Acueductos, embalses o tranques y sifones que deban someterse a la autorización establecida en el artículo 294 del Código de Aguas: embalses de capacidad superior a 50.000 m³ o cuyo muro tenga más de 5 m de altura; acueductos que conduzcan más de 2 m³/s; acueductos de más de 0,5 m³/s próximos a zonas urbanas (a menos de 1 km del límite urbano y con cota de fondo más de 10 m sobre él); sifones y canoas que crucen cauces naturales.',
+    any(gt('a1_altura_muro', 5, 'm'), gt('a1_capacidad', 50000, 'm³'), gt('a0_caudal', 2, 'm³/s'), all(gt('a0_caudal', 0.5, 'm³/s'), yes('a0_urbano')), rev(yes('a0_sifon'), 'Sifones y canoas: el D.S. 50/2015 MOP los incluye cualquiera sea su caudal; la redacción modificada del art. 294 d) los vincula a los caudales de las letras b) o c). Verificar la versión vigente.')),
+    { notes: 'Primer párrafo de la letra a) del art. 3 (y art. 10 a) de la Ley 19.300). Art. 294 cotejado en LeyChile (idNorma 5605) y Guía PAS 155. La Ley 21.770 (D.O. 29-09-2025) modifica el art. 294 con vigencia diferida a la modificación del D.S. 50/2015 MOP (embalses fuera de cauce: 150.000 m³ o 7 m); no cargada.' }), { evidence: ['Memoria de obras hidráulicas con caudales de diseño', 'Planos de cruces de cauces'] }),
   T('A1', 'a.1', 'a', 'Presas', ['hid'], one('A1', 'Presas cuyo muro tenga una altura superior a cinco metros (5 m) medidos desde el coronamiento hasta el nivel del terreno natural, en el plano vertical que pasa por el eje de éste y que soportará el embalse de las aguas, o que generen un embalse con una capacidad superior a cincuenta mil metros cúbicos (50.000 m³).',
     any(gt('a1_altura_muro', 5, 'm'), gt('a1_capacidad', 50000, 'm³')), { from: DS8_FROM, notes: 'Texto vigente desde el D.S. 8/2014 (D.O. 27-03-2014). La redacción anterior no está cargada.' })),
   T('A2', 'a.2', 'a', 'Drenaje o desecación', ['hid'], one('A2', 'Drenaje o desecación de: a.2.1 vegas y bofedales en Arica y Parinacota, Tarapacá y Antofagasta, cualquiera sea su superficie; a.2.2 suelos ñadis ≥ 200 ha; a.2.3 turberas; a.2.4 otros cuerpos naturales de aguas superficiales ≥ 10 ha (Arica y Parinacota a Coquimbo), ≥ 20 ha (Valparaíso a Maule, incluida RM) o ≥ 30 ha (Biobío a Magallanes).',
@@ -309,8 +317,8 @@ export const RULES = [
     any(region([[Z.AP_AT, gte('a3_dragado_cont', 20000, 'm³')], [Z.CO_MA, gte('a3_dragado_cont', 50000, 'm³')]]), gte('a3_dragado_mar', 50000, 'm³')))),
   T('A4', 'a.4', 'a', 'Defensa o alteración de cuerpos o cursos de aguas continentales', ['hid'], one('A4', 'Defensa o alteración que movilice ≥ 50.000 m³ (Arica y Parinacota a Coquimbo) o ≥ 100.000 m³ (Valparaíso a Magallanes, incluida RM). La alteración del lecho y ribera en un área preferencial para la pesca recreativa ingresa independiente del material movilizado.',
     any(region([[Z.AP_CO, gte('a4_defensa', 50000, 'm³')], [Z.VA_MA, gte('a4_defensa', 100000, 'm³')]]), yes('a4_pesca_recreativa')))),
-  T('A5', 'a.5', 'a', 'Alteración de glaciares', ['hid', 'glac'], one('A5', 'La ejecución de obras o actividades que impliquen alteración de las características del glaciar.', all(geo('glaciar'), yes('a5_glaciar')),
-    { notes: 'El encabezado de la letra a) se refiere a glaciares incorporados en el Inventario Público de la DGA: verificar.' })),
+  T('A5', 'a.5', 'a', 'Alteración de glaciares', null, one('A5', 'La ejecución de obras o actividades que impliquen alteración de las características del glaciar.', all(geo('glaciar'), yes('a5_glaciar')),
+    { notes: 'Se evalúa por localización, sin depender de la actividad declarada. El encabezado de la letra a) se refiere a glaciares incorporados en el Inventario Público de la DGA: verificar.' })),
   T('B1', 'b.1', 'b', 'Líneas de transmisión eléctrica de alto voltaje', ['lt'], two('B1',
     'Se entenderá por líneas de transmisión eléctrica de alto voltaje aquellas líneas que conducen energía eléctrica con una tensión mayor a veintitrés kilovoltios (23 kV).', gt('tension_linea', 23, 'kV'),
     'Se entenderá por líneas de transmisión eléctrica de alto voltaje a aquellas líneas que conduzcan energía eléctrica con una tensión mayor a veintitrés kilovoltios (23 kV) y cuyo trazado presente una longitud superior a dos kilómetros (2 km).', all(gt('tension_linea', 23, 'kV'), gt('longitud_linea', 2, 'km')))),
@@ -328,8 +336,8 @@ export const RULES = [
     'Locales destinados al expendio de combustibles líquidos o gaseosos para vehículos motorizados u otros usos, cuya capacidad de almacenamiento sea igual o superior a doscientos mil litros (200.000 L).', gte('capacidad_almacenamiento_combustible', 200000, 'L'),
     'Igual definición; la frase «doscientos mil litros (200.000 L)» se reemplaza por «ochocientos cincuenta mil litros (850.000 L)».', gte('capacidad_almacenamiento_combustible', 850000, 'L'))),
   T('E7', 'e.7', 'e', 'Autopistas', ['vial'], one('E7', 'Vías con dos o más pistas unidireccionales por calzada separadas por una mediana, diseñadas para 120 km/h o más, con prioridad absoluta al tránsito, control total de accesos, segregadas y conectadas mediante enlaces.', yes('e7_autopista'))),
-  T('E8', 'e.8', 'e', 'Caminos públicos que puedan afectar áreas protegidas', ['vial'], one('E8', 'Los caminos públicos pueden afectar áreas protegidas cuando se localicen en las áreas definidas en el inciso quinto del artículo 8 del Reglamento.', all(yes('e8_camino'), geo('area_protegida')),
-    { notes: 'La remisión al inciso quinto del art. 8 (áreas protegidas) debe verificarse en el texto vigente.' })),
+  T('E8', 'e.8', 'e', 'Caminos públicos que puedan afectar áreas protegidas', ['vial'], one('E8', 'Los caminos públicos pueden afectar áreas protegidas cuando se localicen en las áreas definidas en el inciso quinto del artículo 8 del Reglamento.', all(yes('e8_camino'), any(geo('area_protegida'), geo('santuario'))),
+    { notes: 'Las áreas protegidas del art. 8 incluyen santuarios de la naturaleza. La remisión al inciso quinto del art. 8 debe verificarse en el texto vigente.' })),
   T('F', 'f.1–f.4', 'f', 'Puertos, vías de navegación, astilleros y terminales marítimos', ['port'], one('F',
     'f.1 puerto para naves mayores con fines comerciales o productivos (excluye conectividad interna); f.2 vías de navegación construidas o acondicionadas; f.3 astilleros (excluye varaderos, hangares o diques flotantes); f.4 terminal marítimo para buques tanque con cañerías de carga o descarga.',
     any(yes('f1_puerto'), yes('f2_via'), yes('f3_astillero'), yes('f4_terminal')), { notes: 'No modificado por el D.S. 17/2025 (texto oficial cotejado).' })),
@@ -346,9 +354,9 @@ export const RULES = [
     all(no('g_plan_eae'), any(gte('urb_sup_construida', 5000, 'm²'), gte('urb_sup_predial', 15000, 'm²'), gte('urb_personas', 300, 'personas'), gte('urb_estac', 100, 'sitios'), gte('g2_camas', 100, 'camas'), gte('g2_camping', 200, 'sitios'), gte('g2_naves', 50, 'naves'))),
     'Letra b) sustituida: «superficie predial a intervenir igual o mayor a quince mil metros cuadrados (15.000 m²)». Demás condiciones sin cambio.',
     all(no('g_plan_eae'), any(gte('urb_sup_construida', 5000, 'm²'), gte('urb_sup_predial', 15000, 'm²'), gte('urb_personas', 300, 'personas'), gte('urb_estac', 100, 'sitios'), gte('g2_camas', 100, 'camas'), gte('g2_camping', 200, 'sitios'), gte('g2_naves', 50, 'naves'))))),
-  T('H1', 'h.1', 'h', 'Proyectos inmobiliarios en zonas latentes o saturadas', ['urb'], one('H1', 'Loteos, conjuntos de viviendas o equipamiento en zona latente o saturada con alguna de: h.1.1 extensión urbana o área rural con sistemas propios de agua potable o aguas servidas; h.1.2 incorporación de vías expresas o troncales; h.1.3 superficie ≥ 7 ha o 300 o más viviendas; h.1.4 edificios de uso público para 5.000 o más personas o 1.000 o más estacionamientos.',
+  T('H1', 'h.1', 'h', 'Proyectos inmobiliarios en zonas latentes o saturadas', ['urb', 'tur'], one('H1', 'Loteos, conjuntos de viviendas o equipamiento en zona latente o saturada con alguna de: h.1.1 extensión urbana o área rural con sistemas propios de agua potable o aguas servidas; h.1.2 incorporación de vías expresas o troncales; h.1.3 superficie ≥ 7 ha o 300 o más viviendas; h.1.4 edificios de uso público para 5.000 o más personas o 1.000 o más estacionamientos.',
     all(geo('zona_latente_saturada'), any(yes('h11_sistemas_propios'), yes('h12_vias'), gte('h13_superficie', 7, 'ha'), gte('g11_viviendas', 300, 'viviendas'), gte('urb_personas', 5000, 'personas'), gte('urb_estac', 1000, 'sitios'))),
-    { from: DS63_FROM, notes: 'Texto vigente desde el D.S. 63/2014 (D.O. 06-10-2014).' })),
+    { from: DS63_FROM, notes: 'Texto vigente desde el D.S. 63/2014 (D.O. 06-10-2014). Incluye los proyectos destinados a equipamiento, también el turístico (g.2).' })),
   T('H2', 'h.2', 'h', 'Proyectos industriales en zonas latentes o saturadas', null, one('H2',
     'Urbanizaciones o loteos industriales ≥ 20 ha, o instalaciones industriales cuya emisión diaria esperada de algún contaminante causante de la saturación o latencia sea ≥ 5 % de la emisión diaria total estimada de ese contaminante en la zona, para ese tipo de fuente.',
     all(geo('zona_latente_saturada'), any(gte('g13_loteo_ind', 20, 'ha'), gte('h2_pct', 5, '%'))),
@@ -363,7 +371,7 @@ export const RULES = [
   T('I2', 'i.2', 'i', 'Prospecciones mineras', ['prosp'], one('I2', 'Prospecciones que consideren 40 o más plataformas, incluyendo sus sondajes (Arica y Parinacota a Coquimbo), o 20 o más plataformas (Valparaíso a Magallanes, incluida RM). Las exploraciones con menos plataformas no se incluyen.',
     region([[Z.AP_CO, gte('i2_plataformas', 40, 'plataformas')], [Z.VA_MA, gte('i2_plataformas', 20, 'plataformas')]]), { notes: 'La distinción entre prospección y exploración depende de la fase del proyecto: verificar.' })),
   T('I3', 'i.3', 'i', 'Disposición de residuos y estériles mineros', ['rel'], one('I3', 'Proyectos en que se dispongan residuos masivos mineros (estériles, minerales de baja ley, residuos lixiviados, relaves, escorias y equivalentes) que provengan de uno o más proyectos de desarrollo minero que por sí mismos o en su conjunto tengan la capacidad de extracción de la letra i.1.',
-    all(yes('dispone_residuos_masivos'), any(dep('RSEIA-3-I1'), rev(yes('residuos_de_otros_proyectos'), 'La capacidad «en su conjunto» de varios proyectos requiere análisis especializado.')))), { deps: ['RSEIA-3-I1'] }),
+    all(yes('dispone_residuos_masivos'), any(dep('RSEIA-3-I1'), gt('i3_cap_origen', 5000, 't/mes')))), { deps: ['RSEIA-3-I1'] }),
   T('I4', 'i.4', 'i', 'Petróleo y gas', ['hc'], one('I4', 'Acciones u obras cuyo fin es la explotación de yacimientos, comprendiendo las actividades posteriores a la perforación del primer pozo exploratorio y la instalación de plantas procesadoras.', yes('i4_explotacion'))),
   T('I5', 'i.5', 'i', 'Extracción industrial de áridos o greda', ['arid'], one('I5', 'i.5.1 pozos o canteras: ≥ 10.000 m³/mes, o ≥ 100.000 m³ totales en la vida útil, o superficie ≥ 5 ha; i.5.2 cuerpo o curso de agua: ≥ 20.000 m³ totales (Arica y Parinacota a Coquimbo) o ≥ 50.000 m³ (Valparaíso a Magallanes, incluida RM); i.5.3 arena en playa: ≥ 50.000 m³ en la vida útil.',
     any(all(enumIs('i5_tipo', ['pozo']), any(gte('i5_mes', 10000, 'm³/mes'), gte('i5_total', 100000, 'm³'), gte('i5_sup', 5, 'ha'))),
@@ -381,8 +389,8 @@ export const RULES = [
     any(gte('l31', 300, 'UA'), gte('l32', 200, 'UA'), gte('l33a', 3000, 'animales'), gte('l33b', 750, 'animales'), gte('l34', 2500, 'UA'), gte('l41', 85000, 'animales'), gte('l42', 60000, 'animales'), gte('l43', 16500, 'animales'), gte('l44', 150, 't'), gte('l5', 50, 't')))),
   T('M1', 'm.1', 'm', 'Desarrollo o explotación forestal', ['forest'], one('M1', 'Corta de cosecha final o regeneración por tala rasa en suelos frágiles o bosque nativo, de más de 20 ha/año (Arica y Parinacota a Coquimbo), 200 ha/año (Valparaíso y RM), 500 ha/año (O\'Higgins a Aysén) o 1.000 ha/año (Magallanes).',
     all(enumIs('m1_suelo', ['fragil', 'nativo']), region([[Z.AP_CO, gt('m1_ha', 20, 'ha/año')], [Z.VA_RM, gt('m1_ha', 200, 'ha/año')], [Z.OH_AY, gt('m1_ha', 500, 'ha/año')], [Z.MA, gt('m1_ha', 1000, 'ha/año')]])))),
-  T('M2', 'm.2', 'm', 'Plantas astilladoras', ['astill'], one('M2', 'Plantas astilladoras con consumo de madera ≥ 30 m³ ssc/h, o que reúnan los requisitos de h.2 o k.1.', any(gte('m2_consumo', 30, 'm³ ssc/h'), dep('RSEIA-3-H2'), gte('k1_kva', 2000, 'kVA'))), { deps: ['RSEIA-3-H2'] }),
-  T('M3', 'm.3', 'm', 'Aserraderos y plantas elaboradoras de madera', ['aserr'], one('M3', 'Aserraderos y plantas elaboradoras de paneles u otros productos con consumo ≥ 30 m³ ssc/h, o que reúnan los requisitos de h.2 o k.1.', any(gte('m3_consumo', 30, 'm³ ssc/h'), dep('RSEIA-3-H2'), gte('k1_kva', 2000, 'kVA'))), { deps: ['RSEIA-3-H2'] }),
+  T('M2', 'm.2', 'm', 'Plantas astilladoras', ['astill'], one('M2', 'Plantas astilladoras con consumo de madera ≥ 30 m³ ssc/h, o que reúnan los requisitos de h.2 o k.1.', any(gte('m2_consumo', 30, 'm³ ssc/h'), dep('RSEIA-3-H2'), gte('k1_kva', 2000, 'kVA')), { notes: 'Remisión a h.2 o k.1 aplicada desde la vigencia del D.S. 40; en l.1 y l.2 el texto cargado rige desde el D.S. 63/2014. Fecha de la remisión por cotejar en versiones históricas de LeyChile (solo afecta evaluaciones anteriores al 06-10-2014).' }), { deps: ['RSEIA-3-H2'] }),
+  T('M3', 'm.3', 'm', 'Aserraderos y plantas elaboradoras de madera', ['aserr'], one('M3', 'Aserraderos y plantas elaboradoras de paneles u otros productos con consumo ≥ 30 m³ ssc/h, o que reúnan los requisitos de h.2 o k.1.', any(gte('m3_consumo', 30, 'm³ ssc/h'), dep('RSEIA-3-H2'), gte('k1_kva', 2000, 'kVA')), { notes: 'Remisión a h.2 o k.1 aplicada desde la vigencia del D.S. 40; en l.1 y l.2 el texto cargado rige desde el D.S. 63/2014. Fecha de la remisión por cotejar en versiones históricas de LeyChile (solo afecta evaluaciones anteriores al 06-10-2014).' }), { deps: ['RSEIA-3-H2'] }),
   T('M4', 'm.4', 'm', 'Celulosa, pasta de papel y papel', ['celul'], one('M4', 'Toda industria de celulosa, pasta de papel y papel será considerada de dimensiones industriales.', { const: 'TRUE', label: 'Actividad declarada: celulosa, pasta de papel o papel' })),
   T('N0', 'n (explotación)', 'n', 'Explotación intensiva de recursos hidrobiológicos', ['acuiext'], one('N0', 'Utilización de recursos hidrobiológicos declarados en categoría de conservación cuya extracción se realice mediante barcos fábrica o factoría.', yes('n_intensiva'))),
   T('N1', 'n.1–n.5', 'n', 'Cultivo de recursos hidrobiológicos', ['acui'], two('N1',
@@ -391,7 +399,7 @@ export const RULES = [
     'n.1 macroalgas: «mil toneladas (1.000 t)». n.2 sustituido: «Una producción anual igual o mayor a mil toneladas (1.000 t) y/o superficie de cultivo igual o superior a sesenta mil metros cuadrados (60.000 m²), tratándose de moluscos filtradores y otras especies filtradoras, a través de un sistema de producción extensivo». n.3 a n.5 sin cambio.',
     any(gte('n1_t', 1000, 't/año'), gte('n1_m2', 100000, 'm²'), gte('n2_t', 1000, 't/año'), gte('n2_m2', 60000, 'm²'), gte('n3_t', 35, 't/año'), gte('n4_t', 15, 't/año'), yes('n4_lago'), gte('n5_t', 8, 't/año'), yes('n5_juveniles')),
     { v2: { notes: 'Texto oficial cotejado. En n.2, informe la producción total de moluscos filtradores y otras especies filtradoras en el campo de moluscos; el umbral separado de 40 t/año para otras filtradoras fue eliminado.' } })),
-  T('N6', 'n (plantas)', 'n', 'Plantas procesadoras de recursos hidrobiológicos', ['acuipl'], one('N6', 'Plantas procesadoras, incluidas las de barcos fábrica o factoría, que utilicen ≥ 500 t/mes de biomasa en el mes de máxima producción, o que reúnan los requisitos de h.2 o k.1.', any(gte('n_planta', 500, 't/mes'), dep('RSEIA-3-H2'), gte('k1_kva', 2000, 'kVA'))), { deps: ['RSEIA-3-H2'] }),
+  T('N6', 'n (plantas)', 'n', 'Plantas procesadoras de recursos hidrobiológicos', ['acuipl'], one('N6', 'Plantas procesadoras, incluidas las de barcos fábrica o factoría, que utilicen ≥ 500 t/mes de biomasa en el mes de máxima producción, o que reúnan los requisitos de h.2 o k.1.', any(gte('n_planta', 500, 't/mes'), dep('RSEIA-3-H2'), gte('k1_kva', 2000, 'kVA')), { notes: 'Remisión a h.2 o k.1 aplicada desde la vigencia del D.S. 40; en l.1 y l.2 el texto cargado rige desde el D.S. 63/2014. Fecha de la remisión por cotejar en versiones históricas de LeyChile (solo afecta evaluaciones anteriores al 06-10-2014).' }), { deps: ['RSEIA-3-H2'] }),
   T('NN1', 'ñ.1', 'ñ', 'Sustancias tóxicas', ['sptox'], two('NN1', 'Producción, disposición o reutilización durante un semestre o más ≥ 10.000 kg/día, o capacidad de almacenamiento ≥ 30.000 kg.', any(all(yes('nn_habitual'), gte('nn1_prod', 10, 't/día')), gte('nn1_alm', 30, 't')),
     'Producción, disposición o reutilización durante un semestre o más ≥ 10.000 kg/día; almacenamiento ≥ 2.500 t. Sustancias tóxicas: Clase 6, División 6.1 NCh 382:2013; residuos según arts. 12–14 D.S. 148/2003, con remisión a o.9 para su disposición o reutilización.', any(all(yes('nn_habitual'), gte('nn1_prod', 10, 't/día')), gte('nn1_alm', 2500, 't'))), { evidence: ['Inventario de sustancias por clase NCh 382', 'Capacidad de bodegas'] }),
   T('NN2', 'ñ.2', 'ñ', 'Sustancias explosivas', ['spexp'], two('NN2', 'Producción, disposición o reutilización durante un semestre o más, mensualmente, ≥ 2.500 kg/día, o almacenamiento ≥ 2.500 kg.', any(all(yes('nn_habitual'), gte('nn2_prod', 2.5, 't/día')), gte('nn2_alm', 2.5, 't')),
@@ -420,23 +428,28 @@ export const RULES = [
     'o.8.1 eliminación con tasa de ingreso ≥ 30 t/día; o.8.2 tratamiento de residuos de origen animal o lodos de plantas de tratamiento de aguas residuales ≥ 30 t/día; o.8.3 tratamiento, incluidas plantas de compostaje y biodigestión, ≥ 50 t/día.',
     any(all(enumIs('o8_tipo', ['elim']), gte('o8_trat', 30, 't/día')), all(enumIs('o8_tipo', ['animal']), gte('o8_trat', 30, 't/día')), all(enumIs('o8_tipo', ['otros']), gte('o8_trat', 50, 't/día'))),
     { v1: { from: DS8_FROM }, v2: { notes: 'Texto oficial cotejado. El umbral de 50 t de capacidad de disposición fue reemplazado por tasas de ingreso diarias.' } })),
-  T('O9', 'o.9', 'o', 'Residuos peligrosos', ['san_respel'], two('O9', 'Tratamiento, disposición o eliminación con capacidad de 25 kg/día para tóxicos agudos (D.S. 148/2003) y de 1.000 kg/día para otros residuos peligrosos.', any(gte('o9_tox', 25, 'kg/día'), gte('o9_otros', 1000, 'kg/día')),
+  T('O9', 'o.9', 'o', 'Residuos peligrosos', ['san_respel'], two('O9', 'Tratamiento, disposición o eliminación con capacidad de 25 kg/día para tóxicos agudos (D.S. 148/2003) y de 1.000 kg/día para otros residuos peligrosos.', any(gte('o9_tox', 25, 'kg/día'), gte('o9_otros', 1000, 'kg/día'), gte('o9_trat', 1000, 'kg/día')),
     'o.9.1 eliminación con tasa de ingreso ≥ 25 kg/día para «tóxicos agudos» del D.S. 148/2003 y ≥ 1 t/día para residuos con otra característica de peligrosidad; o.9.2 tratamiento de residuos peligrosos con tasa de ingreso ≥ 5 t/día.',
     any(gte('o9_tox', 25, 'kg/día'), gte('o9_otros', 1, 't/día'), gte('o9_trat', 5, 't/día')),
     { v1: { from: DS8_FROM }, v2: { notes: 'Texto oficial cotejado. Informe en los campos de eliminación solo las tasas destinadas a eliminación, y en tratamiento la tasa de ingreso a tratamiento.' } })),
   T('O10', 'o.10', 'o', 'Residuos especiales de establecimientos de salud', ['san_salud'], two('O10', 'Tratamiento, disposición o eliminación con capacidad ≥ 250 kg/día.', gte('o10', 250, 'kg/día'), '«Sistemas de tratamiento o eliminación de residuos especiales provenientes de establecimientos de atención de salud, con una tasa de ingreso de recepción mayor o igual a 500 kilogramos diarios (500 kg/día)».', gte('o10', 500, 'kg/día'), { v1: { from: DS8_FROM } })),
   T('O11', 'o.11', 'o', 'Reparación o recuperación de áreas contaminadas', ['remed'], one('O11', 'Reparación o recuperación de áreas que contengan contaminantes ≥ 10.000 m², salvo medidas de un plan de reparación del art. 43 de la LOSMA.', gte('o11_sup', 10000, 'm²'),
     { exc: [{ id: 'O11-EXC', description: 'Medidas de un plan de reparación del art. 43 LOSMA (art. 3 o.11)', verified: true, logic: yes('o11_plan_sma') }] })),
-  T('P', 'p', 'p', 'Obras en áreas colocadas bajo protección oficial', null, one('P', 'Ejecución de obras, programas o actividades en parques nacionales, reservas nacionales, monumentos naturales, reservas de zonas vírgenes, santuarios de la naturaleza, parques marinos, reservas marinas o cualesquiera otras áreas colocadas bajo protección oficial, en los casos en que la legislación respectiva lo permita.',
-    any(geo('area_protegida'), geo('santuario')), { notes: 'La proximidad no activa la tipología; exige verificar límites oficiales. La calificación de «área colocada bajo protección oficial» requiere revisión jurídica.' }), { evidence: ['Cartografía oficial superpuesta al área del proyecto'] }),
+  T('P', 'p', 'p', 'Obras en áreas colocadas bajo protección oficial', null, [
+    r => v40('P', 'Ejecución de obras, programas o actividades en parques nacionales, reservas nacionales, monumentos naturales, reservas de zonas vírgenes, santuarios de la naturaleza, parques marinos, reservas marinas o en cualesquiera otras áreas colocadas bajo protección oficial, en los casos en que la legislación respectiva lo permita.',
+      any(geo('area_protegida'), geo('santuario')), { ref: r, to: '2020-01-22', notes: 'Texto anterior a la Ley 21.202.' }),
+    r => ({ ...v40('P', 'Ejecución de obras, programas o actividades en parques nacionales, reservas nacionales, monumentos naturales, reservas de zonas vírgenes, santuarios de la naturaleza, parques marinos, reservas marinas, humedales urbanos o en cualesquiera otras áreas colocadas bajo protección oficial, en los casos en que la legislación respectiva lo permita.',
+      any(geo('area_protegida'), geo('santuario'), all(geo('humedal_urbano'), yes('p_humedal_declarado')), rev(geo('humedal_ramsar'), 'Sitio Ramsar: verificar si cuenta con un acto de protección oficial que lo haga «área colocada bajo protección oficial» (Of. SEA 130.844/2013 y actualizaciones).')),
+      { ref: r + '; Ley 21.202 art. 4 N.º 1', from: '2020-01-23', notes: 'Ley 21.202 incorporó «humedales urbanos» (declarados por el MMA) a la letra p). Las áreas de preservación ecológica de los IPT también son áreas bajo protección oficial (Dictamen CGR E39766N20). La proximidad no activa la tipología.' }), version_id: 'P-v2', source_id: 'LEY-19300', source_url: 'https://www.bcn.cl/leychile/navegar?idNorma=30667' })
+  ], { evidence: ['Cartografía oficial superpuesta al área del proyecto', 'Decreto de declaración del humedal urbano, si corresponde'] }),
   T('Q', 'q', 'q', 'Aplicación masiva de productos químicos', ['quim'], one('Q', 'Planes y programas por vía aérea sobre ≥ 1.000 ha para prevenir o erradicar plagas, en áreas urbanas o zonas rurales a menos de 5 km de centros poblados o cursos o masas de agua.', all(yes('q_aerea'), yes('q_proximo')))),
   T('R', 'r', 'r', 'Organismos genéticamente modificados', ['ogm'], one('R', 'Proyectos que utilicen OGM con fines de producción y en áreas no confinadas.', all(yes('r_produccion'), no('r_confinada')), { notes: 'Art. 5 transitorio: excluye especies con autorización e informe favorable del SAG (Res. 1.523/2001).' })),
   T('S', 's', 's', 'Cotos de caza', ['coto'], one('S', 'Cotos de caza, en virtud del artículo 10 de la Ley N.º 19.473.', yes('s_coto'), { ref: 'RSEIA art. 3 s)', notes: 'Literal propio del Reglamento; no corresponde a la letra s) del art. 10 de la Ley 19.300.' })),
   T('T', 't', 't', 'Concesiones del subsuelo de bienes nacionales de uso público', ['subsuelo'], one('T', 'Obras que se concesionen para construir y explotar el subsuelo de los bienes nacionales de uso público (art. 37 DFL 1/2006, Ley Orgánica de Municipalidades).', yes('t_subsuelo'), { ref: 'RSEIA art. 3 t)' })),
   { rule_id: 'LEY-10-S', rule_name: 'Alteración de humedales urbanos', rule_type: 'tipologia_art3', literal: 'Ley s)', art10: 's', activity: null, evidence_required: ['Cartografía del límite urbano y del humedal', 'Descripción de la intervención'],
-    versions: [{ version_id: 'LEY-10-S-v1', source_id: 'LEY-19300', source_version: 'Ley 19.300 modificada por Ley 21.202', effective_from: '2020-01-23', effective_to: null, legal_reference: 'Ley 19.300 art. 10 s)', source_url: 'https://www.bcn.cl/leychile/',
-      text: 'Ejecución de obras o actividades que puedan significar una alteración física o química de humedales total o parcialmente dentro del límite urbano, e impliquen su relleno, drenaje, secado, extracción de caudales o áridos, alteración de la barra terminal o de la vegetación azonal, entre otras. (Paráfrasis; texto no cotejado.)',
-      required_inputs: ['loc:humedal_urbano', 'altera_humedal_urbano'], logic: all(geo('humedal_urbano'), yes('altera_humedal_urbano')), exceptions: [], validation_status: 'PENDIENTE_VALIDACION', reviewer: null, last_reviewed_at: null, notes: 'Literal legal no recogido en el art. 3 del Reglamento consolidado a 2024. Fecha de vigencia por verificar.' }] },
+    versions: [{ version_id: 'LEY-10-S-v1', source_id: 'LEY-19300', source_version: 'Ley 19.300 modificada por Ley 21.202', effective_from: '2020-01-23', effective_to: null, legal_reference: 'Ley 19.300 art. 10 s)', source_url: 'https://www.bcn.cl/leychile/navegar?idNorma=30667',
+      text: 'Ejecución de obras o actividades que puedan significar una alteración física o química a los componentes bióticos, a sus interacciones o a los flujos ecosistémicos de humedales que se encuentran total o parcialmente dentro del límite urbano, y que impliquen su relleno, drenaje, secado, extracción de caudales o de áridos, la alteración de la barra terminal, de la vegetación azonal hídrica y ripariana, la extracción de la cubierta vegetal de turberas o el deterioro, menoscabo, transformación o invasión de la flora y la fauna contenida dentro del humedal, indistintamente de su superficie.',
+      required_inputs: ['loc:humedal_urbano', 'altera_humedal_urbano'], logic: all(geo('humedal_urbano'), yes('altera_humedal_urbano')), exceptions: [], validation_status: 'TEXTO_OFICIAL_CONTRASTADO', reviewer: null, last_reviewed_at: null, notes: 'Texto agregado por la Ley 21.202 (D.O. 23-01-2020), cotejado con el Dictamen CGR E157665N21. Según la jurisprudencia de la CGR, no exige que el humedal haya sido declarado por el MMA: basta que cumpla la definición legal. La proximidad deriva a revisión.' }] },
   { rule_id: 'LEY-11BIS', rule_name: 'Fraccionamiento de proyectos', rule_type: 'fraccionamiento', literal: 'art. 11 bis', art10: null, activity: null, scope: 'fraccionamiento', evidence_required: ['Descripción de proyectos, fases u obras relacionadas', 'Cronograma y vínculos funcionales', 'Antecedentes que acrediten la ejecución por etapas'],
     versions: [{ version_id: 'LEY-11BIS-v1', source_id: 'LEY-19300', source_version: 'Ley 19.300, art. 11 bis (agregado por Ley 20.417, D.O. 26-01-2010)', effective_from: '2010-01-26', effective_to: null, legal_reference: 'Ley 19.300 art. 11 bis; RSEIA art. 14', source_url: 'https://www.bcn.cl/leychile/navegar?idNorma=30667',
       text: '«Los proponentes no podrán, a sabiendas, fraccionar sus proyectos o actividades con el objeto de variar el instrumento de evaluación o de eludir el ingreso al Sistema de Evaluación de Impacto Ambiental.» La SMA determina la infracción. No se aplica cuando el proponente acredita que el proyecto se ejecutará por etapas.',
@@ -447,11 +460,11 @@ export const RULES = [
     versions: [
       { version_id: 'G-v1', source_id: 'DS40-LEYCHILE-2024', source_version: 'D.S. 40 consolidado (D.O. 01-02-2024)', effective_from: DS40_FROM, effective_to: '2026-01-20', legal_reference: 'Ley 19.300 art. 8 y 10; RSEIA art. 2 g)', source_url: DS40_PDF,
         text: 'g.1 las partes, obras o acciones de la modificación constituyen un proyecto del art. 3; g.2 la suma de partes no calificadas y de la modificación constituye un proyecto del art. 3; g.3 se modifica sustantivamente la extensión, magnitud o duración de los impactos; g.4 se modifican sustantivamente las medidas de mitigación, reparación o compensación. Se consideran los cambios sucesivos desde la entrada en vigencia del SEIA.',
-        required_inputs: ['rca', 'g2_suma_incluida', 'g3_impactos', 'g4_medidas'], logic: any({ modificacion: { excludeOriginal: false } }, { prof: { input: 'g3_impactos', label: 'g.3 cambio sustantivo de impactos' } }, { prof: { input: 'g4_medidas', label: 'g.4 cambio sustantivo de medidas' } }), exceptions: [], validation_status: 'TEXTO_OFICIAL_CONTRASTADO', reviewer: null, last_reviewed_at: null,
+        required_inputs: ['rca', 'g2_suma_incluida', 'g3_impactos', 'g4_medidas'], logic: any({ modificacion: { excludeOriginal: false } }, { prof: { input: 'g3_impactos', label: 'g.3 cambio sustantivo de impactos' } }, { all: [{ flag: { input: 'g4_rca_eia', equals: true } }, { prof: { input: 'g4_medidas', label: 'g.4 cambio sustantivo de medidas' } }] }), exceptions: [], validation_status: 'TEXTO_OFICIAL_CONTRASTADO', reviewer: null, last_reviewed_at: null,
         notes: 'g.1 y g.2 se evalúan con los resultados del art. 3 sobre los parámetros informados; g.3 y g.4 exigen determinación profesional fundada.' },
       { version_id: 'G-v2', source_id: 'DS17-2025', source_version: 'D.S. 40 modificado por D.S. 17/2025', effective_from: DS17_FROM, effective_to: null, legal_reference: 'RSEIA art. 2 g) (mod. D.S. 17/2025)', source_url: DS17_URL,
         text: 'g.1 agrega: «a excepción de las tipologías de proyecto o actividad de dicho listado por las que fue calificado originalmente, en cuyo caso se atenderá al resto de los numerales de este literal». g.2 a g.4 sin cambio.',
-        required_inputs: ['rca', 'g2_suma_incluida', 'g3_impactos', 'g4_medidas'], logic: any({ modificacion: { excludeOriginal: true } }, { prof: { input: 'g3_impactos', label: 'g.3 cambio sustantivo de impactos' } }, { prof: { input: 'g4_medidas', label: 'g.4 cambio sustantivo de medidas' } }), exceptions: [], validation_status: 'TEXTO_OFICIAL_CONTRASTADO', reviewer: null, last_reviewed_at: null,
+        required_inputs: ['rca', 'g2_suma_incluida', 'g3_impactos', 'g4_rca_eia', 'g4_medidas'], logic: any({ modificacion: { excludeOriginal: true } }, { prof: { input: 'g3_impactos', label: 'g.3 cambio sustantivo de impactos' } }, { all: [{ flag: { input: 'g4_rca_eia', equals: true } }, { prof: { input: 'g4_medidas', label: 'g.4 cambio sustantivo de medidas' } }] }), exceptions: [], validation_status: 'TEXTO_OFICIAL_CONTRASTADO', reviewer: null, last_reviewed_at: null,
         notes: 'Texto oficial del D.S. 17/2025 cotejado (art. único N.º 1).' }] }
 ];
 

@@ -1,7 +1,7 @@
 // LiqenInsight SEIA — Motor de reglas. Independiente de la interfaz: sin DOM, sin eval.
 import { SECTOR_SOURCES, RULES, UNITS, CATALOG_VERSION, ART10_LETTERS, ART11, LOCATION_ELEMENTS, PAS_CATALOG, NORMATIVA, INPUTS, REGIONS, ACTIVITIES, OBRAS, PROJECT_TYPES, PRESELECT_LOC_RULES, PRESELECT_REGION_RULES, inputVisible } from './seia-catalog.js';
 
-export const ENGINE_VERSION = '0.6.0';
+export const ENGINE_VERSION = '0.7.0';
 export const PROXIMITY_MARGIN = 0.10; // un dato estimado a ±10 % del umbral no permite concluir
 const T = 'TRUE', F = 'FALSE', U = 'UNKNOWN', R = 'REVIEW';
 const and3 = v => v.includes(F) ? F : v.includes(U) ? U : v.includes(R) ? R : T;
@@ -72,7 +72,10 @@ function evalNode(node, ctx, trace) {
   if (node.flag) {
     const { input, equals } = node.flag;
     const pf = (ctx.project.inputs || {})[input] || {};
-    if (pf.quality === 'na') { trace.push({ kind: 'flag', input, label: labelOf(input), op: '=', threshold: equals ? 'Sí' : 'No', provided: 'No aplica', result: F, note: 'Declarado no aplicable por el usuario', layer: 'supuesto' }); return F; }
+    if (pf.quality === 'na') {
+      if (equals === false) { trace.push({ kind: 'flag', input, label: labelOf(input), op: '=', threshold: 'No', provided: 'No aplica', result: U, note: '«No aplica» no equivale a «No» en una condición negativa: responda Sí o No' }); return U; }
+      trace.push({ kind: 'flag', input, label: labelOf(input), op: '=', threshold: 'Sí', provided: 'No aplica', result: F, note: 'Declarado no aplicable por el usuario', layer: 'supuesto' }); return F;
+    }
     const v = pf.value;
     const base = { kind: 'flag', input, label: labelOf(input), op: '=', threshold: equals ? 'Sí' : 'No' };
     if (v !== true && v !== false) { trace.push({ ...base, provided: 'Sin respuesta', result: U, note: 'Dato no informado' }); return U; }
@@ -114,8 +117,12 @@ function evalNode(node, ctx, trace) {
     if (!code) { trace.push({ ...base, provided: ctx.project.region || '—', result: U, note: ctx.project.region ? 'Región no reconocida' : 'Región no informada' }); return U; }
     const c = node.region.cases.find(x => x.in.includes(code));
     if (!c) {
-      const res = node.region.outside === 'FALSE' ? F : R;
-      trace.push({ ...base, provided: code, result: res, note: res === F ? 'La región no está comprendida en este supuesto' : 'La región no está expresamente comprendida en los tramos del texto' });
+      if (node.region.outside === 'FALSE') { trace.push({ ...base, provided: code, result: F, note: 'La región no está comprendida en este supuesto' }); return F; }
+      // Región fuera de los tramos literales (Ñuble): se concluye solo si todos los tramos dan el mismo resultado.
+      const sub = [], rs = node.region.cases.map(x => evalNode(x.node, ctx, sub));
+      const res = rs.every(x => x === F) ? F : rs.every(x => x === T) ? T : rs.includes(U) ? U : R;
+      trace.push({ ...base, provided: code, result: res, note: 'La región no está expresamente comprendida en los tramos del texto. ' + (res === F ? 'El valor no alcanza el umbral de ningún tramo.' : res === T ? 'El valor supera el umbral de todos los tramos.' : res === U ? 'Faltan antecedentes.' : 'El resultado depende del tramo aplicable: requiere revisión.') });
+      trace.push(...sub.filter(t => t.kind !== 'region'));
       return res;
     }
     trace.push({ ...base, provided: code, result: T, note: 'Tramo: ' + c.in.join(', ') });
@@ -147,6 +154,7 @@ function evalNode(node, ctx, trace) {
     const unk = art3.filter(r => r.status === 'INFO_INSUFICIENTE' || r.status === 'REVISION');
     if (unk.length) { const onlyRev = unk.every(r => r.status === 'REVISION'); trace.push({ kind: 'mod', label: 'g.1 — tipologías sin resolver en la modificación', provided: unk.map(r => r.literal + (r.status === 'REVISION' ? ' (revisión)' : '')).join(', '), result: onlyRev ? R : U, note: onlyRev ? 'Las tipologías de la modificación requieren revisión especializada' : 'Faltan antecedentes de la modificación' }); return onlyRev ? R : U; }
     if (suma !== true) { trace.push({ kind: 'mod', label: 'g.2 — suma de partes no calificadas', provided: suma === false ? 'No incluida' : 'Sin respuesta', result: U, note: 'Para descartar g.2 los parámetros deben incluir la suma de partes, obras y acciones no calificadas' }); return U; }
+    if (excluded.length) { trace.push({ kind: 'mod', label: 'g.2 — la suma de partes no calificadas constituye la tipología original', provided: excluded.map(r => r.literal).join(', '), result: R, note: 'El D.S. 17/2025 excluye la tipología original solo del g.1 y remite al resto de los literales: su alcance en g.2 requiere análisis jurídico' }); return R; }
     trace.push({ kind: 'mod', label: 'g.1/g.2 — la modificación, sumada a partes no calificadas, no constituye una tipología', provided: '—', result: F });
     return F;
   }
@@ -168,7 +176,7 @@ function evaluateRule(rule, project, date, results) {
     const fv = ((project.inputs || {}).frac_relacionado || {}).value;
     const need = ['etapas', 'complementarias', 'modificacion'].some(n => (project.nature || []).includes(n));
     if (fv === false) return done('NO_ACTIVADA', 'Se declaró que no existen proyectos, fases u obras relacionadas.', rule.versions[0], { trace: [{ kind: 'flag', label: 'Proyectos o fases relacionadas', provided: 'No', result: 'FALSE', layer: 'dato' }] });
-    if (fv !== true && !need) return done('DESCARTADA', 'Sin proyectos relacionados declarados. Responda la pregunta de la etapa de historial para descartarlo expresamente.', null);
+    if (fv !== true && !need) return done('DESCARTADA', 'Proyecto nuevo sin proyectos relacionados declarados. El art. 11 bis prohíbe fraccionar para eludir el SEIA; no es por sí mismo una causal de ingreso, por lo que la falta de respuesta no impide concluir. Responda la pregunta de historial antes de emitir el informe.', null, { unanswered: true });
   }
   if (rule.scope === 'modificacion' && !isModification(project)) return done('DESCARTADA', 'No aplica: el proyecto no se declaró como modificación.', null);
   const acts = actsOf(rule);
@@ -183,7 +191,8 @@ function evaluateRule(rule, project, date, results) {
     const why = fut ? `Regla con vigencia desde ${fut.effective_from}; no se aplica a la fecha ${date}.` : past.length ? `La vigencia de la regla terminó el ${past[past.length - 1].effective_to} (derogada o reemplazada sin versión cargada).` : 'Sin versión cargada para la fecha.';
     return done('SIN_VERSION_VIGENTE', why, null, { gap: !!fut && !past.length });
   }
-  if (rule.scope === 'modificacion' && !(project.rca?.list || []).length) return done('INFO_INSUFICIENTE', 'El proyecto se declaró como modificación, pero no se registró la RCA original ni sus tipologías.', v, { missing: ['RCA original y tipologías de calificación'] });
+  const sinRca = (project.nature || []).includes('sin_rca') || project.rca?.has === 'no';
+  if (rule.scope === 'modificacion' && !sinRca && !(project.rca?.list || []).length) return done('INFO_INSUFICIENTE', 'El proyecto se declaró como modificación, pero no se registró la RCA original ni sus tipologías.', v, { missing: ['RCA original y tipologías de calificación'] });
   const trace = [];
   const ctx = { project, results };
   const trig = evalNode(v.logic, ctx, trace);
@@ -251,6 +260,8 @@ export function runSeia(project, opts = {}) {
   if (gaps.length) warnings.push(`${gaps.length} regla(s) sin versión cargada para la fecha ${date} (${gaps.map(r => r.literal).join(', ')}): se requiere revisar el texto vigente a esa fecha.`);
   const derog = det.filter(r => r.status === 'SIN_VERSION_VIGENTE' && !r.gap);
   if (derog.length) warnings.push(`Sin vigencia a la fecha (derogadas o reemplazadas): ${derog.map(r => r.literal).join(', ')}. No se consideran en el resultado.`);
+  if (mod && ((project.nature || []).includes('sin_rca') || project.rca?.has === 'no')) warnings.push('Modificación de un proyecto sin RCA: no hay tipologías originales que excluir del g.1; g.2 suma las partes ejecutadas sin calificación desde la entrada en vigencia del SEIA.');
+  if (list.some(r => r.rule_type === 'fraccionamiento' && r.unanswered)) warnings.push('No se respondió si existen otros proyectos, fases u obras relacionadas (Ley 19.300 art. 11 bis). Respóndalo antes de emitir el informe: un fraccionamiento puede alterar la conclusión.');
   if (mod) warnings.push('Proyecto declarado como modificación: los resultados del art. 3 se usan como insumo del art. 2 g). La calificación recae sobre la modificación, pero la evaluación considera la suma de sus impactos y los del proyecto existente (Ley 19.300 art. 11 ter; RSEIA art. 12).');
   return {
     engine_version: ENGINE_VERSION, catalog_version: CATALOG_VERSION, date, global, global_label: GLOBAL_LABELS[global], region_code: regionCode(project),
